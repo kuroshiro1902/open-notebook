@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { AlertCircle, Loader2, RefreshCcw } from 'lucide-react'
 
 import { useDeletePodcastEpisode, usePodcastEpisodes } from '@/lib/hooks/use-podcasts'
@@ -10,33 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GeneratePodcastDialog } from '@/components/podcasts/GeneratePodcastDialog'
-
-const STATUS_ORDER: Array<{
-  key: 'running' | 'completed' | 'failed' | 'pending'
-  title: string
-  description?: string
-}> = [
-  {
-    key: 'running',
-    title: 'Currently Processing',
-    description: 'Episodes that are actively generating assets.',
-  },
-  {
-    key: 'pending',
-    title: 'Queued / Pending',
-    description: 'Submitted episodes waiting to start processing.',
-  },
-  {
-    key: 'completed',
-    title: 'Completed Episodes',
-    description: 'Ready to review, download, or publish.',
-  },
-  {
-    key: 'failed',
-    title: 'Failed Episodes',
-    description: 'Episodes that encountered issues during generation.',
-  },
-]
+import { useTranslations } from 'next-intl'
 
 function SummaryBadge({ label, value }: { label: string; value: number }) {
   return (
@@ -48,6 +22,34 @@ function SummaryBadge({ label, value }: { label: string; value: number }) {
 }
 
 export function EpisodesTab() {
+  const t = useTranslations()
+  
+  const STATUS_ORDER: Array<{
+    key: 'running' | 'completed' | 'failed' | 'pending'
+    title: string
+    description?: string
+  }> = useMemo(() => [
+    {
+      key: 'running',
+      title: t('podcast.episodes.running'),
+      description: t('podcast.episodes.runningDescription'),
+    },
+    {
+      key: 'pending',
+      title: t('podcast.episodes.pending'),
+      description: t('podcast.episodes.pendingDescription'),
+    },
+    {
+      key: 'completed',
+      title: t('podcast.episodes.completed'),
+      description: t('podcast.episodes.completedDescription'),
+    },
+    {
+      key: 'failed',
+      title: t('podcast.episodes.failed'),
+      description: t('podcast.episodes.failedDescription'),
+    },
+  ], [t])
   const [showGenerateDialog, setShowGenerateDialog] = useState(false)
   const {
     episodes,
@@ -75,14 +77,14 @@ export function EpisodesTab() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-1">
-          <h2 className="text-xl font-semibold">Episodes overview</h2>
+          <h2 className="text-xl font-semibold">{t('podcast.episodes.overview')}</h2>
           <p className="text-sm text-muted-foreground">
-            Monitor podcast generation jobs and review the final artefacts.
+            {t('podcast.episodes.overviewDescription')}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Button onClick={() => setShowGenerateDialog(true)}>
-            Generate Podcast
+            {t('podcast.episodes.generate')}
           </Button>
           <Button
             variant="outline"
@@ -95,25 +97,25 @@ export function EpisodesTab() {
             ) : (
               <RefreshCcw className="mr-2 h-4 w-4" />
             )}
-            Refresh
+            {t('podcast.episodes.refresh')}
           </Button>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <SummaryBadge label="Total" value={statusCounts.total} />
-        <SummaryBadge label="Processing" value={statusCounts.running} />
-        <SummaryBadge label="Completed" value={statusCounts.completed} />
-        <SummaryBadge label="Failed" value={statusCounts.failed} />
-        <SummaryBadge label="Pending" value={statusCounts.pending} />
+        <SummaryBadge label={t('podcast.episodes.total')} value={statusCounts.total} />
+        <SummaryBadge label={t('podcast.episodes.running')} value={statusCounts.running} />
+        <SummaryBadge label={t('podcast.episodes.completed')} value={statusCounts.completed} />
+        <SummaryBadge label={t('podcast.episodes.failed')} value={statusCounts.failed} />
+        <SummaryBadge label={t('podcast.episodes.pending')} value={statusCounts.pending} />
       </div>
 
       {isError ? (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Failed to load episodes</AlertTitle>
+          <AlertTitle>{t('podcast.episodes.messages.failedToLoad')}</AlertTitle>
           <AlertDescription>
-            We could not fetch the latest podcast episodes. Try again shortly.
+            {t('podcast.episodes.messages.failedToLoadDescription')}
           </AlertDescription>
         </Alert>
       ) : null}
@@ -121,15 +123,14 @@ export function EpisodesTab() {
       {isLoading ? (
         <div className="flex items-center gap-3 rounded-lg border border-dashed p-6 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Loading episodes…
+          {t('podcast.episodes.messages.loading')}
         </div>
       ) : null}
 
       {emptyState ? (
         <div className="rounded-lg border border-dashed bg-muted/30 p-10 text-center">
           <p className="text-sm text-muted-foreground">
-            No podcast episodes yet. Generate your first one from the notebook or source
-            chat interfaces.
+            {t('podcast.episodes.messages.noEpisodes')}
           </p>
         </div>
       ) : null}

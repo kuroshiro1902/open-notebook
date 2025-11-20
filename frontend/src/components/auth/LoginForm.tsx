@@ -141,7 +141,7 @@ export function LoginForm() {
         <CardHeader className="text-center">
           <CardTitle>Open Notebook</CardTitle>
           <CardDescription>
-            Enter your password to access the application
+            Nhập mật khẩu để truy cập ứng dụng
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -149,7 +149,7 @@ export function LoginForm() {
             <div>
               <Input
                 type="password"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
@@ -168,7 +168,7 @@ export function LoginForm() {
               className="w-full"
               disabled={isLoading || !password.trim()}
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
             </Button>
 
             {configInfo && (

@@ -48,9 +48,9 @@ export default function ModelsPage() {
         <div className="p-6 space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">Model Management</h1>
+              <h1 className="text-2xl font-bold">Quản lý Model</h1>
               <p className="text-muted-foreground mt-1">
-                Configure AI models for different purposes across Open Notebook
+                Cấu hình model AI cho các mục đích khác nhau trên Open Notebook
               </p>
             </div>
             <Button variant="outline" size="sm" onClick={handleRefresh}>

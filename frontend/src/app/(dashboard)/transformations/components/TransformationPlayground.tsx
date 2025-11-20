@@ -48,16 +48,16 @@ export function TransformationPlayground({ transformations, selectedTransformati
         <CardHeader>
           <CardTitle>Playground</CardTitle>
           <CardDescription>
-            Test your transformations on sample text before applying them to your sources
+            Kiểm tra biến đổi của bạn trên văn bản mẫu trước khi áp dụng chúng vào nguồn của bạn
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="transformation">Transformation</Label>
+              <Label htmlFor="transformation">Biến đổi</Label>
               <Select value={selectedId} onValueChange={setSelectedId}>
                 <SelectTrigger id="transformation">
-                  <SelectValue placeholder="Select a transformation" />
+                  <SelectValue placeholder="Chọn một biến đổi" />
                 </SelectTrigger>
                 <SelectContent>
                   {transformations?.map((transformation) => (
@@ -75,13 +75,13 @@ export function TransformationPlayground({ transformations, selectedTransformati
                 modelType="language"
                 value={modelId}
                 onChange={setModelId}
-                placeholder="Select a model"
+                placeholder="Chọn một model"
               />
             </div>
           </div>
 
           <div>
-            <Label htmlFor="input">Input Text</Label>
+            <Label htmlFor="input">Văn bản đầu vào</Label>
             <Textarea
               id="input"
               value={inputText}
@@ -101,12 +101,12 @@ export function TransformationPlayground({ transformations, selectedTransformati
               {executeTransformation.isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Running...
+                  Đang chạy...
                 </>
               ) : (
                 <>
                   <Play className="h-4 w-4 mr-2" />
-                  Run Transformation
+                  Chạy biến đổi
                 </>
               )}
             </Button>
@@ -114,7 +114,7 @@ export function TransformationPlayground({ transformations, selectedTransformati
 
           {output && (
             <div className="space-y-2">
-              <Label>Output</Label>
+              <Label>Kết quả</Label>
               <Card>
                 <ScrollArea className="h-[400px]">
                   <CardContent className="pt-6">

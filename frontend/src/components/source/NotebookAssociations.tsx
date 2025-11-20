@@ -108,10 +108,10 @@ export function NotebookAssociations({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
-            Notebooks
+            Sổ tay
           </CardTitle>
           <CardDescription>
-            Manage which notebooks contain this source
+            Quản lý các sổ tay chứa nguồn này
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -129,14 +129,14 @@ export function NotebookAssociations({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
-            Notebooks
+            Sổ tay
           </CardTitle>
           <CardDescription>
-            Manage which notebooks contain this source
+            Quản lý các sổ tay chứa nguồn này
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">No notebooks available</p>
+          <p className="text-sm text-muted-foreground">Không có sổ tay nào khả dụng</p>
         </CardContent>
       </Card>
     )
@@ -147,10 +147,10 @@ export function NotebookAssociations({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <BookOpen className="h-5 w-5" />
-          Notebooks
+          Sổ tay
         </CardTitle>
         <CardDescription>
-          Manage which notebooks contain this source
+          Quản lý các sổ tay chứa nguồn này
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -203,7 +203,7 @@ export function NotebookAssociations({
               onClick={handleCancel}
               disabled={isSaving}
             >
-              Cancel
+              Hủy
             </Button>
             <Button
               size="sm"
@@ -213,10 +213,10 @@ export function NotebookAssociations({
               {isSaving ? (
                 <>
                   <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
+                  Đang lưu...
                 </>
               ) : (
-                'Save Changes'
+                'Lưu thay đổi'
               )}
             </Button>
           </div>

@@ -68,7 +68,7 @@ export function ChatPanel({
   onDeleteSession,
   onUpdateSession,
   loadingSessions = false,
-  title = 'Chat with Source',
+  title = 'Chat với nguồn',
   contextType = 'source',
   notebookContextStats,
   notebookId
@@ -139,10 +139,10 @@ export function ChatPanel({
                 disabled={loadingSessions}
               >
                 <Clock className="h-4 w-4" />
-                <span className="text-xs">Sessions</span>
+                <span className="text-xs">Phiên chat</span>
               </Button>
               <DialogContent className="sm:max-w-[420px] p-0 overflow-hidden">
-                <DialogTitle className="sr-only">Chat Sessions</DialogTitle>
+                <DialogTitle className="sr-only">Phiên chat</DialogTitle>
                 <SessionManager
                   sessions={sessions}
                   currentSessionId={currentSessionId ?? null}
@@ -167,9 +167,9 @@ export function ChatPanel({
               <div className="text-center text-muted-foreground py-8">
                 <Bot className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p className="text-sm">
-                  Start a conversation about this {contextType}
+                  Bắt đầu cuộc trò chuyện về {contextType} này
                 </p>
-                <p className="text-xs mt-2">Ask questions to understand the content better</p>
+                <p className="text-xs mt-2">Hỏi câu hỏi để hiểu nội dung tốt hơn</p>
               </div>
             ) : (
               messages.map((message) => (
@@ -292,7 +292,7 @@ export function ChatPanel({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={`Ask a question about this ${contextType}... (${keyHint} to send)`}
+              placeholder={`Hỏi câu hỏi về ${contextType} này... (${keyHint} để gửi)`}
               disabled={isStreaming}
               className="flex-1 min-h-[40px] max-h-[100px] resize-none py-2 px-3"
               rows={1}

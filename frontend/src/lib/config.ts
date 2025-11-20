@@ -20,6 +20,7 @@ let configPromise: Promise<AppConfig> | null = null
  * 3. Default fallback (http://localhost:5055)
  */
 export async function getApiUrl(): Promise<string> {
+  console.log({ config })
   // If we already have config, return it
   if (config) {
     return config.apiUrl

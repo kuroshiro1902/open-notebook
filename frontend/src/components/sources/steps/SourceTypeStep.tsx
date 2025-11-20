@@ -26,19 +26,19 @@ const SOURCE_TYPES = [
     value: 'link' as const,
     label: 'Link',
     icon: LinkIcon,
-    description: 'Add a web page or URL',
+    description: 'Thêm một trang web hoặc URL',
   },
   {
     value: 'upload' as const,
     label: 'Upload',
     icon: FileIcon,
-    description: 'Upload a document or file',
+    description: 'Tải lên một tài liệu hoặc tệp',
   },
   {
     value: 'text' as const,
     label: 'Text',
     icon: FileTextIcon,
-    description: 'Add text content directly',
+    description: 'Thêm nội dung văn bản trực tiếp',
   },
 ]
 
@@ -54,8 +54,8 @@ export function SourceTypeStep({ control, register, errors }: SourceTypeStepProp
   return (
     <div className="space-y-6">
       <FormSection
-        title="Source Type"
-        description="Choose how you want to add your content"
+        title="Loại nguồn"
+        description="Chọn cách bạn muốn thêm nội dung của bạn"
       >
         <Controller
           control={control}
@@ -108,7 +108,7 @@ export function SourceTypeStep({ control, register, errors }: SourceTypeStepProp
                         accept=".pdf,.doc,.docx,.pptx,.ppt,.xlsx,.xls,.txt,.md,.epub,.mp4,.avi,.mov,.wmv,.mp3,.wav,.m4a,.aac,.jpg,.jpeg,.png,.tiff,.zip,.tar,.gz,.html"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Supported: Documents (PDF, DOC, DOCX, PPT, XLS, EPUB, TXT, MD), Media (MP4, MP3, WAV, M4A), Images (JPG, PNG), Archives (ZIP)
+                        Định dạng hỗ trợ: Tài liệu (PDF, DOC, DOCX, PPT, XLS, EPUB, TXT, MD), Media (MP4, MP3, WAV, M4A), Hình ảnh (JPG, PNG), Tệp nén (ZIP)
                       </p>
                       {errors.file && (
                         <p className="text-sm text-destructive mt-1">{errors.file.message}</p>
@@ -118,11 +118,11 @@ export function SourceTypeStep({ control, register, errors }: SourceTypeStepProp
                   
                   {type.value === 'text' && (
                     <div>
-                      <Label htmlFor="content" className="mb-2 block">Text Content *</Label>
+                      <Label htmlFor="content" className="mb-2 block">Nội dung văn bản *</Label>
                       <Textarea
                         id="content"
                         {...register('content')}
-                        placeholder="Paste or type your content here..."
+                        placeholder="Dán hoặc nhập nội dung của bạn ở đây..."
                         rows={6}
                       />
                       {errors.content && (
@@ -141,16 +141,16 @@ export function SourceTypeStep({ control, register, errors }: SourceTypeStepProp
       </FormSection>
 
       <FormSection
-        title={selectedType === 'text' ? "Title *" : "Title (optional)"}
+        title={selectedType === 'text' ? "Tiêu đề *" : "Tiêu đề (tùy chọn)"}
         description={selectedType === 'text'
-          ? "A title is required for text content"
-          : "If left empty, a title will be generated from the content"
+          ? "Một tiêu đề là bắt buộc cho nội dung văn bản"
+          : "Nếu để trống, một tiêu đề sẽ được tạo từ nội dung"
         }
       >
         <Input
           id="title"
           {...register('title')}
-          placeholder="Give your source a descriptive title"
+          placeholder="Cho nguồn của bạn một tiêu đề mô tả"
         />
         {errors.title && (
           <p className="text-sm text-destructive mt-1">{errors.title.message}</p>

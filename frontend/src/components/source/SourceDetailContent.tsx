@@ -352,7 +352,7 @@ export function SourceDetailContent({
             {showChatButton && onChatClick && (
               <Button variant="outline" size="sm" onClick={onChatClick}>
                 <MessageSquare className="h-4 w-4 mr-2" />
-                Chat with source
+                Chat với nguồn
               </Button>
             )}
 
@@ -371,10 +371,10 @@ export function SourceDetailContent({
                     >
                       <Download className="mr-2 h-4 w-4" />
                       {fileAvailable === false
-                        ? 'File unavailable'
+                        ? 'Tệp không khả dụng'
                         : isDownloadingFile
-                          ? 'Preparing download…'
-                          : 'Download File'}
+                          ? 'Đang chuẩn bị tải xuống…'
+                          : 'Tải xuống tệp'}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                   </>
@@ -384,7 +384,7 @@ export function SourceDetailContent({
                   disabled={isEmbedding || source.embedded}
                 >
                   <Database className="mr-2 h-4 w-4" />
-                  {isEmbedding ? 'Embedding...' : source.embedded ? 'Already Embedded' : 'Embed Content'}
+                  {isEmbedding ? 'Đang embedding...' : source.embedded ? 'Đã được embedding' : 'Embed nội dung'}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -392,7 +392,7 @@ export function SourceDetailContent({
                   onClick={handleDelete}
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete Source
+                  Xóa nguồn
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -404,11 +404,11 @@ export function SourceDetailContent({
       <div className="flex-1 overflow-y-auto px-2">
         <Tabs defaultValue="content" className="w-full">
           <TabsList className="grid w-full grid-cols-3 sticky top-0 z-10">
-            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="content">Nội dung</TabsTrigger>
             <TabsTrigger value="insights">
               Insights {insights.length > 0 && `(${insights.length})`}
             </TabsTrigger>
-            <TabsTrigger value="details">Details</TabsTrigger>
+            <TabsTrigger value="details">Chi tiết</TabsTrigger>
           </TabsList>
 
           <TabsContent value="content" className="mt-6">
@@ -416,7 +416,7 @@ export function SourceDetailContent({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   {isYouTubeUrl && <Youtube className="h-5 w-5" />}
-                  Content
+                  Nội dung
                 </CardTitle>
                 {source.asset?.url && !isYouTubeUrl && (
                   <CardDescription className="flex items-center gap-2">
@@ -453,7 +453,7 @@ export function SourceDetailContent({
                           className="text-sm text-muted-foreground hover:underline inline-flex items-center gap-1"
                         >
                           <ExternalLink className="h-3 w-3" />
-                          Open on YouTube
+                          Mở trên YouTube
                         </a>
                       </div>
                     )}
@@ -489,7 +489,7 @@ export function SourceDetailContent({
                   <Badge variant="secondary">{insights.length}</Badge>
                 </CardTitle>
                 <CardDescription>
-                  AI-generated insights about this source
+                  Ý tưởng AI được tạo từ nguồn này
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -497,7 +497,7 @@ export function SourceDetailContent({
                 <div className="rounded-lg border bg-muted/30 p-4">
                   <h3 className="mb-3 text-sm font-semibold flex items-center gap-2">
                     <Sparkles className="h-4 w-4" />
-                    Generate New Insight
+                    Tạo ý tưởng mới
                   </h3>
                   <div className="flex gap-2">
                     <Select
@@ -506,7 +506,7 @@ export function SourceDetailContent({
                       disabled={creatingInsight}
                     >
                       <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="Select a transformation..." />
+                        <SelectValue placeholder="Chọn một biến đổi..." />
                       </SelectTrigger>
                       <SelectContent>
                         {transformations.map((trans) => (
@@ -524,12 +524,12 @@ export function SourceDetailContent({
                       {creatingInsight ? (
                         <>
                           <LoadingSpinner className="mr-2 h-3 w-3" />
-                          Creating...
+                          Đang tạo...
                         </>
                       ) : (
                         <>
                           <Plus className="mr-2 h-4 w-4" />
-                          Create
+                          Tạo
                         </>
                       )}
                     </Button>
@@ -544,8 +544,8 @@ export function SourceDetailContent({
                 ) : insights.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <Lightbulb className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                    <p className="text-sm">No insights yet</p>
-                    <p className="text-xs mt-1">Create your first insight using a transformation above</p>
+                    <p className="text-sm">Không có ý tưởng nào</p>
+                    <p className="text-xs mt-1">Tạo ý tưởng đầu tiên bằng cách sử dụng biến đổi ở trên</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -563,7 +563,7 @@ export function SourceDetailContent({
                         </p>
                         <div className="mt-3 flex justify-end">
                           <Button size="sm" variant="outline" onClick={() => setSelectedInsight(insight)}>
-                            View Insight
+                            Xem ý tưởng
                           </Button>
                         </div>
                       </div>
@@ -577,7 +577,7 @@ export function SourceDetailContent({
           <TabsContent value="details" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Details</CardTitle>
+                <CardTitle>Chi tiết</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Embedding Alert */}
@@ -585,10 +585,10 @@ export function SourceDetailContent({
                   <Alert>
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>
-                      Content Not Embedded
+                      Nội dung không được embedding
                     </AlertTitle>
                     <AlertDescription>
-                      This content hasn&apos;t been embedded for vector search. Embedding enables advanced search capabilities and better content discovery.
+                      Nội dung này không được embedding cho tìm kiếm vector. Embedding cho phép tìm kiếm nâng cao và khám phá nội dung tốt hơn.
                       <div className="mt-3">
                         <Button
                           onClick={handleEmbedContent}
@@ -596,7 +596,7 @@ export function SourceDetailContent({
                           size="sm"
                         >
                           <Database className="mr-2 h-4 w-4" />
-                          {isEmbedding ? 'Embedding...' : 'Embed Content'}
+                          {isEmbedding ? 'Đang embedding...' : 'Embed nội dung'}
                         </Button>
                       </div>
                     </AlertDescription>
@@ -636,7 +636,7 @@ export function SourceDetailContent({
 
                   {source.asset?.file_path && (
                     <div className="space-y-2">
-                      <h3 className="text-sm font-semibold">Uploaded File</h3>
+                      <h3 className="text-sm font-semibold">Tệp đã tải lên</h3>
                       <div className="flex flex-wrap items-center gap-2">
                         <code className="rounded bg-muted px-2 py-1 text-sm">
                           {source.asset.file_path}
@@ -649,16 +649,16 @@ export function SourceDetailContent({
                         >
                           <Download className="mr-2 h-4 w-4" />
                           {fileAvailable === false
-                            ? 'Unavailable'
+                            ? 'Không khả dụng'
                             : isDownloadingFile
-                              ? 'Preparing…'
-                              : 'Download'}
+                              ? 'Đang chuẩn bị tải xuống…'
+                              : 'Tải xuống tệp'}
                         </Button>
                       </div>
                       {fileAvailable === false ? (
                         <p className="text-xs text-muted-foreground">
-                          Original file is no longer available on the server (likely removed after
-                          processing). Upload it again if you need a fresh copy.
+                          Tệp gốc không còn khả dụng trên máy chủ (có thể đã bị xóa sau khi
+                          xử lý). Tải lên lại nếu bạn cần một bản sao mới.
                         </p>
                       ) : null}
                     </div>
@@ -666,7 +666,7 @@ export function SourceDetailContent({
 
                   {source.topics && source.topics.length > 0 && (
                     <div>
-                      <h3 className="mb-2 text-sm font-semibold">Topics</h3>
+                      <h3 className="mb-2 text-sm font-semibold">Chủ đề</h3>
                       <div className="flex flex-wrap gap-2">
                         {source.topics.map((topic, idx) => (
                           <Badge key={idx} variant="outline">
@@ -691,7 +691,7 @@ export function SourceDetailContent({
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground">Created</p>
+                      <p className="text-xs font-medium text-muted-foreground">Tạo</p>
                       <p className="text-sm">
                         {formatDistanceToNow(new Date(source.created), { addSuffix: true })}
                       </p>
@@ -700,7 +700,7 @@ export function SourceDetailContent({
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground">Updated</p>
+                      <p className="text-xs font-medium text-muted-foreground">Cập nhật</p>
                       <p className="text-sm">
                         {formatDistanceToNow(new Date(source.updated), { addSuffix: true })}
                       </p>

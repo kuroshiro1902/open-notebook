@@ -93,7 +93,7 @@ export function SessionManager({
           <CardTitle className="flex items-center justify-between">
             <span className="flex items-center gap-2">
               <MessageSquare className="h-5 w-5" />
-              Chat Sessions
+              Phiên chat
             </span>
             <Button
               size="sm"
@@ -111,7 +111,7 @@ export function SessionManager({
                 <Input
                   value={newSessionTitle}
                   onChange={(e) => setNewSessionTitle(e.target.value)}
-                  placeholder="Session title..."
+                  placeholder="Tiêu đề phiên chat..."
                   className="mb-2"
                   autoFocus
                   onKeyPress={(e) => {
@@ -120,7 +120,7 @@ export function SessionManager({
                 />
                 <div className="flex gap-2">
                   <Button size="sm" onClick={handleCreateSession}>
-                    Create
+                    Tạo
                   </Button>
                   <Button
                     size="sm"
@@ -130,7 +130,7 @@ export function SessionManager({
                       setNewSessionTitle('')
                     }}
                   >
-                    Cancel
+                    Hủy bỏ
                   </Button>
                 </div>
               </div>
@@ -138,13 +138,13 @@ export function SessionManager({
 
             {loadingSessions ? (
               <div className="text-center py-8 text-muted-foreground">
-                Loading sessions...
+                Đang tải phiên chat...
               </div>
             ) : sessions.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p className="text-sm">No chat sessions yet</p>
-                <p className="text-xs mt-2">Create a session to start chatting</p>
+                <p className="text-sm">Không có phiên chat nào</p>
+                <p className="text-xs mt-2">Tạo một phiên chat để bắt đầu trò chuyện</p>
               </div>
             ) : (
               <div className="space-y-2 pb-4">
@@ -213,7 +213,7 @@ export function SessionManager({
                         </div>
                         {session.message_count && session.message_count > 0 && (
                           <Badge variant="secondary" className="mt-2 text-xs">
-                            {session.message_count} messages
+                            {session.message_count} tin nhắn
                           </Badge>
                         )}
                         {session.model_override && (
@@ -234,15 +234,15 @@ export function SessionManager({
       <AlertDialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Chat Session?</AlertDialogTitle>
+            <AlertDialogTitle>Xóa phiên chat?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. All messages in this session will be permanently deleted.
+              Điều này không thể hoàn tác. Tất cả tin nhắn trong phiên chat này sẽ bị xóa vĩnh viễn.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Hủy bỏ</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteConfirm}>
-              Delete
+              Xóa
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

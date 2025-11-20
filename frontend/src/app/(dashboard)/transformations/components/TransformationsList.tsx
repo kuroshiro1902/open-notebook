@@ -37,12 +37,12 @@ export function TransformationsList({ transformations, isLoading, onPlayground }
     return (
       <EmptyState
         icon={Wand2}
-        title="No transformations yet"
-        description="Create your first transformation to process and extract insights from your content."
+        title="Không có biến đổi nào"
+        description="Tạo biến đổi đầu tiên để xử lý và trích xuất ý tưởng từ nội dung của bạn."
         action={
           <Button onClick={() => handleOpenEditor()}>
             <Plus className="h-4 w-4 mr-2" />
-            Create New Transformation
+            Tạo biến đổi mới
           </Button>
         }
       />
@@ -53,10 +53,10 @@ export function TransformationsList({ transformations, isLoading, onPlayground }
     <>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Your Transformations</h2>
+          <h2 className="text-lg font-semibold">Các biến đổi của bạn</h2>
           <Button onClick={() => handleOpenEditor()}>
             <Plus className="h-4 w-4 mr-2" />
-            Create New Transformation
+            Tạo biến đổi mới
           </Button>
         </div>
 
