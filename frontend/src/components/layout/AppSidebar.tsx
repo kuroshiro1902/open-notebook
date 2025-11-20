@@ -40,6 +40,7 @@ import {
   Plus,
   Wrench,
 } from 'lucide-react'
+import { useTranslations } from "next-intl";
 
 const navigation = [
   {
@@ -75,6 +76,7 @@ const navigation = [
 type CreateTarget = 'source' | 'notebook' | 'podcast'
 
 export function AppSidebar() {
+  const t = useTranslations();
   const pathname = usePathname()
   const { logout } = useAuth()
   const { isCollapsed, toggleCollapse } = useSidebarStore()
@@ -131,9 +133,9 @@ export function AppSidebar() {
           ) : (
             <>
               <div className="flex items-center gap-2">
-                <Image src="/logo.svg" alt="Open Notebook" width={32} height={32} />
+                <Image src="/logo.svg" alt={t("app.title")} width={32} height={32} />
                 <span className="text-base font-medium text-sidebar-foreground">
-                  Open Notebook
+                  {t("app.title")}
                 </span>
               </div>
               <Button

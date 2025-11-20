@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   // Enable standalone output for optimized Docker deployment
@@ -11,6 +12,7 @@ const nextConfig: NextConfig = {
     // INTERNAL_API_URL: Where Next.js server-side should proxy API requests
     // Default: http://localhost:5055 (single-container deployment)
     // Override for multi-container: INTERNAL_API_URL=http://api-service:5055
+    console.log('process.env.INTERNAL_API_URL', process.env.INTERNAL_API_URL)
     const internalApiUrl = process.env.INTERNAL_API_URL || 'http://localhost:5055'
 
     console.log(`[Next.js Rewrites] Proxying /api/* to ${internalApiUrl}/api/*`)
@@ -24,4 +26,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(nextConfig);
