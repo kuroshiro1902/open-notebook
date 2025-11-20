@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -20,6 +21,7 @@ import { embeddingApi } from '@/lib/api/embedding'
 import type { RebuildEmbeddingsRequest, RebuildStatusResponse } from '@/lib/api/embedding'
 
 export function RebuildEmbeddings() {
+  const t = useTranslations()
   const [mode, setMode] = useState<'existing' | 'all'>('existing')
   const [includeSources, setIncludeSources] = useState(true)
   const [includeNotes, setIncludeNotes] = useState(true)
@@ -121,10 +123,10 @@ export function RebuildEmbeddings() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          🔄 Rebuild Embeddings
+          {t("advanced.rebuildEmbeddings.title")}
         </CardTitle>
         <CardDescription>
-          Rebuild vector embeddings for your content. Use this when switching embedding models or fixing corrupted embeddings.
+          {t("advanced.rebuildEmbeddings.description")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -135,18 +137,18 @@ export function RebuildEmbeddings() {
               <Label htmlFor="mode">Rebuild Mode</Label>
               <Select value={mode} onValueChange={(value) => setMode(value as 'existing' | 'all')}>
                 <SelectTrigger id="mode">
-                  <SelectValue />
-                </SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="existing">Existing</SelectItem>
-                  <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="existing">{t('advanced.rebuildEmbeddings.rebuildMode.existing')}</SelectItem>
+                    <SelectItem value="all">{t('advanced.rebuildEmbeddings.rebuildMode.all')}</SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-sm text-muted-foreground">
-                {mode === 'existing'
-                  ? 'Re-embed only items that already have embeddings (faster, for model switching)'
-                  : 'Re-embed existing items + create embeddings for items without any (slower, comprehensive)'}
-              </p>
+                <p className="text-sm text-muted-foreground">
+                  {mode === 'existing'
+                    ? t('advanced.rebuildEmbeddings.rebuildMode.existingDesc')
+                    : t('advanced.rebuildEmbeddings.rebuildMode.allDesc')}
+                </p>
             </div>
 
             <div className="space-y-3">
@@ -159,7 +161,7 @@ export function RebuildEmbeddings() {
                     onCheckedChange={(checked) => setIncludeSources(checked === true)}
                   />
                   <Label htmlFor="sources" className="font-normal cursor-pointer">
-                    Sources
+                    {t('sources')}
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -169,7 +171,7 @@ export function RebuildEmbeddings() {
                     onCheckedChange={(checked) => setIncludeNotes(checked === true)}
                   />
                   <Label htmlFor="notes" className="font-normal cursor-pointer">
-                    Notes
+                    {t('notes')}
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -179,7 +181,7 @@ export function RebuildEmbeddings() {
                     onCheckedChange={(checked) => setIncludeInsights(checked === true)}
                   />
                   <Label htmlFor="insights" className="font-normal cursor-pointer">
-                    Insights
+                    {t('insights')}
                   </Label>
                 </div>
               </div>
@@ -187,7 +189,7 @@ export function RebuildEmbeddings() {
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>
-                    Please select at least one item type to rebuild
+                    {t('advanced.rebuildEmbeddings.errors.selectOne')}
                   </AlertDescription>
                 </Alert>
               )}
@@ -201,10 +203,10 @@ export function RebuildEmbeddings() {
               {rebuildMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Starting Rebuild...
+                  {t('advanced.rebuildEmbeddings.startingRebuild')}
                 </>
               ) : (
-                '🚀 Start Rebuild'
+                t('advanced.rebuildEmbeddings.startRebuild')
               )}
             </Button>
 
@@ -212,7 +214,7 @@ export function RebuildEmbeddings() {
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  Failed to start rebuild: {(rebuildMutation.error as Error)?.message || 'Unknown error'}
+                  {t('advanced.rebuildEmbeddings.errors.failedStart', { message: (rebuildMutation.error as Error)?.message || 'Unknown error' })}
                 </AlertDescription>
               </Alert>
             )}
@@ -223,28 +225,28 @@ export function RebuildEmbeddings() {
         {status && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                 {status.status === 'queued' && <Clock className="h-5 w-5 text-yellow-500" />}
                 {status.status === 'running' && <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />}
                 {status.status === 'completed' && <CheckCircle2 className="h-5 w-5 text-green-500" />}
                 {status.status === 'failed' && <XCircle className="h-5 w-5 text-red-500" />}
                 <div className="flex flex-col">
                   <span className="font-medium">
-                    {status.status === 'queued' && 'Queued'}
-                    {status.status === 'running' && 'Running...'}
-                    {status.status === 'completed' && 'Completed!'}
-                    {status.status === 'failed' && 'Failed'}
+                    {status.status === 'queued' && t('advanced.rebuildEmbeddings.status.queued')}
+                    {status.status === 'running' && t('advanced.rebuildEmbeddings.status.running')}
+                    {status.status === 'completed' && t('advanced.rebuildEmbeddings.status.completed')}
+                    {status.status === 'failed' && t('advanced.rebuildEmbeddings.status.failed')}
                   </span>
                   {status.status === 'running' && (
                     <span className="text-sm text-muted-foreground">
-                      You can leave this page as this will run in the background
+                      {t('advanced.rebuildEmbeddings.runningNote')}
                     </span>
                   )}
                 </div>
               </div>
               {(status.status === 'completed' || status.status === 'failed') && (
                 <Button variant="outline" size="sm" onClick={handleReset}>
-                  Start New Rebuild
+                  {t('advanced.rebuildEmbeddings.startNewRebuild')}
                 </Button>
               )}
             </div>
@@ -252,7 +254,7 @@ export function RebuildEmbeddings() {
             {progressData && (
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Progress</span>
+                  <span>{t('advanced.rebuildEmbeddings.progress')}</span>
                   <span className="font-medium">
                     {processedItems}/{totalItems} items ({progressPercent.toFixed(1)}%)
                   </span>
@@ -260,7 +262,7 @@ export function RebuildEmbeddings() {
                 <Progress value={progressPercent} className="h-2" />
                 {failedItems > 0 && (
                   <p className="text-sm text-yellow-600">
-                    ⚠️ {failedItems} items failed to process
+                    {t('advanced.rebuildEmbeddings.failedItems', { count: failedItems })}
                   </p>
                 )}
               </div>
@@ -269,19 +271,19 @@ export function RebuildEmbeddings() {
             {stats && (
               <div className="grid grid-cols-4 gap-4">
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Sources</p>
+                  <p className="text-sm text-muted-foreground">{t('sources')}</p>
                   <p className="text-2xl font-bold">{sourcesProcessed}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Notes</p>
+                  <p className="text-sm text-muted-foreground">{t('notes')}</p>
                   <p className="text-2xl font-bold">{notesProcessed}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Insights</p>
+                  <p className="text-sm text-muted-foreground">{t('insights')}</p>
                   <p className="text-2xl font-bold">{insightsProcessed}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Time</p>
+                  <p className="text-sm text-muted-foreground">{t('time')}</p>
                   <p className="text-2xl font-bold">
                     {processingTimeSeconds !== undefined ? `${processingTimeSeconds.toFixed(1)}s` : '—'}
                   </p>
@@ -298,9 +300,9 @@ export function RebuildEmbeddings() {
 
             {status.started_at && (
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>Started: {new Date(status.started_at).toLocaleString()}</p>
+                <p>{t('advanced.rebuildEmbeddings.started')} {new Date(status.started_at).toLocaleString()}</p>
                 {status.completed_at && (
-                  <p>Completed: {new Date(status.completed_at).toLocaleString()}</p>
+                  <p>{t('advanced.rebuildEmbeddings.completedAt')} {new Date(status.completed_at).toLocaleString()}</p>
                 )}
               </div>
             )}

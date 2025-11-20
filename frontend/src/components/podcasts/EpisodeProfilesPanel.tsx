@@ -73,25 +73,25 @@ export function EpisodeProfilesPanel({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">Episode profiles</h2>
+          <h2 className="text-lg font-semibold">Bản phát</h2>
           <p className="text-sm text-muted-foreground">
-            Define reusable generation settings for your shows.
+            Xác định cấu hình có thể sử dụng lại cho các bản phát.
           </p>
         </div>
         <Button onClick={() => setCreateOpen(true)} disabled={disableCreate}>
-          Create profile
+          Tạo bản phát
         </Button>
       </div>
 
       {disableCreate ? (
         <p className="rounded-lg border border-dashed bg-amber-50 p-4 text-sm text-amber-900">
-          Create a speaker profile before adding an episode profile.
+          Tạo bản phát trước khi thêm bản phát.
         </p>
       ) : null}
 
       {sortedProfiles.length === 0 ? (
         <div className="rounded-lg border border-dashed bg-muted/30 p-10 text-center text-sm text-muted-foreground">
-          No episode profiles yet. Create one to kickstart podcast generation.
+          Không có bản phát nào. Tạo một để bắt đầu tạo podcast.
         </div>
       ) : (
         <div className="space-y-4">
@@ -109,7 +109,7 @@ export function EpisodeProfilesPanel({
                       {profile.name}
                     </CardTitle>
                     <CardDescription className="text-sm text-muted-foreground">
-                      {profile.description || 'No description provided.'}
+                      {profile.description || 'Không có mô tả.'}
                     </CardDescription>
                   </div>
                   <div className="flex items-center gap-1">
@@ -118,7 +118,7 @@ export function EpisodeProfilesPanel({
                       size="sm"
                       onClick={() => setEditProfile(profile)}
                     >
-                      <Edit3 className="mr-2 h-4 w-4" /> Edit
+                      <Edit3 className="mr-2 h-4 w-4" /> Sửa
                     </Button>
                     <AlertDialog>
                       <DropdownMenu>
@@ -142,32 +142,32 @@ export function EpisodeProfilesPanel({
                             disabled={duplicateProfile.isPending}
                           >
                             <Copy className="h-4 w-4 mr-2" />
-                            Duplicate
+                            Sao chép
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <AlertDialogTrigger asChild>
                             <DropdownMenuItem className="text-destructive focus:text-destructive">
                               <Trash2 className="h-4 w-4 mr-2" />
-                              Delete
+                              Xóa
                             </DropdownMenuItem>
                           </AlertDialogTrigger>
                         </DropdownMenuContent>
                       </DropdownMenu>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Delete profile?</AlertDialogTitle>
+                          <AlertDialogTitle>Xóa bản phát?</AlertDialogTitle>
                           <AlertDialogDescription>
-                            This will remove “{profile.name}”. Existing episodes keep their
-                            data, but new ones will no longer use this configuration.
+                            Xóa “{profile.name}”. Các bản phát hiện có sẽ không còn sử dụng cấu hình này.
+                            dữ liệu, nhưng các bản phát mới sẽ không còn sử dụng cấu hình này.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>Hủy</AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => deleteProfile.mutate(profile.id)}
                             disabled={deleteProfile.isPending}
                           >
-                            {deleteProfile.isPending ? 'Deleting…' : 'Delete'}
+                            {deleteProfile.isPending ? 'Đang xóa…' : 'Xóa'}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -179,7 +179,7 @@ export function EpisodeProfilesPanel({
                   <div className="grid gap-3 md:grid-cols-2">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                        Outline model
+                        Mô hình tóm tắt
                       </p>
                       <p className="text-foreground">
                         {profile.outline_provider} / {profile.outline_model}
@@ -187,7 +187,7 @@ export function EpisodeProfilesPanel({
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                        Transcript model
+                        Mô hình ghi chú
                       </p>
                       <p className="text-foreground">
                         {profile.transcript_provider} / {profile.transcript_model}
@@ -195,13 +195,13 @@ export function EpisodeProfilesPanel({
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                        Segments
+                        Đoạn
                       </p>
                       <p className="text-foreground">{profile.num_segments}</p>
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                        Speaker profile
+                        Giọng nói
                       </p>
                       <div className="flex items-center gap-2 text-foreground">
                         <Users className="h-4 w-4" />
@@ -218,7 +218,7 @@ export function EpisodeProfilesPanel({
                   {profile.default_briefing ? (
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                        Default briefing
+                        Brief mặc định
                       </p>
                       <p className="mt-1 whitespace-pre-wrap text-muted-foreground">
                         {profile.default_briefing}

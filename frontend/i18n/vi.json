@@ -1,0 +1,273 @@
+{
+  "app": {
+    "title": "CSB KMS"
+  },
+  "signIn": "Đăng nhập",
+  "signOut": "Đăng xuất",
+  "sidebar": {
+    "create": "Tạo mới",
+    "collect": "Danh mục",
+    "process": "Chức năng",
+    "manage": "Quản lý",
+    "source": "Nguồn",
+    "notebook": "Sổ tay",
+    "note": "Ghi chú",
+    "podcast": "Podcast",
+    "askAndSearch": "Tra cứu",
+    "models": "Mô hình",
+    "transformations": "Biến đổi",
+    "settings": "Cấu hình",
+    "advanced": "Nâng cao"
+  },
+  "advanced": {
+    "title": "Nâng cao",
+    "description": "Công cụ và tiện ích nâng cao cho người dùng chuyên sâu",
+    "rebuildEmbeddings": {
+      "title": "🔄 Rebuild Embeddings",
+      "description": "Rebuild vector embeddings cho nội dung của bạn. Sử dụng khi đổi mô hình embedding hoặc sửa embeddings bị lỗi.",
+      "rebuildMode": {
+        "label": "Chế độ rebuild",
+        "existing": "Đã có",
+        "all": "Tất cả",
+        "existingDesc": "Chỉ re-embed các mục đã có embeddings (nhanh hơn, dùng khi đổi mô hình)",
+        "allDesc": "Re-embed các mục đã có + tạo embeddings cho các mục chưa có (chậm hơn, toàn diện)"
+      },
+      "includeInRebuild": "Bao gồm trong quá trình rebuild",
+      "startRebuild": "🚀 Bắt đầu rebuild",
+      "startingRebuild": "Đang bắt đầu rebuild...",
+      "errors": {
+        "selectOne": "Vui lòng chọn ít nhất một loại mục để rebuild",
+        "failedStart": "Khởi động rebuild thất bại: {message}"
+      },
+      "status": {
+        "queued": "Đang xếp hàng",
+        "running": "Đang chạy...",
+        "completed": "Hoàn tất!",
+        "failed": "Thất bại"
+      },
+      "runningNote": "Bạn có thể rời khỏi trang này vì quá trình sẽ chạy nền",
+      "startNewRebuild": "Bắt đầu rebuild mới",
+      "progress": "Tiến trình",
+      "failedItems": "⚠️ {count} mục xử lý thất bại",
+      "started": "Bắt đầu:",
+      "completedAt": "Hoàn tất lúc:"
+    },
+    "systemInfo": {
+      "title": "Thông tin Hệ thống",
+      "loading": "Đang tải...",
+      "currentVersion": "Phiên bản hiện tại",
+      "latestVersion": "Phiên bản mới nhất",
+      "statusLabel": "Trạng thái",
+      "updateAvailable": "Có bản cập nhật",
+      "upToDate": "Đã cập nhật",
+      "unknown": "Không xác định",
+      "viewOnGitHub": "Xem trên GitHub",
+      "unableToCheck": "Không thể kiểm tra cập nhật. Có thể GitHub không khả dụng."
+    }
+  },
+  "sources": "Nguồn",
+  "notes": "Ghi chú",
+  "insights": "Insights",
+  "time": "Thời gian",
+  "viewOnGitHub": "Xem trên GitHub",
+  "models": {
+    "addModelForm": {
+      "addModel": "Thêm Mô hình",
+      "adding": "Đang thêm...",
+      "title": "Thêm Mô hình {type}",
+      "description": "Cấu hình một mô hình {type} mới từ các nhà cung cấp có sẵn.",
+      "providerLabel": "Nhà cung cấp",
+      "selectProviderPlaceholder": "Chọn nhà cung cấp",
+      "errors": {
+        "providerRequired": "Yêu cầu chọn nhà cung cấp",
+        "modelRequired": "Yêu cầu nhập tên mô hình"
+      },
+      "modelNameLabel": "Tên Mô hình",
+      "azureNote": "Đối với Azure, sử dụng tên deployment làm tên mô hình",
+      "noProviders": "Không có nhà cung cấp nào cho mô hình {type}",
+      "cancel": "Hủy",
+      "placeholders": {
+        "language": "ví dụ: gpt-5-mini, claude, gemini",
+        "embedding": "ví dụ: text-embedding-3-small",
+        "text_to_speech": "ví dụ: tts-gpt-4o-mini-tts, tts-1-hd",
+        "speech_to_text": "ví dụ: whisper-1",
+        "default": "Nhập tên mô hình"
+      }
+    },
+    "defaults": {
+      "title": "Gán Mô hình Mặc định",
+      "description": "Cấu hình mô hình sẽ sử dụng cho các mục đích khác nhau trong CSBKMS",
+      "missingRequired": "Thiếu các mô hình bắt buộc: {list}. CSBKMS có thể không hoạt động đúng nếu thiếu những mô hình này.",
+      "selectModelPlaceholder": "Chọn một mô hình",
+      "requiredWarning": "⚠️ Bắt buộc - Chọn một mô hình",
+      "whichModelLink": "Nên chọn mô hình nào? →",
+      "items": {
+        "default_chat_model": {
+          "label": "Mô hình Chat",
+          "description": "Sử dụng cho các cuộc trò chuyện"
+        },
+        "default_transformation_model": {
+          "label": "Mô hình Biến đổi",
+          "description": "Sử dụng cho tóm tắt, nhận định và biến đổi"
+        },
+        "default_tools_model": {
+          "label": "Mô hình Công cụ",
+          "description": "Sử dụng cho gọi hàm - Khuyến nghị OpenAI hoặc Anthropic"
+        },
+        "large_context_model": {
+          "label": "Mô hình Ngữ cảnh Lớn",
+          "description": "Sử dụng để xử lý các tài liệu lớn - Khuyến nghị Gemini"
+        },
+        "default_embedding_model": {
+          "label": "Mô hình Embedding",
+          "description": "Sử dụng cho tìm kiếm ngữ nghĩa và vector embeddings"
+        },
+        "default_text_to_speech_model": {
+          "label": "Mô hình Chuyển văn bản thành giọng nói",
+          "description": "Sử dụng cho tạo podcast"
+        },
+        "default_speech_to_text_model": {
+          "label": "Mô hình Chuyển giọng nói thành văn bản",
+          "description": "Sử dụng cho chuyển âm thanh thành văn bản"
+        }
+      }
+    },
+    "providers": {
+      "title": "Nhà cung cấp AI",
+      "description": "Cấu hình nhà cung cấp thông qua biến môi trường để kích hoạt các mô hình của họ.",
+      "configured": "{available} trong {total} đã được cấu hình",
+      "noModels": "Không có mô hình",
+      "notConfigured": "Chưa cấu hình",
+      "seeLess": "Thu gọn",
+      "seeAll": "Xem tất cả {count} nhà cung cấp",
+      "learnConfig": "Tìm hiểu cách cấu hình nhà cung cấp →"
+    }
+  },
+  "notebooks": {
+    "title": "Sổ tay",
+    "searchPlaceholder": "Tìm kiếm sổ tay...",
+    "newNotebook": "Tạo sổ tay mới",
+    "activeTitle": "Sổ tay đang hoạt động",
+    "archivedTitle": "Sổ tay đã lưu trữ",
+    "empty": {
+      "noMatch": "Không có sổ tay nào khớp với tìm kiếm của bạn",
+      "tryDifferent": "Hãy thử dùng tên sổ tay khác.",
+      "archivedNoMatch": "Không có sổ tay lưu trữ nào khớp với tìm kiếm của bạn",
+      "archivedTryDifferent": "Thay đổi tìm kiếm để tìm sổ tay đã lưu trữ.",
+      "defaultDescription": "Tạo sổ tay đầu tiên để bắt đầu research."
+    },
+    "chat": {
+      "title": "Trò chuyện với Sổ tay",
+      "unableToLoad": "Không thể tải trò chuyện",
+      "tryRefresh": "Vui lòng thử làm mới trang"
+    },
+    "card": {
+      "archived": "Đã lưu trữ",
+      "noDescription": "Không có mô tả",
+      "updated": "Cập nhật {time}",
+      "confirmDelete": {
+        "title": "Xóa Sổ tay",
+        "description": "Bạn có chắc muốn xóa \"{name}\" không? Hành động này không thể hoàn tác và sẽ xóa tất cả nguồn, ghi chú và phiên trò chuyện.",
+        "confirm": "Xóa"
+      }
+    },
+    "actions": {
+      "archive": "Lưu trữ",
+      "unarchive": "Bỏ lưu trữ",
+      "delete": "Xóa"
+    },
+    "header": {
+      "namePlaceholder": "Tên sổ tay",
+      "descriptionPlaceholder": "Thêm mô tả...",
+      "emptyText": "Thêm mô tả...",
+      "createdUpdated": "Tạo {created} • Cập nhật {updated}",
+      "confirmDelete": {
+        "confirmForever": "Xóa vĩnh viễn"
+      }
+    },
+    "noteEditor": {
+      "title": {
+        "create": "Tạo ghi chú",
+        "edit": "Chỉnh sửa ghi chú"
+      },
+      "loading": "Đang tải ghi chú…",
+      "titlePlaceholder": "Thêm tiêu đề...",
+      "titleEmpty": "Ghi chú chưa có tiêu đề",
+      "contentPlaceholder": "Viết nội dung ghi chú của bạn ở đây...",
+      "buttons": {
+        "cancel": "Hủy",
+        "saving": "Đang lưu...",
+        "creating": "Đang tạo...",
+        "saveNote": "Lưu ghi chú",
+        "createNote": "Tạo ghi chú"
+      },
+      "errors": {
+        "contentRequired": "Nội dung là bắt buộc"
+      }
+    },
+    "notesColumn": {
+      "title": "Ghi chú",
+      "writeNote": "Viết ghi chú",
+      "empty": {
+        "title": "Chưa có ghi chú nào",
+        "description": "Tạo ghi chú đầu tiên để ghi lại nhận định và quan sát."
+      },
+      "deleteConfirm": {
+        "title": "Xóa ghi chú",
+        "description": "Bạn có chắc muốn xóa ghi chú này không? Hành động này không thể hoàn tác.",
+        "confirm": "Xóa"
+      }
+    },
+    "noteTypes": {
+      "ai": "Tạo bởi AI",
+      "human": "Tạo bởi con người"
+    },
+    "sourcesColumn": {
+      "addSource": "Thêm nguồn",
+      "addNew": "Thêm nguồn mới",
+      "addExisting": "Thêm nguồn có sẵn",
+      "empty": {
+        "title": "Chưa có nguồn nào",
+        "description": "Thêm nguồn đầu tiên để bắt đầu xây dựng cơ sở tri thức của bạn."
+      },
+      "deleteConfirm": {
+        "title": "Xóa nguồn",
+        "description": "Bạn có chắc muốn xóa nguồn này không? Hành động này không thể hoàn tác.",
+        "confirm": "Xóa"
+      },
+      "removeConfirm": {
+        "title": "Gỡ nguồn khỏi Sổ tay",
+        "description": "Bạn có chắc muốn gỡ nguồn này khỏi sổ tay không? Nguồn sẽ không bị xóa khỏi hệ thống.",
+        "confirm": "Gỡ"
+      }
+    }
+  },
+  "podcast": {
+    "title": "Podcasts",
+    "description": "Quản lý podcast và xem các bản đã tạo.",
+    "chooseView": "Chọn view",
+    "templates": "Mẫu",
+    "episodes": {
+      "title": "Bản đã tạo",
+      "overview": "Tổng quan bản đã tạo",
+      "overviewDescription": "Theo dõi các công việc tạo podcast và xem các artefacts cuối cùng.",
+      "running": "Đang tạo",
+      "runningDescription": "Bản đang được tạo.",
+      "pending": "Chờ xử lý",
+      "pendingDescription": "Bản đang chờ xử lý.",
+      "completed": "Hoàn tất",
+      "completedDescription": "Bản đã hoàn tất.",
+      "failed": "Thất bại",
+      "failedDescription": "Bản đã thất bại.",
+      "generate": "Tạo Podcast",
+      "refresh": "Làm mới",
+      "total": "Tổng",
+      "messages": {
+        "failedToLoad": "Không thể tải bản đã tạo",
+        "failedToLoadDescription": "Không thể tải bản đã tạo. Vui lòng thử lại sau.",
+        "loading": "Đang tải bản đã tạo…",
+        "noEpisodes": "Không có bản đã tạo nào. Tạo bản đầu tiên từ sổ tay hoặc chat."
+      }
+    }
+  }
+}

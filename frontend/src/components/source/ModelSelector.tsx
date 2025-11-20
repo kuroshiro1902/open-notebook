@@ -98,10 +98,10 @@ export function ModelSelector({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5" />
-            Model Configuration
+            Cấu hình Model
           </DialogTitle>
           <DialogDescription>
-            Override the default model for this chat session. Leave empty to use the system default.
+            Ghi đè model mặc định cho phiên chat này. Để trống để sử dụng model mặc định của hệ thống.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -109,7 +109,7 @@ export function ModelSelector({
             <Label htmlFor="model">Model</Label>
             <Select value={selectedModel} onValueChange={setSelectedModel}>
               <SelectTrigger id="model">
-                <SelectValue placeholder="Select a model (or use default)" />
+                <SelectValue placeholder="Chọn một model (hoặc sử dụng mặc định)" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="default">
@@ -146,17 +146,17 @@ export function ModelSelector({
           {selectedModel && selectedModel !== 'default' && (
             <div className="rounded-lg bg-muted p-3">
               <p className="text-sm text-muted-foreground">
-                This session will use <strong>{languageModels.find(m => m.id === selectedModel)?.name}</strong> instead of the default model.
+                Phiên chat này sẽ sử dụng <strong>{languageModels.find(m => m.id === selectedModel)?.name}</strong> thay vì model mặc định.
               </p>
             </div>
           )}
         </div>
         <DialogFooter className="flex justify-between">
           <Button variant="outline" onClick={handleReset}>
-            Reset to Default
+            Đặt lại mặc định
           </Button>
           <Button onClick={handleSave}>
-            Save Changes
+            Lưu thay đổi
           </Button>
         </DialogFooter>
       </DialogContent>

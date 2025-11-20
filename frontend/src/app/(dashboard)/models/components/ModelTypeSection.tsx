@@ -31,7 +31,7 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
       case 'language':
         return {
           title: 'Language Models',
-          description: 'Chat, transformations, and text generation',
+          description: 'Chat, biến đổi và tạo văn bản',
           icon: Bot,
           iconColor: 'text-blue-500',
           bgColor: 'bg-blue-50 dark:bg-blue-950/20'
@@ -39,7 +39,7 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
       case 'embedding':
         return {
           title: 'Embedding Models',
-          description: 'Semantic search and vector embeddings',
+          description: 'Tìm kiếm semantic và embedding vector',
           icon: Search,
           iconColor: 'text-green-500',
           bgColor: 'bg-green-50 dark:bg-green-950/20'
@@ -47,7 +47,7 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
       case 'text_to_speech':
         return {
           title: 'Text-to-Speech',
-          description: 'Generate audio from text',
+          description: 'Tạo âm thanh từ văn bản',
           icon: Volume2,
           iconColor: 'text-purple-500',
           bgColor: 'bg-purple-50 dark:bg-purple-950/20'
@@ -55,7 +55,7 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
       case 'speech_to_text':
         return {
           title: 'Speech-to-Text',
-          description: 'Transcribe audio to text',
+          description: 'Chuyển đổi âm thanh thành văn bản',
           icon: Mic,
           iconColor: 'text-orange-500',
           bgColor: 'bg-orange-50 dark:bg-orange-950/20'
@@ -118,7 +118,7 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
                 className="cursor-pointer text-xs"
                 onClick={() => setSelectedProvider(null)}
               >
-                All
+                Tất cả
               </Badge>
               {modelProviders.map(provider => (
                 <Badge
@@ -143,8 +143,8 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
           ) : filteredModels.length === 0 ? (
             <div className="text-center py-6 text-sm text-muted-foreground">
               {selectedProvider 
-                ? `No ${selectedProvider} models configured`
-                : 'No models configured'
+                ? `Không có ${selectedProvider} models configured`
+                : 'Không có models configured'
               }
             </div>
           ) : (
@@ -182,12 +182,12 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
                   {isExpanded ? (
                     <>
                       <ChevronUp className="h-4 w-4 mr-2" />
-                      Show less
+                      Hiển thị ít hơn
                     </>
                   ) : (
                     <>
                       <ChevronDown className="h-4 w-4 mr-2" />
-                      Show {filteredModels.length - COLLAPSED_ITEM_COUNT} more
+                      Hiển thị {filteredModels.length - COLLAPSED_ITEM_COUNT} nhiều hơn
                     </>
                   )}
                 </Button>
@@ -200,9 +200,9 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
       <ConfirmDialog
         open={!!deleteModel}
         onOpenChange={(open) => !open && setDeleteModel(null)}
-        title="Delete Model"
-        description={`Are you sure you want to delete "${deleteModel?.name}"? This action cannot be undone.`}
-        confirmText="Delete"
+        title="Xóa Model"
+        description={`Bạn có chắc chắn muốn xóa "${deleteModel?.name}"? Thao tác này không thể hoàn tác.`}
+        confirmText="Xóa"
         confirmVariant="destructive"
         onConfirm={handleDelete}
       />

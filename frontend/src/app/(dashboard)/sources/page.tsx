@@ -282,9 +282,9 @@ export default function SourcesPage() {
     <AppShell>
       <div className="flex flex-col h-full w-full max-w-none px-6 py-6">
         <div className="mb-6 flex-shrink-0">
-          <h1 className="text-3xl font-bold">All Sources</h1>
+          <h1 className="text-3xl font-bold">Danh sách nguồn</h1>
           <p className="mt-2 text-muted-foreground">
-            Browse all sources across your notebooks. Use arrow keys to navigate and Enter to open.
+            Xem tất cả nguồn từ tất cả sổ tay của bạn.
           </p>
         </div>
 
@@ -305,10 +305,10 @@ export default function SourcesPage() {
             <thead className="sticky top-0 bg-background z-10">
               <tr className="border-b bg-muted/50">
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Type
+                  Loại
                 </th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Title
+                  Tiêu đề
                 </th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden sm:table-cell">
                   <Button
@@ -317,7 +317,7 @@ export default function SourcesPage() {
                     onClick={() => toggleSort('created')}
                     className="h-8 px-2 hover:bg-muted"
                   >
-                    Created
+                    Tạo
                     <ArrowUpDown className={cn(
                       "ml-2 h-3 w-3",
                       sortBy === 'created' ? 'opacity-100' : 'opacity-30'
@@ -336,7 +336,7 @@ export default function SourcesPage() {
                   Embedded
                 </th>
                 <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">
-                  Actions
+                  Hành động
                 </th>
               </tr>
             </thead>
@@ -401,7 +401,7 @@ export default function SourcesPage() {
                   <td colSpan={6} className="h-16 text-center">
                     <div className="flex items-center justify-center">
                       <LoadingSpinner />
-                      <span className="ml-2 text-muted-foreground">Loading more sources...</span>
+                      <span className="ml-2 text-muted-foreground">Đang tải thêm nguồn...</span>
                     </div>
                   </td>
                 </tr>
@@ -414,9 +414,9 @@ export default function SourcesPage() {
       <ConfirmDialog
         open={deleteDialog.open}
         onOpenChange={(open) => setDeleteDialog({ open, source: deleteDialog.source })}
-        title="Delete Source"
-        description={`Are you sure you want to delete "${deleteDialog.source?.title || 'this source'}"? This action cannot be undone.`}
-        confirmText="Delete"
+        title="Xóa nguồn"
+        description={`Bạn có chắc chắn muốn xóa "${deleteDialog.source?.title || 'nguồn này'}"? Điều này không thể hoàn tác.`}
+        confirmText="Xóa"
         confirmVariant="destructive"
         onConfirm={handleDeleteConfirm}
       />

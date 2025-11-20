@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -40,41 +40,45 @@ import {
   Plus,
   Wrench,
 } from 'lucide-react'
-
-const navigation = [
-  {
-    title: 'Collect',
-    items: [
-      { name: 'Sources', href: '/sources', icon: FileText },
-    ],
-  },
-  {
-    title: 'Process',
-    items: [
-      { name: 'Notebooks', href: '/notebooks', icon: Book },
-      { name: 'Ask and Search', href: '/search', icon: Search },
-    ],
-  },
-  {
-    title: 'Create',
-    items: [
-      { name: 'Podcasts', href: '/podcasts', icon: Mic },
-    ],
-  },
-  {
-    title: 'Manage',
-    items: [
-      { name: 'Models', href: '/models', icon: Bot },
-      { name: 'Transformations', href: '/transformations', icon: Shuffle },
-      { name: 'Settings', href: '/settings', icon: Settings },
-      { name: 'Advanced', href: '/advanced', icon: Wrench },
-    ],
-  },
-] as const
+import { useTranslations } from "next-intl";
 
 type CreateTarget = 'source' | 'notebook' | 'podcast'
 
 export function AppSidebar() {
+
+  const t = useTranslations();
+
+  const navigation = useMemo(() => [
+    {
+      title: t("sidebar.collect"),
+      items: [
+        { name: t("sidebar.source"), href: '/sources', icon: FileText },
+      ],
+    },
+    {
+      title: t("sidebar.process"),
+      items: [
+        { name: t("sidebar.notebook"), href: '/notebooks', icon: Book },
+        { name: t("sidebar.askAndSearch"), href: '/search', icon: Search },
+      ],
+    },
+    {
+      title: t("sidebar.create"),
+      items: [
+        { name: 'Podcasts', href: '/podcasts', icon: Mic },
+      ],
+    },
+    {
+      title: t("sidebar.manage"),
+      items: [
+        { name: t("sidebar.models"), href: '/models', icon: Bot },
+        { name: t("sidebar.transformations"), href: '/transformations', icon: Shuffle },
+        { name: t("sidebar.settings"), href: '/settings', icon: Settings },
+        { name: t("sidebar.advanced"), href: '/advanced', icon: Wrench },
+      ],
+    },
+  ] as const, [t])
+
   const pathname = usePathname()
   const { logout } = useAuth()
   const { isCollapsed, toggleCollapse } = useSidebarStore()
@@ -114,7 +118,7 @@ export function AppSidebar() {
             <div className="relative flex items-center justify-center w-full">
               <Image
                 src="/logo.svg"
-                alt="Open Notebook"
+                alt={t("app.title")}
                 width={32}
                 height={32}
                 className="transition-opacity group-hover:opacity-0"
@@ -131,9 +135,9 @@ export function AppSidebar() {
           ) : (
             <>
               <div className="flex items-center gap-2">
-                <Image src="/logo.svg" alt="Open Notebook" width={32} height={32} />
+                <Image src="/logo.svg" alt={t("app.title")} width={32} height={32} />
                 <span className="text-base font-medium text-sidebar-foreground">
-                  Open Notebook
+                  {t("app.title")}
                 </span>
               </div>
               <Button
@@ -176,7 +180,7 @@ export function AppSidebar() {
                       </Button>
                     </DropdownMenuTrigger>
                   </TooltipTrigger>
-                  <TooltipContent side="right">Create</TooltipContent>
+                  <TooltipContent side="right">{t("sidebar.create")}</TooltipContent>
                 </Tooltip>
               ) : (
                 <DropdownMenuTrigger asChild>
@@ -187,7 +191,7 @@ export function AppSidebar() {
                     className="w-full justify-start bg-primary hover:bg-primary/90 text-primary-foreground border-0"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Create
+                    {t("sidebar.create")}
                   </Button>
                 </DropdownMenuTrigger>
               )}
@@ -205,7 +209,7 @@ export function AppSidebar() {
                   className="gap-2"
                 >
                   <FileText className="h-4 w-4" />
-                  Source
+                  {t("sidebar.source")}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onSelect={(event) => {
@@ -215,7 +219,7 @@ export function AppSidebar() {
                   className="gap-2"
                 >
                   <Book className="h-4 w-4" />
-                  Notebook
+                  {t("sidebar.notebook")}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onSelect={(event) => {
@@ -225,7 +229,7 @@ export function AppSidebar() {
                   className="gap-2"
                 >
                   <Mic className="h-4 w-4" />
-                  Podcast
+                  {t("sidebar.podcast")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -320,7 +324,7 @@ export function AppSidebar() {
                   <LogOut className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">Sign Out</TooltipContent>
+              <TooltipContent side="right">{t("signOut")}</TooltipContent>
             </Tooltip>
           ) : (
             <Button
@@ -329,7 +333,7 @@ export function AppSidebar() {
               onClick={logout}
             >
               <LogOut className="h-4 w-4" />
-              Sign Out
+              {t("signOut")}
             </Button>
           )}
         </div>

@@ -98,19 +98,19 @@ export default function SearchPage() {
   return (
     <AppShell>
       <div className="p-4 md:p-6">
-        <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Ask and Search</h1>
+        <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Tra cứu và hỏi đáp</h1>
 
         <Tabs defaultValue="ask" className="w-full space-y-6">
           <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Choose a mode</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Chọn mô hình</p>
             <TabsList aria-label="Ask or search your knowledge base" className="w-full max-w-xl">
               <TabsTrigger value="ask">
                 <MessageCircleQuestion className="h-4 w-4" />
-                Ask (beta)
+                Hỏi đáp (beta)
               </TabsTrigger>
               <TabsTrigger value="search">
                 <Search className="h-4 w-4" />
-                Search
+                Tra cứu
               </TabsTrigger>
             </TabsList>
           </div>
@@ -118,18 +118,18 @@ export default function SearchPage() {
           <TabsContent value="ask" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Ask Your Knowledge Base (beta)</CardTitle>
+                <CardTitle className="text-lg">Hỏi đáp với cơ sở kiến thức (beta)</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  The LLM will answer your query based on the documents in your knowledge base.
+                  Model sẽ trả lời câu hỏi của bạn dựa trên các tài liệu trong cơ sở kiến thức của bạn.
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Question Input */}
                 <div className="space-y-2">
-                  <Label htmlFor="ask-question">Question</Label>
+                  <Label htmlFor="ask-question">Câu hỏi</Label>
                   <Textarea
                     id="ask-question"
-                    placeholder="Enter your question..."
+                    placeholder="Nhập câu hỏi của bạn..."
                     value={askQuestion}
                     onChange={(e) => setAskQuestion(e.target.value)}
                     onKeyDown={(e) => {
@@ -141,23 +141,23 @@ export default function SearchPage() {
                     }}
                     disabled={ask.isStreaming}
                     rows={3}
-                    aria-label="Enter your question to ask the knowledge base"
+                    aria-label="Nhập câu hỏi để hỏi cơ sở kiến thức"
                   />
-                  <p className="text-xs text-muted-foreground">Press Cmd/Ctrl+Enter to submit</p>
+                  <p className="text-xs text-muted-foreground">Nhấn Cmd/Ctrl+Enter để gửi</p>
                 </div>
 
                 {/* Models Display */}
                 {!hasEmbeddingModel ? (
                   <div className="flex items-center gap-2 p-3 text-sm text-amber-600 dark:text-amber-500 bg-amber-50 dark:bg-amber-950/20 rounded-md">
                     <AlertCircle className="h-4 w-4" />
-                    <span>You can&apos;t use this feature because you have no embedding model selected. Please set one up in the Models page.</span>
+                    <span>Bạn không thể sử dụng tính năng này vì không có model embedding được chọn. Vui lòng đặt một model embedding trong trang Mô hình.</span>
                   </div>
                 ) : (
                   <>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label className="text-xs text-muted-foreground">
-                          {customModels ? 'Using Custom Models' : 'Using Default Models'}
+                          {customModels ? 'Sử dụng model tùy chỉnh' : 'Sử dụng model mặc định'}
                         </Label>
                         <Button
                           variant="ghost"
@@ -167,18 +167,18 @@ export default function SearchPage() {
                           className="h-auto py-1 px-2"
                         >
                           <Settings className="h-3 w-3 mr-1" />
-                          Advanced
+                          Nâng cao
                         </Button>
                       </div>
                       <div className="flex gap-2 text-xs flex-wrap">
                         <Badge variant="secondary">
-                          Strategy: {resolveModelName(customModels?.strategy || modelDefaults?.default_chat_model)}
+                          Chiến lược: {resolveModelName(customModels?.strategy || modelDefaults?.default_chat_model)}
                         </Badge>
                         <Badge variant="secondary">
-                          Answer: {resolveModelName(customModels?.answer || modelDefaults?.default_chat_model)}
+                          Trả lời: {resolveModelName(customModels?.answer || modelDefaults?.default_chat_model)}
                         </Badge>
                         <Badge variant="secondary">
-                          Final: {resolveModelName(customModels?.finalAnswer || modelDefaults?.default_chat_model)}
+                          Kết quả: {resolveModelName(customModels?.finalAnswer || modelDefaults?.default_chat_model)}
                         </Badge>
                       </div>
                     </div>
@@ -192,10 +192,10 @@ export default function SearchPage() {
                         {ask.isStreaming ? (
                           <>
                             <LoadingSpinner size="sm" className="mr-2" />
-                            Processing...
+                            Đang xử lý...
                           </>
                         ) : (
-                          'Ask'
+                          'Hỏi'
                         )}
                       </Button>
 
@@ -206,7 +206,7 @@ export default function SearchPage() {
                           className="w-full"
                         >
                           <Save className="h-4 w-4 mr-2" />
-                          Save to Notebooks
+                          Lưu vào sổ tay
                         </Button>
                       )}
                     </div>
@@ -249,9 +249,9 @@ export default function SearchPage() {
           <TabsContent value="search" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Search</CardTitle>
+                <CardTitle className="text-lg">Tra cứu</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Search your knowledge base for specific keywords or concepts
+                  Tra cứu cơ sở kiến thức của bạn cho các từ khóa hoặc khái niệm cụ thể
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -260,18 +260,18 @@ export default function SearchPage() {
                   <div className="flex flex-col sm:flex-row gap-2">
                     <Input
                       id="search-query"
-                      placeholder="Enter search query..."
+                      placeholder="Nhập câu tra cứu..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyPress={handleKeyPress}
                       disabled={searchMutation.isPending}
                       className="flex-1"
-                      aria-label="Enter search query"
+                      aria-label="Nhập câu tra cứu"
                     />
                     <Button
                       onClick={handleSearch}
                       disabled={searchMutation.isPending || !searchQuery.trim()}
-                      aria-label="Search knowledge base"
+                      aria-label="Tra cứu cơ sở kiến thức"
                       className="w-full sm:w-auto"
                     >
                       {searchMutation.isPending ? (
@@ -279,21 +279,21 @@ export default function SearchPage() {
                       ) : (
                         <Search className="h-4 w-4 mr-2" />
                       )}
-                      Search
+                      Tra cứu
                     </Button>
                   </div>
-                  <p className="text-xs text-muted-foreground">Press Enter to search</p>
+                  <p className="text-xs text-muted-foreground">Nhấn Enter để tra cứu</p>
                 </div>
 
                 {/* Search Options */}
                 <div className="space-y-4">
                   {/* Search Type */}
                   <div className="space-y-2">
-                    <Label>Search Type</Label>
+                    <Label>Loại tra cứu</Label>
                     {!hasEmbeddingModel && (
                       <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-500">
                         <AlertCircle className="h-4 w-4" />
-                        <span>Vector search requires an embedding model. Only text search is available.</span>
+                        <span>Tra cứu vector yêu cầu một model embedding. Chỉ tra cứu văn bản được khả dụng.</span>
                       </div>
                     )}
                     <RadioGroup
@@ -304,7 +304,7 @@ export default function SearchPage() {
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="text" id="text" />
                         <Label htmlFor="text" className="font-normal cursor-pointer">
-                          Text Search
+                          Tra cứu văn bản
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -317,7 +317,7 @@ export default function SearchPage() {
                           htmlFor="vector"
                           className={`font-normal ${!hasEmbeddingModel ? 'text-muted-foreground cursor-not-allowed' : 'cursor-pointer'}`}
                         >
-                          Vector Search
+                          Tra cứu vector
                         </Label>
                       </div>
                     </RadioGroup>
@@ -325,7 +325,7 @@ export default function SearchPage() {
 
                   {/* Search Locations */}
                   <div className="space-y-2">
-                    <Label>Search In</Label>
+                    <Label>Tra cứu trong</Label>
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2">
                         <Checkbox
@@ -335,7 +335,7 @@ export default function SearchPage() {
                           disabled={searchMutation.isPending}
                         />
                         <Label htmlFor="sources" className="font-normal cursor-pointer">
-                          Search Sources
+                          Tra cứu nguồn
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -346,7 +346,7 @@ export default function SearchPage() {
                           disabled={searchMutation.isPending}
                         />
                         <Label htmlFor="notes" className="font-normal cursor-pointer">
-                          Search Notes
+                          Tra cứu sổ tay
                         </Label>
                       </div>
                     </div>
@@ -358,9 +358,9 @@ export default function SearchPage() {
                   <div className="mt-6 space-y-3">
                     <div className="flex items-center justify-between">
                       <h3 className="text-sm font-medium">
-                        {searchMutation.data.total_count} result{searchMutation.data.total_count !== 1 ? 's' : ''} found
+                        {searchMutation.data.total_count} kết quả{searchMutation.data.total_count !== 1 ? 's' : ''} được tìm thấy
                       </h3>
-                      <Badge variant="outline">{searchMutation.data.search_type} search</Badge>
+                      <Badge variant="outline">{searchMutation.data.search_type} tra cứu</Badge>
                     </div>
 
                     {searchMutation.data.results.length === 0 ? (

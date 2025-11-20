@@ -116,14 +116,14 @@ export function TransformationEditorDialog({ open, onOpenChange, transformation 
         <form onSubmit={handleSubmit(onSubmit)} className="flex h-full flex-col">
           {isEditing && isLoading ? (
             <div className="flex-1 flex items-center justify-center py-10">
-              <span className="text-sm text-muted-foreground">Loading transformation…</span>
+              <span className="text-sm text-muted-foreground">Đang tải biến đổi…</span>
             </div>
           ) : (
             <>
               <div className="border-b px-6 py-4 space-y-4">
                 <div>
                   <Label htmlFor="transformation-name" className="text-sm font-medium">
-                    Name
+                    Tên
                   </Label>
                   <Controller
                     control={control}
@@ -132,7 +132,7 @@ export function TransformationEditorDialog({ open, onOpenChange, transformation 
                       <Input
                         id="transformation-name"
                         {...field}
-                        placeholder="Unique identifier, e.g. key_topics"
+                        placeholder="Mã nhận dạng duy nhất, ví dụ: key_topics"
                       />
                     )}
                   />
@@ -144,7 +144,7 @@ export function TransformationEditorDialog({ open, onOpenChange, transformation 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="transformation-title" className="text-sm font-medium">
-                      Title
+                      Tiêu đề
                     </Label>
                     <Controller
                       control={control}
@@ -153,7 +153,7 @@ export function TransformationEditorDialog({ open, onOpenChange, transformation 
                         <Input
                           id="transformation-title"
                           {...field}
-                          placeholder="Displayed title, defaults to name"
+                          placeholder="Tiêu đề hiển thị, mặc định là tên"
                         />
                       )}
                     />
@@ -171,14 +171,14 @@ export function TransformationEditorDialog({ open, onOpenChange, transformation 
                       )}
                     />
                     <Label htmlFor="transformation-default" className="text-sm">
-                      Suggest by default on new sources
+                      Gợi ý mặc định cho nguồn mới
                     </Label>
                   </div>
                 </div>
 
                 <div>
                   <Label htmlFor="transformation-description" className="text-sm font-medium">
-                    Description
+                    Mô tả
                   </Label>
                   <Controller
                     control={control}
@@ -187,7 +187,7 @@ export function TransformationEditorDialog({ open, onOpenChange, transformation 
                       <Textarea
                         id="transformation-description"
                         {...field}
-                        placeholder="Describe what this transformation does."
+                        placeholder="Mô tả công việc mà biến đổi này thực hiện."
                         rows={2}
                       />
                     )}
@@ -206,7 +206,7 @@ export function TransformationEditorDialog({ open, onOpenChange, transformation 
                       value={field.value}
                       onChange={field.onChange}
                       height={420}
-                      placeholder="Write the prompt that will power this transformation..."
+                      placeholder="Viết prompt sẽ sử dụng để thực hiện biến đổi này..."
                       className="rounded-md border"
                     />
                   )}
@@ -215,8 +215,8 @@ export function TransformationEditorDialog({ open, onOpenChange, transformation 
                   <p className="text-sm text-red-600 mt-1">{errors.prompt.message}</p>
                 )}
                 <p className="text-xs text-muted-foreground mt-3">
-                  Prompts should be written with the source content in mind. You can ask the model to
-                  summarise, extract insights, or produce structured outputs such as tables.
+                  Bạn có thể yêu cầu model
+                  tóm tắt, trích xuất ý tưởng, hoặc tạo ra các đầu ra có cấu trúc như bảng.
                 </p>
               </div>
             </>

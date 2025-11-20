@@ -70,9 +70,9 @@ interface AddSourceDialogProps {
 }
 
 const WIZARD_STEPS: readonly WizardStep[] = [
-  { number: 1, title: 'Source & Content', description: 'Choose type and add content' },
-  { number: 2, title: 'Organization', description: 'Select notebooks' },
-  { number: 3, title: 'Processing', description: 'Choose transformations and options' },
+  { number: 1, title: 'Nguồn & Nội dung', description: 'Chọn loại và thêm nội dung' },
+  { number: 2, title: 'Sổ tay', description: 'Chọn sổ tay' },
+  { number: 3, title: 'Xử lý', description: 'Chọn biến đổi và tùy chọn' },
 ]
 
 interface ProcessingState {
@@ -297,9 +297,9 @@ export function AddSourceDialog({
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="sm:max-w-[500px]" showCloseButton={true}>
           <DialogHeader>
-            <DialogTitle>Processing Source</DialogTitle>
+            <DialogTitle>Đang xử lý nguồn</DialogTitle>
             <DialogDescription>
-              Your source is being processed. This may take a few moments.
+              Nguồn của bạn đang được xử lý. Điều này có thể mất vài phút.
             </DialogDescription>
           </DialogHeader>
           
@@ -307,7 +307,7 @@ export function AddSourceDialog({
             <div className="flex items-center gap-3">
               <LoaderIcon className="h-5 w-5 animate-spin text-primary" />
               <span className="text-sm text-muted-foreground">
-                {processingStatus?.message || 'Processing...'}
+                {processingStatus?.message || 'Đang xử lý...'}
               </span>
             </div>
             
@@ -331,9 +331,9 @@ export function AddSourceDialog({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[700px] p-0">
         <DialogHeader className="px-6 pt-6 pb-0">
-          <DialogTitle>Add New Source</DialogTitle>
+          <DialogTitle>Tạo nguồn mới</DialogTitle>
           <DialogDescription>
-            Add content from links, uploads, or text to your notebooks.
+            Thêm nội dung từ liên kết, tải lên, hoặc văn bản vào sổ tay của bạn.
           </DialogDescription>
         </DialogHeader>
 
@@ -383,7 +383,7 @@ export function AddSourceDialog({
               variant="outline" 
               onClick={handleClose}
             >
-              Cancel
+              Hủy bỏ
             </Button>
 
             <div className="flex gap-2">
@@ -393,7 +393,7 @@ export function AddSourceDialog({
                   variant="outline"
                   onClick={handlePrevStep}
                 >
-                  Back
+                  Quay lại
                 </Button>
               )}
 
@@ -405,7 +405,7 @@ export function AddSourceDialog({
                   onClick={(e) => handleNextStep(e)}
                   disabled={!currentStepValid}
                 >
-                  Next
+                  Tiếp theo
                 </Button>
               )}
 
@@ -415,7 +415,7 @@ export function AddSourceDialog({
                 disabled={!currentStepValid || createSource.isPending}
                 className="min-w-[120px]"
               >
-                {createSource.isPending ? 'Creating...' : 'Done'}
+                {createSource.isPending ? 'Đang tạo...' : 'Hoàn tất'}
               </Button>
             </div>
           </div>

@@ -33,9 +33,9 @@ export function DefaultPromptEditor() {
               <div className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
                 <div className="text-left">
-                  <CardTitle className="text-lg">Default Transformation Prompt</CardTitle>
+                  <CardTitle className="text-lg">Prompt mặc định</CardTitle>
                   <CardDescription>
-                    This will be added to all your transformation prompts
+                    Đây sẽ được thêm vào tất cả các prompt biến đổi của bạn
                   </CardDescription>
                 </div>
               </div>
@@ -52,7 +52,7 @@ export function DefaultPromptEditor() {
             <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Enter your default transformation instructions..."
+              placeholder="Nhập các hướng dẫn biến đổi mặc định..."
               className="min-h-[200px] font-mono text-sm"
               disabled={isLoading}
             />
@@ -61,7 +61,7 @@ export function DefaultPromptEditor() {
                 onClick={handleSave}
                 disabled={isLoading || updateDefaultPrompt.isPending}
               >
-                Save
+                Lưu
               </Button>
             </div>
           </CardContent>

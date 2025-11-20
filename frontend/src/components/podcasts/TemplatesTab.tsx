@@ -58,9 +58,9 @@ export function TemplatesTab() {
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h2 className="text-xl font-semibold">Templates workspace</h2>
+        <h2 className="text-xl font-semibold">Không gian mẫu</h2>
         <p className="text-sm text-muted-foreground">
-          Build reusable episode and speaker configurations for fast podcast production.
+          Xây dựng cấu hình bản phát và bản phát để tạo podcast nhanh chóng.
         </p>
       </div>
 
@@ -72,44 +72,44 @@ export function TemplatesTab() {
           <AccordionTrigger className="gap-2 py-4 text-left text-sm font-semibold">
             <div className="flex items-center gap-2">
               <Lightbulb className="h-4 w-4 text-primary" />
-              How templates power podcast generation
+              Cách mẫu tạo podcast
             </div>
           </AccordionTrigger>
           <AccordionContent className="text-sm text-muted-foreground">
             <div className="space-y-4">
               <p className="text-muted-foreground/90">
-                Templates split the podcast workflow into two reusable building blocks. Mix and match
-                them whenever you generate a new episode.
+                Mẫu chia quy trình podcast thành hai khối xây dựng lại có thể sử dụng lại. Trộn và khớp
+                thêm mỗi khi bạn tạo bản phát mới.
               </p>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-foreground">Episode profiles set the format</h4>
+                <h4 className="font-medium text-foreground">Bản phát đặt định dạng</h4>
                 <ul className="list-disc space-y-1 pl-5">
-                  <li>Outline the number of segments and how the story flows</li>
-                  <li>Pick the language models used for briefing, outlining, and script writing</li>
-                  <li>Store default briefings so every episode starts with a consistent tone</li>
+                  <li>Xác định số lượng đoạn và cách truyện kể</li>
+                  <li>Chọn các mô hình ngôn ngữ được sử dụng cho bản phát, tóm tắt và viết sổ tay</li>
+                  <li>Lưu bản phát mặc định để mỗi bản phát bắt đầu với một tiếng nói đồng đều</li>
                 </ul>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-foreground">Speaker profiles bring voices to life</h4>
+                <h4 className="font-medium text-foreground">Bản phát đưa giọng nói lời</h4>
                 <ul className="list-disc space-y-1 pl-5">
-                  <li>Choose the text-to-speech provider and model</li>
-                  <li>Capture personality, backstory, and pronunciation notes per speaker</li>
-                  <li>Reuse the same host or guest voices across different episode formats</li>
+                  <li>Chọn nhà cung cấp và mô hình text-to-speech</li>
+                  <li>Chụp nhân vật, nội dung và ghi chú phát âm cho mỗi bản phát</li>
+                  <li>Sử dụng lại cùng giọng nói chủ hoặc khách trong các định dạng bản phát khác nhau</li>
                 </ul>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-foreground">Recommended workflow</h4>
+                <h4 className="font-medium text-foreground">Quy trình khuyến nghị</h4>
                 <ol className="list-decimal space-y-1 pl-5">
-                  <li>Create speaker profiles for each voice you need</li>
-                  <li>Build episode profiles that reference those speakers by name</li>
-                  <li>Generate podcasts by selecting the episode profile that fits the story</li>
+                  <li>Tạo bản phát cho mỗi giọng bạn cần</li>
+                  <li>Xây dựng bản phát tham chiếu những bản phát bằng tên</li>
+                  <li>Tạo podcast bằng cách chọn bản phát phù hợp với truyện</li>
                 </ol>
                 <p className="text-xs text-muted-foreground/80">
-                  Episode profiles reference speaker profiles by name, so starting with speakers avoids
-                  missing voice assignments later.
+                  Bản phát tham chiếu bản phát bằng tên, vì vậy bắt đầu với bản phát giúp tránh
+                  gán giọng nói sau này.
                 </p>
               </div>
             </div>
@@ -120,9 +120,9 @@ export function TemplatesTab() {
       {hasError ? (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Failed to load templates data</AlertTitle>
+          <AlertTitle>Không thể tải dữ liệu mẫu</AlertTitle>
           <AlertDescription>
-            Ensure the API is running and try again. Some sections may be incomplete.
+            Đảm bảo API đang chạy và thử lại. Một số phần có thể không hoàn chỉnh.
           </AlertDescription>
         </Alert>
       ) : null}
@@ -130,7 +130,7 @@ export function TemplatesTab() {
       {isLoading ? (
         <div className="flex items-center gap-3 rounded-lg border border-dashed p-6 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Loading templates…
+          Đang tải mẫu…
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-2">

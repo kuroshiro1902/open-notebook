@@ -184,10 +184,10 @@ export function AddExistingSourceDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Link2 className="h-5 w-5" />
-            Add Existing Sources
+            Thêm nguồn đã tồn tại
           </DialogTitle>
           <DialogDescription>
-            Search and select existing sources to add to this notebook
+            Tìm kiếm và chọn nguồn đã tồn tại để thêm vào sổ tay này
           </DialogDescription>
         </DialogHeader>
 
@@ -196,7 +196,7 @@ export function AddExistingSourceDialog({
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search sources..."
+              placeholder="Tìm kiếm nguồn..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -211,12 +211,12 @@ export function AddExistingSourceDialog({
             {isSearching && filteredSources.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-[200px] text-muted-foreground">
                 <LoaderIcon className="h-12 w-12 mb-2 animate-spin" />
-                <p>Loading sources...</p>
+                <p>Đang tải nguồn...</p>
               </div>
             ) : filteredSources.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-[200px] text-muted-foreground">
                 <FileText className="h-12 w-12 mb-2 opacity-50" />
-                <p>No sources found</p>
+                <p>Không tìm thấy nguồn nào</p>
               </div>
             ) : (
               <div className="space-y-2 p-4">
@@ -247,12 +247,12 @@ export function AddExistingSourceDialog({
                           </h4>
                           {isAlreadyLinked && (
                             <Badge variant="secondary" className="text-xs shrink-0">
-                              Linked
+                              Đã liên kết
                             </Badge>
                           )}
                         </div>
                         <p className="text-xs text-muted-foreground truncate">
-                          Added {formatDate(source.created)}
+                          Thêm vào {formatDate(source.created)}
                         </p>
                       </div>
                     </div>
@@ -265,14 +265,14 @@ export function AddExistingSourceDialog({
           {/* Truncation Warning */}
           {allSources.length >= 100 && !debouncedSearchQuery && (
             <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded-md">
-              Showing first 100 sources. Use the Search feature to find specific sources.
+              Hiển thị 100 nguồn đầu tiên. Sử dụng tính năng Tìm kiếm để tìm kiếm nguồn cụ thể.
             </div>
           )}
 
           {/* Selection Summary */}
           {selectedSourceIds.length > 0 && (
             <div className="text-sm text-muted-foreground">
-              {selectedSourceIds.length} source{selectedSourceIds.length > 1 ? 's' : ''} selected
+              {selectedSourceIds.length} nguồn{selectedSourceIds.length > 1 ? 's' : ''} đã chọn
             </div>
           )}
         </div>
@@ -283,7 +283,7 @@ export function AddExistingSourceDialog({
             onClick={() => onOpenChange(false)}
             disabled={addSources.isPending}
           >
-            Cancel
+            Hủy bỏ
           </Button>
           <Button
             onClick={handleAddSelected}
@@ -292,10 +292,10 @@ export function AddExistingSourceDialog({
             {addSources.isPending ? (
               <>
                 <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
-                Adding...
+                Đang thêm...
               </>
             ) : (
-              <>Add Selected</>
+              <>Thêm nguồn đã chọn</>
             )}
           </Button>
         </DialogFooter>

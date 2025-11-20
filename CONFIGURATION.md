@@ -1,9 +1,5 @@
 # Configuration Guide
 
-## API Connection Configuration
-
-Starting from version 1.0.0-alpha, Open Notebook uses a simplified API connection system that automatically configures itself based on your deployment environment.
-
 ### How It Works
 
 The frontend automatically discovers the API location at runtime by analyzing the incoming HTTP request. This eliminates the need for complex network configurations and works for both Docker deployment modes:
@@ -41,8 +37,8 @@ Or add it to your `docker-compose.yml`:
 
 ```yaml
 services:
-  open_notebook:
-    image: lfnovo/open_notebook:v1-latest
+  csbkms:
+    image: csb/csbkms:v1-latest
     ports:
       - "8502:8502"
       - "5055:5055"  # API port must be exposed
@@ -56,7 +52,7 @@ services:
 docker run -e API_URL=http://your-server-ip:5055 \
   -p 8502:8502 \
   -p 5055:5055 \
-  lfnovo/open_notebook:v1-latest-single
+  csb/csbkms:v1-latest-single
 ```
 
 ### Important Notes

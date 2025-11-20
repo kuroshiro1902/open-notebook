@@ -45,21 +45,21 @@ export function ProcessingStep({
   return (
     <div className="space-y-8">
       <FormSection
-        title="Transformations (optional)"
-        description="Apply AI transformations to analyze and extract insights from your content."
+        title="Biến đổi (tùy chọn)"
+        description="Áp dụng biến đổi AI để phân tích và trích xuất ý tưởng từ nội dung của bạn."
       >
         <CheckboxList
           items={transformationItems}
           selectedIds={selectedTransformations}
           onToggle={onToggleTransformation}
           loading={loading}
-          emptyMessage="No transformations found."
+          emptyMessage="Không tìm thấy biến đổi."
         />
       </FormSection>
 
       <FormSection
-        title="Processing Settings"
-        description="Configure how your source will be processed and stored."
+        title="Cài đặt xử lý"
+        description="Cấu hình cách nguồn của bạn sẽ được xử lý và lưu trữ."
       >
         <div className="space-y-4">
           {settings?.default_embedding_option === 'ask' && (
@@ -74,9 +74,9 @@ export function ProcessingStep({
                     className="mt-0.5"
                   />
                   <div className="flex-1">
-                    <span className="text-sm font-medium block">Enable embedding for search</span>
+                    <span className="text-sm font-medium block">Bật embedding cho tìm kiếm</span>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Allows this source to be found in vector searches and AI queries
+                      Cho phép nguồn này được tìm thấy trong tìm kiếm vector và câu hỏi AI
                     </p>
                   </div>
                 </label>
@@ -89,10 +89,10 @@ export function ProcessingStep({
               <div className="flex items-start gap-3">
                 <div className="w-4 h-4 bg-primary rounded-full mt-0.5 flex-shrink-0"></div>
                 <div className="flex-1">
-                  <span className="text-sm font-medium block text-primary">Embedding enabled automatically</span>
+                  <span className="text-sm font-medium block text-primary">Embedding được bật tự động</span>
                   <p className="text-xs text-primary mt-1">
-                    Your settings are configured to always embed content for vector search.
-                    You can change this in <span className="font-medium">Settings</span>.
+                    Cài đặt của bạn được cấu hình để luôn embedding nội dung cho tìm kiếm vector.
+                    Bạn có thể thay đổi điều này trong <span className="font-medium">Cài đặt</span>.
                   </p>
                 </div>
               </div>
@@ -104,10 +104,10 @@ export function ProcessingStep({
               <div className="flex items-start gap-3">
                 <div className="w-4 h-4 bg-muted-foreground rounded-full mt-0.5 flex-shrink-0"></div>
                 <div className="flex-1">
-                  <span className="text-sm font-medium block text-foreground">Embedding disabled</span>
+                  <span className="text-sm font-medium block text-foreground">Embedding bị vô hiệu hóa</span>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Your settings are configured to skip embedding. Vector search won&apos;t be available for this source.
-                    You can change this in <span className="font-medium">Settings</span>.
+                    Cài đặt của bạn được cấu hình để bỏ qua embedding. Tìm kiếm vector sẽ không khả dụng cho nguồn này.
+                    Bạn có thể thay đổi điều này trong <span className="font-medium">Cài đặt</span>.
                   </p>
                 </div>
               </div>

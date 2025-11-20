@@ -11,6 +11,7 @@ import { ModelDefaults, Model } from '@/lib/types/models'
 import { useUpdateModelDefaults } from '@/lib/hooks/use-models'
 import { AlertCircle, X } from 'lucide-react'
 import { EmbeddingModelChangeDialog } from './EmbeddingModelChangeDialog'
+import { useTranslations } from 'next-intl'
 
 interface DefaultModelsSectionProps {
   models: Model[]
@@ -28,52 +29,53 @@ interface DefaultConfig {
 const defaultConfigs: DefaultConfig[] = [
   {
     key: 'default_chat_model',
-    label: 'Chat Model',
-    description: 'Used for chat conversations',
+    label: 'models.defaults.items.default_chat_model.label',
+    description: 'models.defaults.items.default_chat_model.description',
     modelType: 'language',
     required: true
   },
   {
     key: 'default_transformation_model',
-    label: 'Transformation Model',
-    description: 'Used for summaries, insights, and transformations',
+    label: 'models.defaults.items.default_transformation_model.label',
+    description: 'models.defaults.items.default_transformation_model.description',
     modelType: 'language',
     required: true
   },
   {
     key: 'default_tools_model',
-    label: 'Tools Model',
-    description: 'Used for function calling - OpenAI or Anthropic recommended',
+    label: 'models.defaults.items.default_tools_model.label',
+    description: 'models.defaults.items.default_tools_model.description',
     modelType: 'language'
   },
   {
     key: 'large_context_model',
-    label: 'Large Context Model',
-    description: 'Used for processing large documents - Gemini recommended',
+    label: 'models.defaults.items.large_context_model.label',
+    description: 'models.defaults.items.large_context_model.description',
     modelType: 'language'
   },
   {
     key: 'default_embedding_model',
-    label: 'Embedding Model',
-    description: 'Used for semantic search and vector embeddings',
+    label: 'models.defaults.items.default_embedding_model.label',
+    description: 'models.defaults.items.default_embedding_model.description',
     modelType: 'embedding',
     required: true
   },
   {
     key: 'default_text_to_speech_model',
-    label: 'Text-to-Speech Model',
-    description: 'Used for podcast generation',
+    label: 'models.defaults.items.default_text_to_speech_model.label',
+    description: 'models.defaults.items.default_text_to_speech_model.description',
     modelType: 'text_to_speech'
   },
   {
     key: 'default_speech_to_text_model',
-    label: 'Speech-to-Text Model',
-    description: 'Used for audio transcription',
+    label: 'models.defaults.items.default_speech_to_text_model.label',
+    description: 'models.defaults.items.default_speech_to_text_model.description',
     modelType: 'speech_to_text'
   }
 ]
 
 export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionProps) {
+  const t = useTranslations()
   const updateDefaults = useUpdateModelDefaults()
   const { setValue, watch } = useForm<ModelDefaults>({
     defaultValues: defaults
@@ -148,14 +150,14 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
       const modelsOfType = models.filter(m => m.type === config.modelType)
       return !modelsOfType.some(m => m.id === value)
     })
-    .map(config => config.label)
+    .map(config => t(config.label))
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Default Model Assignments</CardTitle>
+        <CardTitle>{t('models.defaults.title')}</CardTitle>
         <CardDescription>
-          Configure which models to use for different purposes across Open Notebook
+          {t('models.defaults.description')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -163,8 +165,7 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              Missing required models: {missingRequired.join(', ')}. 
-              Open Notebook may not function properly without these.
+              {t('models.defaults.missingRequired', { list: missingRequired.join(', ') })}
             </AlertDescription>
           </Alert>
         )}
@@ -180,7 +181,7 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
             return (
               <div key={config.key} className="space-y-2">
                 <Label>
-                  {config.label}
+                  {t(config.label)}
                   {config.required && <span className="text-destructive ml-1">*</span>}
                 </Label>
                 <div className="flex gap-2">
@@ -188,15 +189,15 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
                     value={currentValue || ""}
                     onValueChange={(value) => handleChange(config.key, value)}
                   >
-                    <SelectTrigger className={
+                      <SelectTrigger className={
                       config.required && !isValidModel && availableModels.length > 0
                         ? 'border-destructive' 
                         : ''
                     }>
                       <SelectValue placeholder={
                         config.required && !isValidModel && availableModels.length > 0 
-                          ? "⚠️ Required - Select a model"
-                          : "Select a model"
+                          ? t('models.defaults.requiredWarning')
+                          : t('models.defaults.selectModelPlaceholder')
                       } />
                     </SelectTrigger>
                     <SelectContent>
@@ -223,21 +224,10 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
                     </Button>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground">{config.description}</p>
+                <p className="text-xs text-muted-foreground">{t(config.description)}</p>
               </div>
             )
           })}
-        </div>
-
-        <div className="pt-4 border-t">
-          <a
-            href="https://github.com/lfnovo/open-notebook/blob/main/docs/features/ai-models.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-primary hover:underline"
-          >
-            Which model should I choose? →
-          </a>
         </div>
       </CardContent>
 

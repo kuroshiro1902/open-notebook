@@ -46,7 +46,7 @@ export function ConnectionErrorOverlay({
             </h1>
             <p className="text-muted-foreground">
               {isApiError
-                ? 'The Open Notebook API server could not be reached'
+                ? 'The CSBKMS API server could not be reached'
                 : 'The API server is running, but the database is not accessible'}
             </p>
           </div>
@@ -103,15 +103,12 @@ export function ConnectionErrorOverlay({
         {/* Documentation link */}
         <div className="text-sm">
           <p>For detailed setup instructions, see:</p>
-          <a
-            href="https://github.com/lfnovo/open-notebook"
-            target="_blank"
-            rel="noopener noreferrer"
+          <span
             className="text-primary hover:underline inline-flex items-center gap-1"
           >
-            Open Notebook Documentation
+            CSBKMS Documentation
             <ExternalLink className="w-4 h-4" />
-          </a>
+          </span>
         </div>
 
         {/* Collapsible technical details */}

@@ -62,7 +62,7 @@ export function TransformationCard({ transformation, onPlayground, onEdit }: Tra
                 {onEdit && (
                   <Button variant="outline" size="sm" onClick={onEdit}>
                     <Edit className="h-4 w-4 mr-2" />
-                    Edit
+                    Sửa
                   </Button>
                 )}
                 <Button
@@ -80,13 +80,13 @@ export function TransformationCard({ transformation, onPlayground, onEdit }: Tra
           <CollapsibleContent>
             <CardContent className="space-y-4">
               <div>
-                <p className="text-sm text-muted-foreground">Title</p>
+                <p className="text-sm text-muted-foreground">Tiêu đề</p>
                 <p className="text-sm font-medium">{transformation.title || 'Untitled'}</p>
               </div>
 
               {transformation.description && (
                 <div>
-                  <p className="text-sm text-muted-foreground">Description</p>
+                  <p className="text-sm text-muted-foreground">Mô tả</p>
                   <p className="text-sm leading-6">{transformation.description}</p>
                 </div>
               )}
@@ -105,9 +105,9 @@ export function TransformationCard({ transformation, onPlayground, onEdit }: Tra
       <ConfirmDialog
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
-        title="Delete Transformation"
-        description={`Are you sure you want to delete "${transformation.name}"? This action cannot be undone.`}
-        confirmText="Delete"
+        title="Xóa biến đổi"
+        description={`Bạn có chắc chắn muốn xóa "${transformation.name}"? Thao tác này không thể hoàn tác.`}
+        confirmText="Xóa"
         confirmVariant="destructive"
         onConfirm={handleDelete}
         isLoading={deleteTransformation.isPending}
