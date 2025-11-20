@@ -96,8 +96,8 @@
     },
     "defaults": {
       "title": "Gán Mô hình Mặc định",
-      "description": "Cấu hình mô hình sẽ sử dụng cho các mục đích khác nhau trong Open Notebook",
-      "missingRequired": "Thiếu các mô hình bắt buộc: {list}. Open Notebook có thể không hoạt động đúng nếu thiếu những mô hình này.",
+      "description": "Cấu hình mô hình sẽ sử dụng cho các mục đích khác nhau trong CSBKMS",
+      "missingRequired": "Thiếu các mô hình bắt buộc: {list}. CSBKMS có thể không hoạt động đúng nếu thiếu những mô hình này.",
       "selectModelPlaceholder": "Chọn một mô hình",
       "requiredWarning": "⚠️ Bắt buộc - Chọn một mô hình",
       "whichModelLink": "Nên chọn mô hình nào? →",

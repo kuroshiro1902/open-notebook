@@ -23,19 +23,7 @@ export function useVersionCheck() {
           if (!isDismissed) {
             // Show persistent toast notification
             toast.info(`Version ${config.latestVersion} available`, {
-              description: 'A new version of Open Notebook is available.',
-              duration: Infinity, // No auto-dismiss - user must manually dismiss
-              closeButton: true, // Show close button for dismissing
-              action: {
-                label: 'View on GitHub',
-                onClick: () => {
-                  window.open(
-                    'https://github.com/lfnovo/open-notebook',
-                    '_blank',
-                    'noopener,noreferrer'
-                  )
-                },
-              },
+              description: 'A new version of CSBKMS is available.',
               onDismiss: () => {
                 // Store dismissal in session storage
                 sessionStorage.setItem(dismissKey, 'true')

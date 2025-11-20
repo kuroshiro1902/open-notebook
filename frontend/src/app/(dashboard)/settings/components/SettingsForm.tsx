@@ -257,7 +257,7 @@ export function SettingsForm() {
                 Giúp tôi chọn
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-2 text-sm text-muted-foreground space-y-2">
-                <p>Một khi tệp của bạn đã được tải lên và xử lý, chúng không còn cần thiết nữa. Hầu hết người dùng nên cho phép Open Notebook xóa tệp tự động từ thư mục tải lên. Chọn <strong>không</strong>, CHỈ nếu bạn đang sử dụng Notebook làm vị trí lưu trữ chính cho những tệp đó (mà bạn không nên làm điều đó). Tùy chọn này sẽ sớm bị phục vụ bằng cách luôn tải xuống các tệp.</p>
+                <p>Một khi tệp của bạn đã được tải lên và xử lý, chúng không còn cần thiết nữa. Hầu hết người dùng nên cho phép CSBKMS xóa tệp tự động từ thư mục tải lên. Chọn <strong>không</strong>, CHỈ nếu bạn đang sử dụng Notebook làm vị trí lưu trữ chính cho những tệp đó (mà bạn không nên làm điều đó). Tùy chọn này sẽ sớm bị phục vụ bằng cách luôn tải xuống các tệp.</p>
                 <p>• Chọn <strong>có</strong> (khuyến nghị) để xóa tệp tự động sau khi xử lý</p>
                 <p>• Chọn <strong>không</strong> chỉ khi bạn cần giữ nguyên tệp gốc trong thư mục tải lên</p>
               </CollapsibleContent>

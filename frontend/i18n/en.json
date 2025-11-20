@@ -96,8 +96,8 @@
     },
     "defaults": {
       "title": "Default Model Assignments",
-      "description": "Configure which models to use for different purposes across Open Notebook",
-      "missingRequired": "Missing required models: {list}. Open Notebook may not function properly without these.",
+      "description": "Configure which models to use for different purposes across CSBKMS",
+      "missingRequired": "Missing required models: {list}. CSBKMS may not function properly without these.",
       "selectModelPlaceholder": "Select a model",
       "requiredWarning": "⚠️ Required - Select a model",
       "whichModelLink": "Which model should I choose? →",

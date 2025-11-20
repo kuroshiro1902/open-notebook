@@ -50,7 +50,7 @@ export default function ModelsPage() {
             <div>
               <h1 className="text-2xl font-bold">Quản lý Model</h1>
               <p className="text-muted-foreground mt-1">
-                Cấu hình model AI cho các mục đích khác nhau trên Open Notebook
+                Cấu hình model AI cho các mục đích khác nhau trên CSBKMS
               </p>
             </div>
             <Button variant="outline" size="sm" onClick={handleRefresh}>
