@@ -12,7 +12,7 @@ import { themeScript } from "@/lib/theme-script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Open Notebook",
+  title: "CSB-KMS",
   description: "Privacy-focused research and knowledge management",
 };
 

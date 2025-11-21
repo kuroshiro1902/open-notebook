@@ -118,7 +118,7 @@ export function AppSidebar() {
           {isCollapsed ? (
             <div className="relative flex items-center justify-center w-full">
               <Image
-                src="/logo.svg"
+                src="/Vietnam_Coast_Guard_insignia.svg"
                 alt={tApp('name')}
                 width={32}
                 height={32}
@@ -136,7 +136,7 @@ export function AppSidebar() {
           ) : (
             <>
               <div className="flex items-center gap-2">
-                <Image src="/logo.svg" alt={tApp('name')} width={32} height={32} />
+                <Image src="/Vietnam_Coast_Guard_insignia.svg" alt={tApp('name')} width={32} height={32} />
                 <span className="text-base font-medium text-sidebar-foreground">
                   {tApp('name')}
                 </span>

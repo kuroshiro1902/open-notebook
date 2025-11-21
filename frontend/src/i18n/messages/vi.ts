@@ -1,6 +1,6 @@
 const messages = {
   app: {
-    name: 'Open Notebook',
+    name: 'CSB-KMS',
   },
   sidebar: {
     create: {
@@ -54,7 +54,7 @@ const messages = {
   },
   auth: {
     login: {
-      title: 'Open Notebook',
+      title: 'CSB-KMS',
       description: 'Nhập mật khẩu để truy cập ứng dụng',
       passwordPlaceholder: 'Mật khẩu',
       submit: 'Đăng nhập',
@@ -222,7 +222,7 @@ const messages = {
   models: {
     page: {
       title: 'Quản lý mô hình',
-      description: 'Cấu hình các mô hình AI cho nhiều mục đích khác nhau trong Open Notebook',
+      description: 'Cấu hình các mô hình AI cho nhiều mục đích khác nhau trong CSB-KMS',
       loadError: 'Không thể tải dữ liệu mô hình',
       refreshAria: 'Làm mới dữ liệu mô hình',
     },
@@ -238,8 +238,8 @@ const messages = {
     },
     defaultAssignments: {
       title: 'Thiết lập mô hình mặc định',
-      description: 'Chọn mô hình sử dụng cho từng mục đích trong Open Notebook',
-      missingNotice: 'Thiếu mô hình bắt buộc: {list}. Open Notebook có thể hoạt động không ổn định nếu thiếu các mô hình này.',
+      description: 'Chọn mô hình sử dụng cho từng mục đích trong CSB-KMS',
+      missingNotice: 'Thiếu mô hình bắt buộc: {list}. CSB-KMS có thể hoạt động không ổn định nếu thiếu các mô hình này.',
       link: 'Nên chọn mô hình nào? →',
       placeholders: {
         select: 'Chọn mô hình',

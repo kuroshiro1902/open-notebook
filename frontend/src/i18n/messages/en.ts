@@ -1,6 +1,6 @@
 const messages = {
   app: {
-    name: 'Open Notebook',
+    name: 'CSB-KMS',
   },
   sidebar: {
     create: {
@@ -54,7 +54,7 @@ const messages = {
   },
   auth: {
     login: {
-      title: 'Open Notebook',
+      title: 'CSB-KMS',
       description: 'Enter your password to access the application',
       passwordPlaceholder: 'Password',
       submit: 'Sign In',
@@ -222,7 +222,7 @@ const messages = {
   models: {
     page: {
       title: 'Model Management',
-      description: 'Configure AI models for different purposes across Open Notebook',
+      description: 'Configure AI models for different purposes across CSB-KMS',
       loadError: 'Failed to load models data',
       refreshAria: 'Refresh models data',
     },
@@ -238,8 +238,8 @@ const messages = {
     },
     defaultAssignments: {
       title: 'Default Model Assignments',
-      description: 'Configure which models to use for different purposes across Open Notebook',
-      missingNotice: 'Missing required models: {list}. Open Notebook may not function properly without these.',
+      description: 'Configure which models to use for different purposes across CSB-KMS',
+      missingNotice: 'Missing required models: {list}. CSB-KMS may not function properly without these.',
       link: 'Which model should I choose? →',
       placeholders: {
         select: 'Select a model',
