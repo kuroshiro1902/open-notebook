@@ -230,16 +230,6 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
           })}
         </div>
 
-        <div className="pt-4 border-t">
-          <a
-            href="https://github.com/lfnovo/open-notebook/blob/main/docs/features/ai-models.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-primary hover:underline"
-          >
-            {t('link')}
-          </a>
-        </div>
       </CardContent>
 
       <EmbeddingModelChangeDialog

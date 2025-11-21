@@ -73,10 +73,6 @@ export function AppSidebar() {
         ],
       },
       {
-        title: tSidebar('sections.create'),
-        items: [{ name: tSidebar('items.podcasts'), href: '/podcasts', icon: Mic }],
-      },
-      {
         title: tSidebar('sections.manage'),
         items: [
           { name: tSidebar('items.models'), href: '/models', icon: Bot },

@@ -72,49 +72,6 @@ export function SystemInfo() {
             <Badge variant="outline">{config?.version || t('statusValues.unknown')}</Badge>
           </div>
 
-          {config?.latestVersion && (
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">{t('latestVersion')}</span>
-              <Badge variant="outline">{config.latestVersion}</Badge>
-            </div>
-          )}
-
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">{t('status')}</span>
-            {statusBadge()}
-          </div>
-
-          {config?.hasUpdate && (
-            <div className="pt-2 border-t">
-              <a
-                href="https://github.com/lfnovo/open-notebook"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline inline-flex items-center gap-1"
-              >
-                {t('viewOnGithub')}
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                  />
-                </svg>
-              </a>
-            </div>
-          )}
-
-          {!config?.latestVersion && config?.version && (
-            <div className="pt-2 text-xs text-muted-foreground">
-              {t('updateCheckFailed')}
-            </div>
-          )}
         </div>
       </div>
     </Card>

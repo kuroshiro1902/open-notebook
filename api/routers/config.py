@@ -66,15 +66,14 @@ def get_latest_version_cached(current_version: str) -> tuple[Optional[str], bool
         logger.info("Checking for latest version from GitHub...")
 
         # Fetch latest version from GitHub with 10-second timeout
-        latest_version = get_version_from_github(
-            "https://github.com/lfnovo/open-notebook",
-            "main"
-        )
+        latest_version = "1.2.1"
 
         logger.info(f"Latest version from GitHub: {latest_version}, Current version: {current_version}")
 
         # Compare versions
-        has_update = compare_versions(current_version, latest_version) < 0
+        # has_update = compare_versions(current_version, latest_version) < 0
+        
+        has_update = False
 
         # Cache the result
         _version_cache["latest_version"] = latest_version

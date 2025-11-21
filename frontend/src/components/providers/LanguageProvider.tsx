@@ -25,7 +25,7 @@ type LanguageContextValue = {
   getMessages: () => TranslationMessages
 }
 
-const STORAGE_KEY = 'open-notebook:locale'
+const STORAGE_KEY = 'csb-kms:locale'
 
 const noop = () => {}
 

@@ -118,16 +118,6 @@ export function ProviderStatus({ providers }: ProviderStatusProps) {
           </div>
         ) : null}
 
-        <div className="mt-6 pt-4 border-t">
-          <a
-            href="https://github.com/lfnovo/open-notebook/blob/main/docs/features/ai-models.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-primary hover:underline"
-          >
-            {t('learnMore')}
-          </a>
-        </div>
       </CardContent>
     </Card>
   )
