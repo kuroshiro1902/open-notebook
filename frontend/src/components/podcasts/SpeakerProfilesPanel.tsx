@@ -64,17 +64,17 @@ export function SpeakerProfilesPanel({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">Speaker profiles</h2>
+          <h2 className="text-lg font-semibold">Bản phát</h2>
           <p className="text-sm text-muted-foreground">
-            Configure voices and personalities for generated episodes.
+            Cấu hình giọng nói và nhân vật cho bản phát được tạo.
           </p>
         </div>
-        <Button onClick={() => setCreateOpen(true)}>Create speaker</Button>
+        <Button onClick={() => setCreateOpen(true)}>Tạo bản phát</Button>
       </div>
 
       {sortedProfiles.length === 0 ? (
         <div className="rounded-lg border border-dashed bg-muted/30 p-8 text-center text-sm text-muted-foreground">
-          No speaker profiles yet. Create one to make episode templates available.
+          Không có bản phát nào. Tạo một để có bản phát mẫu sẵn sàng.
         </div>
       ) : (
         <div className="space-y-4">
@@ -91,7 +91,7 @@ export function SpeakerProfilesPanel({
                         {profile.name}
                       </CardTitle>
                       <CardDescription className="text-sm text-muted-foreground">
-                        {profile.description || 'No description provided.'}
+                        {profile.description || 'Không có mô tả.'}
                       </CardDescription>
                     </div>
                     <Badge variant="outline" className="text-xs">
@@ -104,7 +104,7 @@ export function SpeakerProfilesPanel({
                       className="text-xs"
                     >
                       {usageCount > 0
-                        ? `Used by ${usageCount} episode${usageCount === 1 ? '' : 's'}`
+                        ? `Được sử dụng bởi ${usageCount} bản phát${usageCount === 1 ? '' : 's'}`
                         : 'Unused'}
                     </Badge>
                   </div>
@@ -125,14 +125,14 @@ export function SpeakerProfilesPanel({
                             </span>
                           </div>
                           <span className="text-xs text-muted-foreground">
-                            Voice ID: {speaker.voice_id}
+                            ID giọng: {speaker.voice_id}
                           </span>
                         </div>
                         <p className="mt-2 text-xs text-muted-foreground whitespace-pre-wrap">
-                          <span className="font-semibold">Backstory:</span> {speaker.backstory}
+                          <span className="font-semibold">Nội dung:</span> {speaker.backstory}
                         </p>
                         <p className="mt-2 text-xs text-muted-foreground whitespace-pre-wrap">
-                          <span className="font-semibold">Personality:</span> {speaker.personality}
+                          <span className="font-semibold">Nhân vật:</span> {speaker.personality}
                         </p>
                       </div>
                     ))}
@@ -144,7 +144,7 @@ export function SpeakerProfilesPanel({
                       size="sm"
                       onClick={() => setEditProfile(profile)}
                     >
-                      <Edit3 className="mr-2 h-4 w-4" /> Edit
+                      <Edit3 className="mr-2 h-4 w-4" /> Sửa
                     </Button>
                     <AlertDialog>
                       <DropdownMenu>
@@ -168,7 +168,7 @@ export function SpeakerProfilesPanel({
                             disabled={duplicateProfile.isPending}
                           >
                             <Copy className="h-4 w-4 mr-2" />
-                            Duplicate
+                            Sao chép
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <AlertDialogTrigger asChild>
@@ -177,30 +177,30 @@ export function SpeakerProfilesPanel({
                               disabled={deleteDisabled}
                             >
                               <Trash2 className="h-4 w-4 mr-2" />
-                              Delete
+                              Xóa
                             </DropdownMenuItem>
                           </AlertDialogTrigger>
                         </DropdownMenuContent>
                       </DropdownMenu>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Delete speaker profile?</AlertDialogTitle>
+                          <AlertDialogTitle>Xóa bản phát?</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Deleting “{profile.name}” cannot be undone.
+                            Xóa “{profile.name}” không thể hoàn tác.
                           </AlertDialogDescription>
                           {deleteDisabled ? (
                             <p className="mt-2 text-sm text-muted-foreground">
-                              Remove this speaker from episode profiles before deleting it.
+                              Xóa giọng nói này khỏi bản phát trước khi xóa nó.
                             </p>
                           ) : null}
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>Hủy</AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => deleteProfile.mutate(profile.id)}
                             disabled={deleteDisabled || deleteProfile.isPending}
                           >
-                            {deleteProfile.isPending ? 'Deleting…' : 'Delete'}
+                            {deleteProfile.isPending ? 'Đang xóa…' : 'Xóa'}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

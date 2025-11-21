@@ -11,6 +11,7 @@ import { useCreateNote, useUpdateNote, useNote } from '@/lib/hooks/use-notes'
 import { QUERY_KEYS } from '@/lib/api/query-client'
 import { MarkdownEditor } from '@/components/ui/markdown-editor'
 import { InlineEdit } from '@/components/common/InlineEdit'
+import { useTranslations } from 'next-intl'
 
 const createNoteSchema = z.object({
   title: z.string().optional(),
@@ -27,6 +28,7 @@ interface NoteEditorDialogProps {
 }
 
 export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteEditorDialogProps) {
+  const t = useTranslations()
   const createNote = useCreateNote()
   const updateNote = useUpdateNote()
   const queryClient = useQueryClient()
@@ -106,12 +108,12 @@ export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteE
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-3xl w-full max-h-[90vh] overflow-hidden p-0">
         <DialogTitle className="sr-only">
-          {isEditing ? 'Edit note' : 'Create note'}
+          {isEditing ? t('notebooks.noteEditor.title.edit') : t('notebooks.noteEditor.title.create')}
         </DialogTitle>
         <form onSubmit={handleSubmit(onSubmit)} className="flex h-full flex-col">
-          {isEditing && noteLoading ? (
+            {isEditing && noteLoading ? (
             <div className="flex-1 flex items-center justify-center py-10">
-              <span className="text-sm text-muted-foreground">Loading note…</span>
+              <span className="text-sm text-muted-foreground">{t('notebooks.noteEditor.loading')}</span>
             </div>
           ) : (
             <>
@@ -119,8 +121,8 @@ export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteE
                 <InlineEdit
                   value={watchTitle ?? ''}
                   onSave={(value) => setValue('title', value || '')}
-                  placeholder="Add a title..."
-                  emptyText="Untitled Note"
+                  placeholder={t('notebooks.noteEditor.titlePlaceholder')}
+                  emptyText={t('notebooks.noteEditor.titleEmpty')}
                   className="text-xl font-semibold"
                   inputClassName="text-xl font-semibold"
                 />
@@ -136,13 +138,13 @@ export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteE
                       value={field.value}
                       onChange={field.onChange}
                       height={420}
-                      placeholder="Write your note content here..."
+                      placeholder={t('notebooks.noteEditor.contentPlaceholder')}
                       className="rounded-md border"
                     />
                   )}
                 />
                 {errors.content && (
-                  <p className="text-sm text-red-600 mt-1">{errors.content.message}</p>
+                  <p className="text-sm text-red-600 mt-1">{t('notebooks.noteEditor.errors.contentRequired')}</p>
                 )}
               </div>
             </>
@@ -150,17 +152,17 @@ export function NoteEditorDialog({ open, onOpenChange, notebookId, note }: NoteE
 
           <div className="border-t px-6 py-4 flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={handleClose}>
-              Cancel
+              {t('notebooks.noteEditor.buttons.cancel')}
             </Button>
             <Button 
               type="submit" 
               disabled={isSaving || (isEditing && noteLoading)}
             >
               {isSaving
-                ? isEditing ? 'Saving...' : 'Creating...'
+                ? isEditing ? t('notebooks.noteEditor.buttons.saving') : t('notebooks.noteEditor.buttons.creating')
                 : isEditing
-                  ? 'Save Note'
-                  : 'Create Note'}
+                  ? t('notebooks.noteEditor.buttons.saveNote')
+                  : t('notebooks.noteEditor.buttons.createNote')}
             </Button>
           </div>
         </form>

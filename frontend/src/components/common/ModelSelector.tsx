@@ -19,7 +19,7 @@ export function ModelSelector({
   modelType, 
   value, 
   onChange, 
-  placeholder = 'Select a model',
+  placeholder = 'Chọn một model',
   disabled = false 
 }: ModelSelectorProps) {
   const { data: models, isLoading } = useModels()

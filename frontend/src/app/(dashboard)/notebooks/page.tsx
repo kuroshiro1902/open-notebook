@@ -9,12 +9,15 @@ import { Plus, RefreshCw } from 'lucide-react'
 import { useNotebooks } from '@/lib/hooks/use-notebooks'
 import { CreateNotebookDialog } from '@/components/notebooks/CreateNotebookDialog'
 import { Input } from '@/components/ui/input'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 export default function NotebooksPage() {
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const { data: notebooks, isLoading, refetch } = useNotebooks(false)
   const { data: archivedNotebooks } = useNotebooks(true)
+  const t = useTranslations('notebooks.page')
+  const tList = useTranslations('notebooks.list')
 
   const normalizedQuery = searchTerm.trim().toLowerCase()
 
@@ -51,8 +54,8 @@ export default function NotebooksPage() {
         <div className="p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold">Notebooks</h1>
-            <Button variant="outline" size="sm" onClick={() => refetch()}>
+            <h1 className="text-2xl font-bold">{t('title')}</h1>
+            <Button variant="outline" size="sm" onClick={() => refetch()} aria-label={t('title')}>
               <RefreshCw className="h-4 w-4" />
             </Button>
           </div>
@@ -60,12 +63,12 @@ export default function NotebooksPage() {
             <Input
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search notebooks..."
+              placeholder={t('searchPlaceholder')}
               className="w-full sm:w-64"
             />
             <Button onClick={() => setCreateDialogOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              New Notebook
+              {t('createButton')}
             </Button>
           </div>
         </div>
@@ -74,19 +77,23 @@ export default function NotebooksPage() {
           <NotebookList 
             notebooks={filteredActive} 
             isLoading={isLoading}
-            title="Active Notebooks"
-            emptyTitle={isSearching ? 'No notebooks match your search' : undefined}
-            emptyDescription={isSearching ? 'Try using a different notebook name.' : undefined}
+            title={t('sections.active')}
+            emptyTitle={isSearching ? t('emptySearch.activeTitle') : undefined}
+            emptyDescription={isSearching ? t('emptySearch.activeDescription') : undefined}
+            fallbackTitle={tList('fallbackTitle')}
+            fallbackDescription={tList('fallbackDescription')}
           />
           
           {hasArchived && (
             <NotebookList 
               notebooks={filteredArchived} 
               isLoading={false}
-              title="Archived Notebooks"
+              title={t('sections.archived')}
               collapsible
-              emptyTitle={isSearching ? 'No archived notebooks match your search' : undefined}
-              emptyDescription={isSearching ? 'Modify your search to find archived notebooks.' : undefined}
+              emptyTitle={isSearching ? t('emptySearch.archivedTitle') : undefined}
+              emptyDescription={isSearching ? t('emptySearch.archivedDescription') : undefined}
+              fallbackTitle={tList('fallbackTitle')}
+              fallbackDescription={tList('fallbackDescription')}
             />
           )}
         </div>

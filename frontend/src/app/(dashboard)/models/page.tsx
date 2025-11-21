@@ -8,11 +8,13 @@ import { useModels, useModelDefaults, useProviders } from '@/lib/hooks/use-model
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 export default function ModelsPage() {
   const { data: models, isLoading: modelsLoading, refetch: refetchModels } = useModels()
   const { data: defaults, isLoading: defaultsLoading, refetch: refetchDefaults } = useModelDefaults()
   const { data: providers, isLoading: providersLoading, refetch: refetchProviders } = useProviders()
+  const t = useTranslations('models.page')
 
   const handleRefresh = () => {
     refetchModels()
@@ -35,7 +37,7 @@ export default function ModelsPage() {
       <AppShell>
         <div className="p-6">
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Failed to load models data</p>
+            <p className="text-muted-foreground">{t('loadError')}</p>
           </div>
         </div>
       </AppShell>
@@ -48,12 +50,17 @@ export default function ModelsPage() {
         <div className="p-6 space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">Model Management</h1>
+              <h1 className="text-2xl font-bold">{t('title')}</h1>
               <p className="text-muted-foreground mt-1">
-                Configure AI models for different purposes across Open Notebook
+                {t('description')}
               </p>
             </div>
-            <Button variant="outline" size="sm" onClick={handleRefresh}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              aria-label={t('refreshAria')}
+            >
               <RefreshCw className="h-4 w-4" />
             </Button>
         </div>

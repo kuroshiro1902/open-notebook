@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, ExternalLink } from 'lucide-react'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 interface EmbeddingModelChangeDialogProps {
   open: boolean
@@ -28,15 +29,15 @@ export function EmbeddingModelChangeDialog({
   onOpenChange,
   onConfirm,
   oldModelName,
-  newModelName
+  newModelName,
 }: EmbeddingModelChangeDialogProps) {
   const router = useRouter()
   const [isConfirming, setIsConfirming] = useState(false)
+  const t = useTranslations('models.embeddingDialog')
 
   const handleConfirmAndRebuild = () => {
     setIsConfirming(true)
     onConfirm()
-    // Give a moment for the model to update, then redirect
     setTimeout(() => {
       router.push('/advanced')
       onOpenChange(false)
@@ -49,60 +50,67 @@ export function EmbeddingModelChangeDialog({
     onOpenChange(false)
   }
 
+  const changeSummary =
+    oldModelName && newModelName
+      ? t('changeFromTo')
+          .replace('{old}', oldModelName)
+          .replace('{new}', newModelName)
+      : ''
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="max-w-lg">
         <AlertDialogHeader>
           <div className="flex items-center gap-2 mb-2">
             <AlertTriangle className="h-5 w-5 text-yellow-500" />
-            <AlertDialogTitle>Embedding Model Change</AlertDialogTitle>
+            <AlertDialogTitle>{t('title')}</AlertDialogTitle>
           </div>
           <AlertDialogDescription asChild>
             <div className="space-y-3 text-base text-muted-foreground">
               <p>
-                You are about to change your embedding model{' '}
-                {oldModelName && newModelName && (
+                {t('descriptionIntro')}
+                {changeSummary ? (
                   <>
-                    from <strong>{oldModelName}</strong> to <strong>{newModelName}</strong>
+                    {' '}
+                    {changeSummary}
                   </>
-                )}
+                ) : null}
                 .
               </p>
 
               <div className="bg-muted p-4 rounded-md space-y-2">
-                <p className="font-semibold text-foreground">⚠️ Important: Rebuild Required</p>
+                <p className="font-semibold text-foreground">{t('warningTitle')}</p>
                 <p className="text-sm">
-                  Changing your embedding model requires rebuilding all existing embeddings to maintain consistency.
-                  Without rebuilding, your searches may return incorrect or incomplete results.
+                  {t('rebuildInfo')}
                 </p>
               </div>
 
               <div className="space-y-2 text-sm">
-                <p className="font-medium text-foreground">What happens next:</p>
+                <p className="font-medium text-foreground">{t('listTitle')}</p>
                 <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li>Your default embedding model will be updated</li>
-                  <li>Existing embeddings will remain unchanged until rebuild</li>
-                  <li>New content will use the new embedding model</li>
-                  <li>You should rebuild embeddings as soon as possible</li>
+                  <li>{t('listItems.first')}</li>
+                  <li>{t('listItems.second')}</li>
+                  <li>{t('listItems.third')}</li>
+                  <li>{t('listItems.fourth')}</li>
                 </ul>
               </div>
 
               <p className="text-sm font-medium text-foreground">
-                Would you like to proceed to the Advanced page to start the rebuild now?
+                {t('prompt')}
               </p>
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-col sm:flex-row gap-2">
           <AlertDialogCancel disabled={isConfirming}>
-            Cancel
+            {t('cancel')}
           </AlertDialogCancel>
           <Button
             variant="outline"
             onClick={handleConfirmOnly}
             disabled={isConfirming}
           >
-            Change Model Only
+            {t('changeOnly')}
           </Button>
           <AlertDialogAction
             onClick={handleConfirmAndRebuild}
@@ -110,7 +118,7 @@ export function EmbeddingModelChangeDialog({
             className="bg-primary"
           >
             <ExternalLink className="mr-2 h-4 w-4" />
-            Change & Go to Rebuild
+            {t('changeAndRebuild')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

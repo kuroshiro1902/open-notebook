@@ -38,7 +38,7 @@ export function ContextIndicator({
   if (!hasContext) {
     return (
       <div className={cn('flex-shrink-0 text-xs text-muted-foreground py-2 px-3 border-t', className)}>
-        No sources or notes included in context. Toggle icons on cards to include them.
+        Không có nguồn hoặc ghi chú nào được bao gồm trong ngữ cảnh. Bật biểu tượng trên nguồn/ghi chú để bao gồm chúng.
       </div>
     )
   }
@@ -46,7 +46,7 @@ export function ContextIndicator({
   return (
     <div className={cn('flex-shrink-0 flex items-center justify-between gap-2 py-2 px-3 border-t bg-muted/30', className)}>
       <div className="flex items-center gap-2">
-        <span className="text-xs font-medium text-muted-foreground">Context:</span>
+        <span className="text-xs font-medium text-muted-foreground">Ngữ cảnh:</span>
 
         <div className="flex items-center gap-1.5">
           {sourcesInsights > 0 && (
