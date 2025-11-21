@@ -62,12 +62,12 @@ export function AppSidebar() {
         { name: t("sidebar.askAndSearch"), href: '/search', icon: Search },
       ],
     },
-    {
-      title: t("sidebar.create"),
-      items: [
-        { name: 'Podcasts', href: '/podcasts', icon: Mic },
-      ],
-    },
+    // {
+    //   title: t("sidebar.create"),
+    //   items: [
+    //     { name: 'Podcasts', href: '/podcasts', icon: Mic },
+    //   ],
+    // },
     {
       title: t("sidebar.manage"),
       items: [
