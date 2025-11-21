@@ -6,14 +6,15 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Check, X } from 'lucide-react'
 import { ProviderAvailability } from '@/lib/types/models'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 interface ProviderStatusProps {
   providers: ProviderAvailability
 }
 
 export function ProviderStatus({ providers }: ProviderStatusProps) {
-  const t = useTranslations()
+  const t = useTranslations('models.providerStatus')
+
   // Combine all providers, with available ones first
   const allProviders = useMemo(
     () => [
@@ -32,14 +33,18 @@ export function ProviderStatus({ providers }: ProviderStatusProps) {
     return allProviders.slice(0, 6)
   }, [allProviders, expanded])
 
+  const configuredSummary = t('configuredSummary')
+    .replace('{available}', String(providers.available.length))
+    .replace('{total}', String(allProviders.length))
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t('models.providers.title')}</CardTitle>
+        <CardTitle>{t('title')}</CardTitle>
         <CardDescription>
-          {t('models.providers.description')}
+          {t('description')}
           <span className="ml-1">
-            {t('models.providers.configured', { available: providers.available.length, total: allProviders.length })}
+            {configuredSummary}
           </span>
         </CardDescription>
       </CardHeader>
@@ -85,12 +90,12 @@ export function ProviderStatus({ providers }: ProviderStatusProps) {
                           </Badge>
                         ))
                       ) : (
-                        <Badge variant="outline" className="text-xs">{t('models.providers.noModels')}</Badge>
+                        <Badge variant="outline" className="text-xs">{t('badgeNoModels')}</Badge>
                       )}
                     </div>
                   ) : (
                     <Badge variant="outline" className="text-xs text-muted-foreground border-dashed">
-                      {t('models.providers.notConfigured')}
+                      {t('badgeNotConfigured')}
                     </Badge>
                   )}
                 </div>
@@ -106,10 +111,23 @@ export function ProviderStatus({ providers }: ProviderStatusProps) {
               onClick={() => setExpanded((prev) => !prev)}
               className="text-sm font-medium text-primary hover:underline"
             >
-              {expanded ? t('models.providers.seeLess') : t('models.providers.seeAll', { count: allProviders.length })}
+              {expanded
+                ? t('seeLess')
+                : t('seeAll').replace('{count}', String(allProviders.length))}
             </button>
           </div>
         ) : null}
+
+        <div className="mt-6 pt-4 border-t">
+          <a
+            href="https://github.com/lfnovo/open-notebook/blob/main/docs/features/ai-models.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-primary hover:underline"
+          >
+            {t('learnMore')}
+          </a>
+        </div>
       </CardContent>
     </Card>
   )

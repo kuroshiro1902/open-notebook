@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
@@ -11,7 +12,7 @@ import { ModelDefaults, Model } from '@/lib/types/models'
 import { useUpdateModelDefaults } from '@/lib/hooks/use-models'
 import { AlertCircle, X } from 'lucide-react'
 import { EmbeddingModelChangeDialog } from './EmbeddingModelChangeDialog'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 interface DefaultModelsSectionProps {
   models: Model[]
@@ -20,8 +21,7 @@ interface DefaultModelsSectionProps {
 
 interface DefaultConfig {
   key: keyof ModelDefaults
-  label: string
-  description: string
+  translationKey: string
   modelType: 'language' | 'embedding' | 'text_to_speech' | 'speech_to_text'
   required?: boolean
 }
@@ -29,57 +29,53 @@ interface DefaultConfig {
 const defaultConfigs: DefaultConfig[] = [
   {
     key: 'default_chat_model',
-    label: 'models.defaults.items.default_chat_model.label',
-    description: 'models.defaults.items.default_chat_model.description',
+    translationKey: 'default_chat_model',
     modelType: 'language',
-    required: true
+    required: true,
   },
   {
     key: 'default_transformation_model',
-    label: 'models.defaults.items.default_transformation_model.label',
-    description: 'models.defaults.items.default_transformation_model.description',
+    translationKey: 'default_transformation_model',
     modelType: 'language',
-    required: true
+    required: true,
   },
   {
     key: 'default_tools_model',
-    label: 'models.defaults.items.default_tools_model.label',
-    description: 'models.defaults.items.default_tools_model.description',
-    modelType: 'language'
+    translationKey: 'default_tools_model',
+    modelType: 'language',
   },
   {
     key: 'large_context_model',
-    label: 'models.defaults.items.large_context_model.label',
-    description: 'models.defaults.items.large_context_model.description',
-    modelType: 'language'
+    translationKey: 'large_context_model',
+    modelType: 'language',
   },
   {
     key: 'default_embedding_model',
-    label: 'models.defaults.items.default_embedding_model.label',
-    description: 'models.defaults.items.default_embedding_model.description',
+    translationKey: 'default_embedding_model',
     modelType: 'embedding',
-    required: true
+    required: true,
   },
   {
     key: 'default_text_to_speech_model',
-    label: 'models.defaults.items.default_text_to_speech_model.label',
-    description: 'models.defaults.items.default_text_to_speech_model.description',
-    modelType: 'text_to_speech'
+    translationKey: 'default_text_to_speech_model',
+    modelType: 'text_to_speech',
   },
   {
     key: 'default_speech_to_text_model',
-    label: 'models.defaults.items.default_speech_to_text_model.label',
-    description: 'models.defaults.items.default_speech_to_text_model.description',
-    modelType: 'speech_to_text'
-  }
+    translationKey: 'default_speech_to_text_model',
+    modelType: 'speech_to_text',
+  },
 ]
 
 export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionProps) {
-  const t = useTranslations()
   const updateDefaults = useUpdateModelDefaults()
   const { setValue, watch } = useForm<ModelDefaults>({
-    defaultValues: defaults
+    defaultValues: defaults,
   })
+
+  const t = useTranslations('models.defaultAssignments')
+  const tFields = useTranslations('models.defaultAssignments.fields')
+  const tPlaceholders = useTranslations('models.defaultAssignments.placeholders')
 
   // State for embedding model change dialog
   const [showEmbeddingDialog, setShowEmbeddingDialog] = useState(false)
@@ -110,7 +106,7 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
           key,
           value,
           oldModelId: currentEmbeddingModel,
-          newModelId: value
+          newModelId: value,
         })
         setShowEmbeddingDialog(true)
         return
@@ -125,7 +121,7 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
   const handleConfirmEmbeddingChange = () => {
     if (pendingEmbeddingChange) {
       const newDefaults = {
-        [pendingEmbeddingChange.key]: pendingEmbeddingChange.value || null
+        [pendingEmbeddingChange.key]: pendingEmbeddingChange.value || null,
       }
       updateDefaults.mutate(newDefaults)
       setPendingEmbeddingChange(null)
@@ -141,97 +137,111 @@ export function DefaultModelsSection({ models, defaults }: DefaultModelsSectionP
     return models.filter(model => model.type === type)
   }
 
-  const missingRequired = defaultConfigs
-    .filter(config => {
-      if (!config.required) return false
-      const value = defaults[config.key]
-      if (!value) return true
-      // Check if the model still exists
-      const modelsOfType = models.filter(m => m.type === config.modelType)
-      return !modelsOfType.some(m => m.id === value)
-    })
-    .map(config => t(config.label))
+  const missingRequiredConfigs = defaultConfigs.filter(config => {
+    if (!config.required) return false
+    const value = defaults[config.key]
+    if (!value) return true
+    const modelsOfType = models.filter(m => m.type === config.modelType)
+    return !modelsOfType.some(m => m.id === value)
+  })
+
+  const missingRequiredLabels = missingRequiredConfigs.map(config =>
+    tFields(`${config.translationKey}.label`),
+  )
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t('models.defaults.title')}</CardTitle>
+        <CardTitle>{t('title')}</CardTitle>
         <CardDescription>
-          {t('models.defaults.description')}
+          {t('description')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {missingRequired.length > 0 && (
+        {missingRequiredLabels.length > 0 && (
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              {t('models.defaults.missingRequired', { list: missingRequired.join(', ') })}
+              {t('missingNotice').replace('{list}', missingRequiredLabels.join(', '))}
             </AlertDescription>
           </Alert>
         )}
 
         <div className="grid gap-6 md:grid-cols-2">
           {defaultConfigs.map((config) => {
+            const label = tFields(`${config.translationKey}.label`)
+            const description = tFields(`${config.translationKey}.description`)
             const availableModels = getModelsForType(config.modelType)
             const currentValue = watch(config.key) || undefined
-            
-            // Check if the current value exists in available models
+
             const isValidModel = currentValue && availableModels.some(m => m.id === currentValue)
+
+            const selectPlaceholder = config.required && !isValidModel && availableModels.length > 0
+              ? tPlaceholders('requiredSelect')
+              : tPlaceholders('select')
 
             return (
               <div key={config.key} className="space-y-2">
                 <Label>
-                  {t(config.label)}
+                  {label}
                   {config.required && <span className="text-destructive ml-1">*</span>}
                 </Label>
                 <div className="flex gap-2">
                   <Select
-                    value={currentValue || ""}
+                    value={currentValue || ''}
                     onValueChange={(value) => handleChange(config.key, value)}
                   >
                       <SelectTrigger className={
                       config.required && !isValidModel && availableModels.length > 0
-                        ? 'border-destructive' 
+                        ? 'border-destructive'
                         : ''
                     }>
-                      <SelectValue placeholder={
-                        config.required && !isValidModel && availableModels.length > 0 
-                          ? t('models.defaults.requiredWarning')
-                          : t('models.defaults.selectModelPlaceholder')
-                      } />
+                      <SelectValue placeholder={selectPlaceholder} />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableModels.sort((a, b) => a.name.localeCompare(b.name)).map((model) => (
-                        <SelectItem key={model.id} value={model.id}>
-                          <div className="flex items-center justify-between w-full">
-                            <span>{model.name}</span>
-                            <span className="text-xs text-muted-foreground ml-2">
-                              {model.provider}
-                            </span>
-                          </div>
-                        </SelectItem>
-                      ))}
+                      {availableModels
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((model) => (
+                          <SelectItem key={model.id} value={model.id}>
+                            <div className="flex items-center justify-between w-full">
+                              <span>{model.name}</span>
+                              <span className="text-xs text-muted-foreground ml-2">
+                                {model.provider}
+                              </span>
+                            </div>
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                   {!config.required && currentValue && (
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => handleChange(config.key, "")}
+                      onClick={() => handleChange(config.key, '')}
                       className="h-10 w-10"
                     >
                       <X className="h-4 w-4" />
                     </Button>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground">{t(config.description)}</p>
+                <p className="text-xs text-muted-foreground">{description}</p>
               </div>
             )
           })}
         </div>
+
+        <div className="pt-4 border-t">
+          <a
+            href="https://github.com/lfnovo/open-notebook/blob/main/docs/features/ai-models.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-primary hover:underline"
+          >
+            {t('link')}
+          </a>
+        </div>
       </CardContent>
 
-      {/* Embedding Model Change Dialog */}
       <EmbeddingModelChangeDialog
         open={showEmbeddingDialog}
         onOpenChange={(open) => {

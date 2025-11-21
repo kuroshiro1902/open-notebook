@@ -13,6 +13,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { useSettings, useUpdateSettings } from '@/lib/hooks/use-settings'
 import { useEffect, useState } from 'react'
 import { ChevronDownIcon } from 'lucide-react'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 const settingsSchema = z.object({
   default_content_processing_engine_doc: z.enum(['auto', 'docling', 'simple']).optional(),
@@ -28,6 +29,13 @@ export function SettingsForm() {
   const updateSettings = useUpdateSettings()
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({})
   const [hasResetForm, setHasResetForm] = useState(false)
+  const t = useTranslations('settings.form')
+  const tContent = useTranslations('settings.form.sections.contentProcessing')
+  const tDoc = useTranslations('settings.form.sections.contentProcessing.doc')
+  const tUrl = useTranslations('settings.form.sections.contentProcessing.url')
+  const tEmbedding = useTranslations('settings.form.sections.embedding')
+  const tFiles = useTranslations('settings.form.sections.files')
+  const tActions = useTranslations('settings.form.actions')
   
   
   const {
@@ -78,9 +86,9 @@ export function SettingsForm() {
   if (error) {
     return (
       <Alert variant="destructive">
-        <AlertTitle>Không thể tải cấu hình</AlertTitle>
+        <AlertTitle>{t('error.title')}</AlertTitle>
         <AlertDescription>
-          {error instanceof Error ? error.message : 'Đã xảy ra lỗi không mong muốn.'}
+          {error instanceof Error ? error.message : t('error.descriptionFallback')}
         </AlertDescription>
       </Alert>
     )
@@ -90,14 +98,14 @@ export function SettingsForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Xử lý nội dung</CardTitle>
+          <CardTitle>{tContent('title')}</CardTitle>
           <CardDescription>
-            Cấu hình cách xử lý văn bản và URL
+            {tContent('description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <Label htmlFor="doc_engine">Mô hình xử lý văn bản</Label>
+            <Label htmlFor="doc_engine">{tDoc('label')}</Label>
             <Controller
               name="default_content_processing_engine_doc"
               control={control}
@@ -109,12 +117,12 @@ export function SettingsForm() {
                   disabled={field.disabled || isLoading}
                 >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Chọn mô hình xử lý văn bản" />
+                      <SelectValue placeholder={tDoc('placeholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="auto">Tự động (Khuyến nghị)</SelectItem>
-                      <SelectItem value="docling">Docling</SelectItem>
-                      <SelectItem value="simple">Simple</SelectItem>
+                      <SelectItem value="auto">{tDoc('options.auto')}</SelectItem>
+                      <SelectItem value="docling">{tDoc('options.docling')}</SelectItem>
+                      <SelectItem value="simple">{tDoc('options.simple')}</SelectItem>
                     </SelectContent>
                   </Select>
               )}
@@ -122,18 +130,18 @@ export function SettingsForm() {
             <Collapsible open={expandedSections.doc} onOpenChange={() => toggleSection('doc')}>
               <CollapsibleTrigger className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ChevronDownIcon className={`h-4 w-4 transition-transform ${expandedSections.doc ? 'rotate-180' : ''}`} />
-                Giúp tôi chọn
+                {tDoc('helpToggle')}
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-2 text-sm text-muted-foreground space-y-2">
-                <p>• <strong>Docling</strong> là một mô hình chậm hơn nhưng chính xác hơn, đặc biệt nếu văn bản chứa bảng và hình ảnh.</p>
-                <p>• <strong>Simple</strong> sẽ trích xuất nội dung từ văn bản mà không định dạng nó. Nó phù hợp với văn bản đơn giản, nhưng sẽ mất chất lượng trong văn bản phức tạp.</p>
-                <p>• <strong>Tự động (khuyến nghị)</strong> sẽ cố gắng xử lý qua Docling và mặc định là Simple.</p>
+                <p>• {tDoc('help.docling')}</p>
+                <p>• {tDoc('help.simple')}</p>
+                <p>• {tDoc('help.auto')}</p>
               </CollapsibleContent>
             </Collapsible>
           </div>
           
           <div className="space-y-3">
-            <Label htmlFor="url_engine">Mô hình xử lý URL</Label>
+            <Label htmlFor="url_engine">{tUrl('label')}</Label>
             <Controller
               name="default_content_processing_engine_url"
               control={control}
@@ -145,13 +153,13 @@ export function SettingsForm() {
                   disabled={field.disabled || isLoading}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Chọn mô hình xử lý URL" />
+                    <SelectValue placeholder={tUrl('placeholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="auto">Tự động (Khuyến nghị)</SelectItem>
-                    <SelectItem value="firecrawl">Firecrawl</SelectItem>
-                    <SelectItem value="jina">Jina</SelectItem>
-                    <SelectItem value="simple">Simple</SelectItem>
+                    <SelectItem value="auto">{tUrl('options.auto')}</SelectItem>
+                    <SelectItem value="firecrawl">{tUrl('options.firecrawl')}</SelectItem>
+                    <SelectItem value="jina">{tUrl('options.jina')}</SelectItem>
+                    <SelectItem value="simple">{tUrl('options.simple')}</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -159,13 +167,13 @@ export function SettingsForm() {
             <Collapsible open={expandedSections.url} onOpenChange={() => toggleSection('url')}>
               <CollapsibleTrigger className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ChevronDownIcon className={`h-4 w-4 transition-transform ${expandedSections.url ? 'rotate-180' : ''}`} />
-                Giúp tôi chọn
+                {tUrl('helpToggle')}
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-2 text-sm text-muted-foreground space-y-2">
-                <p>• <strong>Firecrawl</strong> là một dịch vụ trả phí (với gói miễn phí), và rất mạnh mẽ.</p>
-                <p>• <strong>Jina</strong> là một lựa chọn tốt và cũng có gói miễn phí.</p>
-                <p>• <strong>Simple</strong> sẽ sử dụng trích xuất HTTP cơ bản và sẽ bỏ lỡ nội dung trên trang web dựa trên javascript.</p>
-                <p>• <strong>Tự động (khuyến nghị)</strong> sẽ cố gắng sử dụng Firecrawl (nếu có API Key). Sau đó, nó sẽ sử dụng Jina cho đến khi đạt giới hạn (hoặc sẽ tiếp tục sử dụng Jina nếu bạn đã thiết lập API Key). Nó sẽ fallback đến Simple, khi không có các tùy chọn trước đó là khả dụng.</p>
+                <p>• {tUrl('help.firecrawl')}</p>
+                <p>• {tUrl('help.jina')}</p>
+                <p>• {tUrl('help.simple')}</p>
+                <p>• {tUrl('help.auto')}</p>
               </CollapsibleContent>
             </Collapsible>
           </div>
@@ -174,14 +182,14 @@ export function SettingsForm() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Embedding và Tìm kiếm</CardTitle>
+          <CardTitle>{tEmbedding('title')}</CardTitle>
           <CardDescription>
-            Cấu hình các tùy chọn tìm kiếm và embedding
+            {tEmbedding('description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <Label htmlFor="embedding">Tùy chọn embedding mặc định</Label>
+            <Label htmlFor="embedding">{tEmbedding('label')}</Label>
             <Controller
               name="default_embedding_option"
               control={control}
@@ -193,12 +201,12 @@ export function SettingsForm() {
                   disabled={field.disabled || isLoading}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Chọn tùy chọn embedding" />
+                    <SelectValue placeholder={tEmbedding('placeholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ask">Hỏi</SelectItem>
-                    <SelectItem value="always">Luôn</SelectItem>
-                    <SelectItem value="never">Không bao giờ</SelectItem>
+                    <SelectItem value="ask">{tEmbedding('options.ask')}</SelectItem>
+                    <SelectItem value="always">{tEmbedding('options.always')}</SelectItem>
+                    <SelectItem value="never">{tEmbedding('options.never')}</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -206,15 +214,14 @@ export function SettingsForm() {
             <Collapsible open={expandedSections.embedding} onOpenChange={() => toggleSection('embedding')}>
               <CollapsibleTrigger className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ChevronDownIcon className={`h-4 w-4 transition-transform ${expandedSections.embedding ? 'rotate-180' : ''}`} />
-                Giúp tôi chọn
+                {tEmbedding('helpToggle')}
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-2 text-sm text-muted-foreground space-y-2">
-                <p>Embedding nội dung sẽ làm cho nó dễ dàng tìm kiếm bởi bạn và bởi các agent AI của bạn. Nếu bạn đang chạy một mô hình embedding local (Ollama, ví dụ), bạn không nên lo lắng về chi phí và chỉ embedding mọi thứ. Đối với các nhà cung cấp trực tuyến, bạn có thể cẩn thận chỉ khi bạn xử lý rất nhiều nội dung (như 100s văn bản trong một ngày).</p>
-                <p>• Chọn <strong>luôn</strong> nếu bạn đang chạy một mô hình embedding local hoặc nếu thể tích nội dung của bạn không quá lớn</p>
-                <p>• Chọn <strong>hỏi</strong> nếu bạn muốn quyết định mỗi lần</p>
-                <p>• Chọn <strong>không bao giờ</strong> nếu bạn không quan tâm đến tìm kiếm vector hoặc không có nhà cung cấp embedding.</p>
-                <p>Làm tài liệu tham khảo, OpenAI&apos;s text-embedding-3-small costs about 0.02 for 1 million tokens -- which is about 30 times the Wikipedia page for Earth. With Gemini API, Text Embedding 004 is free with a rate limit of 1500 requests per minute.</p>
-                <p>Với Gemini API, Text Embedding 004 là miễn phí với giới hạn tốc độ 1500 yêu cầu mỗi phút.</p>
+                <p>{tEmbedding('helpIntro')}</p>
+                <p>• {tEmbedding('help.always')}</p>
+                <p>• {tEmbedding('help.ask')}</p>
+                <p>• {tEmbedding('help.never')}</p>
+                <p>{tEmbedding('reference')}</p>
               </CollapsibleContent>
             </Collapsible>
           </div>
@@ -223,14 +230,14 @@ export function SettingsForm() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Quản lý tệp</CardTitle>
+          <CardTitle>{tFiles('title')}</CardTitle>
           <CardDescription>
-            Cấu hình xử lý và lưu trữ tệp và tệp
+            {tFiles('description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <Label htmlFor="auto_delete">Xóa tệp tự động</Label>
+            <Label htmlFor="auto_delete">{tFiles('label')}</Label>
             <Controller
               name="auto_delete_files"
               control={control}
@@ -242,11 +249,11 @@ export function SettingsForm() {
                   disabled={field.disabled || isLoading}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Chọn tùy chọn xóa tự động" />
+                    <SelectValue placeholder={tFiles('placeholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="yes">Có</SelectItem>
-                    <SelectItem value="no">Không</SelectItem>
+                    <SelectItem value="yes">{tFiles('options.yes')}</SelectItem>
+                    <SelectItem value="no">{tFiles('options.no')}</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -254,12 +261,13 @@ export function SettingsForm() {
             <Collapsible open={expandedSections.files} onOpenChange={() => toggleSection('files')}>
               <CollapsibleTrigger className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ChevronDownIcon className={`h-4 w-4 transition-transform ${expandedSections.files ? 'rotate-180' : ''}`} />
-                Giúp tôi chọn
+                {tFiles('helpToggle')}
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-2 text-sm text-muted-foreground space-y-2">
-                <p>Một khi tệp của bạn đã được tải lên và xử lý, chúng không còn cần thiết nữa. Hầu hết người dùng nên cho phép CSBKMS xóa tệp tự động từ thư mục tải lên. Chọn <strong>không</strong>, CHỈ nếu bạn đang sử dụng Notebook làm vị trí lưu trữ chính cho những tệp đó (mà bạn không nên làm điều đó). Tùy chọn này sẽ sớm bị phục vụ bằng cách luôn tải xuống các tệp.</p>
-                <p>• Chọn <strong>có</strong> (khuyến nghị) để xóa tệp tự động sau khi xử lý</p>
-                <p>• Chọn <strong>không</strong> chỉ khi bạn cần giữ nguyên tệp gốc trong thư mục tải lên</p>
+                <p>{tFiles('helpIntro')}</p>
+                <p>• {tFiles('help.yes')}</p>
+                <p>• {tFiles('help.no')}</p>
+                <p>{tFiles('note')}</p>
               </CollapsibleContent>
             </Collapsible>
           </div>
@@ -271,7 +279,7 @@ export function SettingsForm() {
           type="submit" 
           disabled={!isDirty || updateSettings.isPending}
         >
-          {updateSettings.isPending ? 'Đang lưu...' : 'Lưu cấu hình'}
+          {updateSettings.isPending ? tActions('saving') : tActions('save')}
         </Button>
       </div>
     </form>

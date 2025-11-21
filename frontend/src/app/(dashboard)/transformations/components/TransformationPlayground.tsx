@@ -12,6 +12,7 @@ import { Transformation } from '@/lib/types/transformations'
 import { useExecuteTransformation } from '@/lib/hooks/use-transformations'
 import { ModelSelector } from '@/components/common/ModelSelector'
 import ReactMarkdown from 'react-markdown'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 interface TransformationPlaygroundProps {
   transformations: Transformation[] | undefined
@@ -25,6 +26,7 @@ export function TransformationPlayground({ transformations, selectedTransformati
   const [output, setOutput] = useState('')
   
   const executeTransformation = useExecuteTransformation()
+  const t = useTranslations('transformations.playground')
 
   const handleExecute = async () => {
     if (!selectedId || !modelId || !inputText.trim()) {
@@ -34,7 +36,7 @@ export function TransformationPlayground({ transformations, selectedTransformati
     const result = await executeTransformation.mutateAsync({
       transformation_id: selectedId,
       input_text: inputText,
-      model_id: modelId
+      model_id: modelId,
     })
 
     setOutput(result.output)
@@ -46,18 +48,18 @@ export function TransformationPlayground({ transformations, selectedTransformati
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Playground</CardTitle>
+          <CardTitle>{t('title')}</CardTitle>
           <CardDescription>
-            Kiểm tra biến đổi của bạn trên văn bản mẫu trước khi áp dụng chúng vào nguồn của bạn
+            {t('description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="transformation">Biến đổi</Label>
+              <Label htmlFor="transformation">{t('transformationLabel')}</Label>
               <Select value={selectedId} onValueChange={setSelectedId}>
                 <SelectTrigger id="transformation">
-                  <SelectValue placeholder="Chọn một biến đổi" />
+                  <SelectValue placeholder={t('transformationPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {transformations?.map((transformation) => (
@@ -71,22 +73,22 @@ export function TransformationPlayground({ transformations, selectedTransformati
 
             <div>
               <ModelSelector
-                label="Model"
+                label={t('modelLabel')}
                 modelType="language"
                 value={modelId}
                 onChange={setModelId}
-                placeholder="Chọn một model"
+                placeholder={t('modelPlaceholder')}
               />
             </div>
           </div>
 
           <div>
-            <Label htmlFor="input">Văn bản đầu vào</Label>
+            <Label htmlFor="input">{t('inputLabel')}</Label>
             <Textarea
               id="input"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Enter some text to transform..."
+              placeholder={t('inputPlaceholder')}
               rows={8}
               className="font-mono text-sm"
             />
@@ -101,12 +103,12 @@ export function TransformationPlayground({ transformations, selectedTransformati
               {executeTransformation.isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Đang chạy...
+                  {t('running')}
                 </>
               ) : (
                 <>
                   <Play className="h-4 w-4 mr-2" />
-                  Chạy biến đổi
+                  {t('run')}
                 </>
               )}
             </Button>
@@ -114,7 +116,7 @@ export function TransformationPlayground({ transformations, selectedTransformati
 
           {output && (
             <div className="space-y-2">
-              <Label>Kết quả</Label>
+              <Label>{t('outputLabel')}</Label>
               <Card>
                 <ScrollArea className="h-[400px]">
                   <CardContent className="pt-6">

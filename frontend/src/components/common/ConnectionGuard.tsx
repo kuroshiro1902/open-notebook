@@ -51,7 +51,7 @@ export function ConnectionGuard({ children }: ConnectionGuardProps) {
       setError({
         type: 'api-unreachable',
         details: {
-          message: 'The CSBKMS API server could not be reached',
+          message: 'The CSB-KMS API server could not be reached',
           technicalMessage: errorMessage,
           stack: err instanceof Error ? err.stack : undefined,
           attemptedUrl,

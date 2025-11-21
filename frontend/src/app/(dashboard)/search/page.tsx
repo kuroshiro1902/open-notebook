@@ -21,8 +21,11 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { StreamingResponse } from '@/components/search/StreamingResponse'
 import { AdvancedModelsDialog } from '@/components/search/AdvancedModelsDialog'
 import { SaveToNotebooksDialog } from '@/components/search/SaveToNotebooksDialog'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 export default function SearchPage() {
+  const t = useTranslations('search')
+
   // Search state
   const [searchQuery, setSearchQuery] = useState('')
   const [searchType, setSearchType] = useState<'text' | 'vector'>('text')
@@ -98,19 +101,19 @@ export default function SearchPage() {
   return (
     <AppShell>
       <div className="p-4 md:p-6">
-        <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Tra cứu và hỏi đáp</h1>
+        <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">{t('search')}</h1>
 
         <Tabs defaultValue="ask" className="w-full space-y-6">
           <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Chọn mô hình</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('chooseAMode')}</p>
             <TabsList aria-label="Ask or search your knowledge base" className="w-full max-w-xl">
               <TabsTrigger value="ask">
                 <MessageCircleQuestion className="h-4 w-4" />
-                Hỏi đáp (beta)
+                {t('askBeta')}
               </TabsTrigger>
               <TabsTrigger value="search">
                 <Search className="h-4 w-4" />
-                Tra cứu
+                {t('search')}
               </TabsTrigger>
             </TabsList>
           </div>
@@ -118,18 +121,18 @@ export default function SearchPage() {
           <TabsContent value="ask" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Hỏi đáp với cơ sở kiến thức (beta)</CardTitle>
+                <CardTitle className="text-lg">{t('askYourKnowledgeBaseBeta')}</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Model sẽ trả lời câu hỏi của bạn dựa trên các tài liệu trong cơ sở kiến thức của bạn.
+                  {t('theLlmWillAnswerYourQueryBasedOnTheDocumentsInYourKnowledgeBase')}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Question Input */}
                 <div className="space-y-2">
-                  <Label htmlFor="ask-question">Câu hỏi</Label>
+                  <Label htmlFor="ask-question">{t('question')}</Label>
                   <Textarea
                     id="ask-question"
-                    placeholder="Nhập câu hỏi của bạn..."
+                    placeholder={t('enterYourQuestion')}
                     value={askQuestion}
                     onChange={(e) => setAskQuestion(e.target.value)}
                     onKeyDown={(e) => {
@@ -143,14 +146,14 @@ export default function SearchPage() {
                     rows={3}
                     aria-label="Nhập câu hỏi để hỏi cơ sở kiến thức"
                   />
-                  <p className="text-xs text-muted-foreground">Nhấn Cmd/Ctrl+Enter để gửi</p>
+                  <p className="text-xs text-muted-foreground">{t('pressCmdCtrlEnterToSubmit')}</p>
                 </div>
 
                 {/* Models Display */}
                 {!hasEmbeddingModel ? (
                   <div className="flex items-center gap-2 p-3 text-sm text-amber-600 dark:text-amber-500 bg-amber-50 dark:bg-amber-950/20 rounded-md">
                     <AlertCircle className="h-4 w-4" />
-                    <span>Bạn không thể sử dụng tính năng này vì không có model embedding được chọn. Vui lòng đặt một model embedding trong trang Mô hình.</span>
+                    <span>{t('youCantUseThisFeatureBecauseYouHaveNoEmbeddingModelSelectedPleaseSetOneUpInTheModelsPage')}</span>
                   </div>
                 ) : (
                   <>
@@ -167,18 +170,18 @@ export default function SearchPage() {
                           className="h-auto py-1 px-2"
                         >
                           <Settings className="h-3 w-3 mr-1" />
-                          Nâng cao
+                          {t('advanced')}
                         </Button>
                       </div>
                       <div className="flex gap-2 text-xs flex-wrap">
                         <Badge variant="secondary">
-                          Chiến lược: {resolveModelName(customModels?.strategy || modelDefaults?.default_chat_model)}
+                          {t('strategy')}: {resolveModelName(customModels?.strategy || modelDefaults?.default_chat_model)}
                         </Badge>
                         <Badge variant="secondary">
-                          Trả lời: {resolveModelName(customModels?.answer || modelDefaults?.default_chat_model)}
+                          {t('answer')}: {resolveModelName(customModels?.answer || modelDefaults?.default_chat_model)}
                         </Badge>
                         <Badge variant="secondary">
-                          Kết quả: {resolveModelName(customModels?.finalAnswer || modelDefaults?.default_chat_model)}
+                          {t('final')}: {resolveModelName(customModels?.finalAnswer || modelDefaults?.default_chat_model)}
                         </Badge>
                       </div>
                     </div>
@@ -192,10 +195,10 @@ export default function SearchPage() {
                         {ask.isStreaming ? (
                           <>
                             <LoadingSpinner size="sm" className="mr-2" />
-                            Đang xử lý...
+                            {t('processing')}
                           </>
                         ) : (
-                          'Hỏi'
+                          t('ask')
                         )}
                       </Button>
 
@@ -206,7 +209,7 @@ export default function SearchPage() {
                           className="w-full"
                         >
                           <Save className="h-4 w-4 mr-2" />
-                          Lưu vào sổ tay
+                          {t('saveToNotebooks')}
                         </Button>
                       )}
                     </div>
@@ -249,9 +252,9 @@ export default function SearchPage() {
           <TabsContent value="search" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Tra cứu</CardTitle>
+                <CardTitle className="text-lg">{t('search')}</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Tra cứu cơ sở kiến thức của bạn cho các từ khóa hoặc khái niệm cụ thể
+                  {t('searchYourKnowledgeBaseForSpecificKeywordsOrConcepts')}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -260,7 +263,7 @@ export default function SearchPage() {
                   <div className="flex flex-col sm:flex-row gap-2">
                     <Input
                       id="search-query"
-                      placeholder="Nhập câu tra cứu..."
+                      placeholder={t('enterSearchQuery')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyPress={handleKeyPress}
@@ -279,21 +282,21 @@ export default function SearchPage() {
                       ) : (
                         <Search className="h-4 w-4 mr-2" />
                       )}
-                      Tra cứu
+                      {t('search')}
                     </Button>
                   </div>
-                  <p className="text-xs text-muted-foreground">Nhấn Enter để tra cứu</p>
+                  <p className="text-xs text-muted-foreground">{t('pressEnterToSearch')}</p>
                 </div>
 
                 {/* Search Options */}
                 <div className="space-y-4">
                   {/* Search Type */}
                   <div className="space-y-2">
-                    <Label>Loại tra cứu</Label>
+                    <Label>{t('searchType')}</Label>
                     {!hasEmbeddingModel && (
                       <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-500">
                         <AlertCircle className="h-4 w-4" />
-                        <span>Tra cứu vector yêu cầu một model embedding. Chỉ tra cứu văn bản được khả dụng.</span>
+                        <span>{t('vectorSearchRequiresAnEmbeddingModelOnlyTextSearchIsAvailable')}</span>
                       </div>
                     )}
                     <RadioGroup
@@ -304,7 +307,7 @@ export default function SearchPage() {
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="text" id="text" />
                         <Label htmlFor="text" className="font-normal cursor-pointer">
-                          Tra cứu văn bản
+                          {t('textSearch')}
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -317,7 +320,7 @@ export default function SearchPage() {
                           htmlFor="vector"
                           className={`font-normal ${!hasEmbeddingModel ? 'text-muted-foreground cursor-not-allowed' : 'cursor-pointer'}`}
                         >
-                          Tra cứu vector
+                          {t('vectorSearch')}
                         </Label>
                       </div>
                     </RadioGroup>
@@ -325,7 +328,7 @@ export default function SearchPage() {
 
                   {/* Search Locations */}
                   <div className="space-y-2">
-                    <Label>Tra cứu trong</Label>
+                    <Label>{t('searchIn')}</Label>
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2">
                         <Checkbox
@@ -335,7 +338,7 @@ export default function SearchPage() {
                           disabled={searchMutation.isPending}
                         />
                         <Label htmlFor="sources" className="font-normal cursor-pointer">
-                          Tra cứu nguồn
+                          {t('searchSources')}
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -346,7 +349,7 @@ export default function SearchPage() {
                           disabled={searchMutation.isPending}
                         />
                         <Label htmlFor="notes" className="font-normal cursor-pointer">
-                          Tra cứu sổ tay
+                          {t('searchNotes')}
                         </Label>
                       </div>
                     </div>
@@ -358,15 +361,15 @@ export default function SearchPage() {
                   <div className="mt-6 space-y-3">
                     <div className="flex items-center justify-between">
                       <h3 className="text-sm font-medium">
-                        {searchMutation.data.total_count} kết quả{searchMutation.data.total_count !== 1 ? 's' : ''} được tìm thấy
+                        {searchMutation.data.total_count} {t('result')}{searchMutation.data.total_count !== 1 ? t('results') : ''} {t('found')}
                       </h3>
-                      <Badge variant="outline">{searchMutation.data.search_type} tra cứu</Badge>
+                      <Badge variant="outline">{searchMutation.data.search_type} {t('search')}</Badge>
                     </div>
 
                     {searchMutation.data.results.length === 0 ? (
                       <Card>
                         <CardContent className="pt-6 text-center text-muted-foreground">
-                          No results found for &ldquo;{searchQuery}&rdquo;
+                          {t('noResultsFoundFor')} &ldquo;{searchQuery}&rdquo;
                         </CardContent>
                       </Card>
                     ) : (
@@ -397,7 +400,7 @@ export default function SearchPage() {
                                 <Collapsible className="mt-3">
                                   <CollapsibleTrigger className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
                                     <ChevronDown className="h-4 w-4" />
-                                    Matches ({result.matches.length})
+                                    {t('matches')} ({result.matches.length})
                                   </CollapsibleTrigger>
                                   <CollapsibleContent className="mt-2 space-y-1">
                                     {result.matches.map((match, i) => (

@@ -9,6 +9,7 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { Wand2 } from 'lucide-react'
 import { Transformation } from '@/lib/types/transformations'
 import { TransformationEditorDialog } from './TransformationEditorDialog'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 interface TransformationsListProps {
   transformations: Transformation[] | undefined
@@ -19,6 +20,7 @@ interface TransformationsListProps {
 export function TransformationsList({ transformations, isLoading, onPlayground }: TransformationsListProps) {
   const [editorOpen, setEditorOpen] = useState(false)
   const [editingTransformation, setEditingTransformation] = useState<Transformation | undefined>()
+  const t = useTranslations('transformations.list')
 
   const handleOpenEditor = (trans?: Transformation) => {
     setEditingTransformation(trans)
@@ -37,12 +39,12 @@ export function TransformationsList({ transformations, isLoading, onPlayground }
     return (
       <EmptyState
         icon={Wand2}
-        title="Không có biến đổi nào"
-        description="Tạo biến đổi đầu tiên để xử lý và trích xuất ý tưởng từ nội dung của bạn."
+        title={t('emptyTitle')}
+        description={t('emptyDescription')}
         action={
           <Button onClick={() => handleOpenEditor()}>
             <Plus className="h-4 w-4 mr-2" />
-            Tạo biến đổi mới
+            {t('emptyAction')}
           </Button>
         }
       />
@@ -53,10 +55,10 @@ export function TransformationsList({ transformations, isLoading, onPlayground }
     <>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Các biến đổi của bạn</h2>
+          <h2 className="text-lg font-semibold">{t('title')}</h2>
           <Button onClick={() => handleOpenEditor()}>
             <Plus className="h-4 w-4 mr-2" />
-            Tạo biến đổi mới
+            {t('createButton')}
           </Button>
         </div>
 

@@ -10,11 +10,13 @@ import { TransformationPlayground } from './components/TransformationPlayground'
 import { useTransformations } from '@/lib/hooks/use-transformations'
 import { Transformation } from '@/lib/types/transformations'
 import { Wand2, Play, RefreshCw } from 'lucide-react'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 export default function TransformationsPage() {
   const [activeTab, setActiveTab] = useState('transformations')
   const [selectedTransformation, setSelectedTransformation] = useState<Transformation | undefined>()
   const { data: transformations, isLoading, refetch } = useTransformations()
+  const t = useTranslations('transformations.page')
 
   const handlePlayground = (transformation: Transformation) => {
     setSelectedTransformation(transformation)
@@ -27,50 +29,57 @@ export default function TransformationsPage() {
         <div className="p-6 space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold">Biến đổi</h1>
-              <Button variant="outline" size="sm" onClick={() => refetch()}>
+              <h1 className="text-2xl font-bold">{t('title')}</h1>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => refetch()}
+                aria-label={t('refreshAria')}
+              >
                 <RefreshCw className="h-4 w-4" />
-            </Button>
+              </Button>
+            </div>
           </div>
-        </div>
 
-        <div className="max-w-5xl">
-          <p className="text-muted-foreground">
-            Biến đổi là các prompt sẽ được sử dụng bởi LLM để xử lý nguồn và trích xuất ý tưởng, tóm tắt, etc.
-          </p>
-        </div>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Chọn một workspace</p>
-            <TabsList aria-label="Transformation views" className="w-full max-w-xl">
-              <TabsTrigger value="transformations" className="flex items-center gap-2">
-                <Wand2 className="h-4 w-4" />
-                Biến đổi
-              </TabsTrigger>
-              <TabsTrigger value="playground" className="flex items-center gap-2">
-                <Play className="h-4 w-4" />
-                Playground
-              </TabsTrigger>
-            </TabsList>
+          <div className="max-w-5xl">
+            <p className="text-muted-foreground">
+              {t('description')}
+            </p>
           </div>
-          
-          <TabsContent value="transformations" className="space-y-6">
-            <DefaultPromptEditor />
-            <TransformationsList 
-              transformations={transformations} 
-              isLoading={isLoading}
-              onPlayground={handlePlayground}
-            />
-          </TabsContent>
-          
-          <TabsContent value="playground">
-            <TransformationPlayground 
-              transformations={transformations}
-              selectedTransformation={selectedTransformation}
-            />
-          </TabsContent>
-        </Tabs>
+
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t('workspaceLabel')}
+              </p>
+              <TabsList aria-label={t('tabs.aria')} className="w-full max-w-xl">
+                <TabsTrigger value="transformations" className="flex items-center gap-2">
+                  <Wand2 className="h-4 w-4" />
+                  {t('tabs.transformations')}
+                </TabsTrigger>
+                <TabsTrigger value="playground" className="flex items-center gap-2">
+                  <Play className="h-4 w-4" />
+                  {t('tabs.playground')}
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            
+            <TabsContent value="transformations" className="space-y-6">
+              <DefaultPromptEditor />
+              <TransformationsList 
+                transformations={transformations} 
+                isLoading={isLoading}
+                onPlayground={handlePlayground}
+              />
+            </TabsContent>
+            
+            <TabsContent value="playground">
+              <TransformationPlayground 
+                transformations={transformations}
+                selectedTransformation={selectedTransformation}
+              />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </AppShell>
