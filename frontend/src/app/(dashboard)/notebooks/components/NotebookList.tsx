@@ -15,6 +15,8 @@ interface NotebookListProps {
   collapsible?: boolean
   emptyTitle?: string
   emptyDescription?: string
+  fallbackTitle: string
+  fallbackDescription: string
 }
 
 export function NotebookList({ 
@@ -24,6 +26,8 @@ export function NotebookList({
   collapsible = false,
   emptyTitle,
   emptyDescription,
+  fallbackTitle,
+  fallbackDescription,
 }: NotebookListProps) {
   const [isExpanded, setIsExpanded] = useState(!collapsible)
 
@@ -39,8 +43,8 @@ export function NotebookList({
     return (
       <EmptyState
         icon={Book}
-        title={emptyTitle ?? `No ${title.toLowerCase()}`}
-        description={emptyDescription ?? 'Start by creating your first notebook to organize your research.'}
+        title={emptyTitle ?? fallbackTitle}
+        description={emptyDescription ?? fallbackDescription}
       />
     )
   }

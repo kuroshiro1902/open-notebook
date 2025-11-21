@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/accordion'
 import { embeddingApi } from '@/lib/api/embedding'
 import type { RebuildEmbeddingsRequest, RebuildStatusResponse } from '@/lib/api/embedding'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 export function RebuildEmbeddings() {
   const [mode, setMode] = useState<'existing' | 'all'>('existing')
@@ -28,19 +29,21 @@ export function RebuildEmbeddings() {
   const [status, setStatus] = useState<RebuildStatusResponse | null>(null)
   const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null)
 
-  // Rebuild mutation
+  const t = useTranslations('advanced.rebuild')
+  const tForm = useTranslations('advanced.rebuild.form')
+  const tStatus = useTranslations('advanced.rebuild.status')
+  const tAccordion = useTranslations('advanced.rebuild.accordion')
+
   const rebuildMutation = useMutation({
     mutationFn: async (request: RebuildEmbeddingsRequest) => {
       return embeddingApi.rebuildEmbeddings(request)
     },
     onSuccess: (data) => {
       setCommandId(data.command_id)
-      // Start polling for status
       startPolling(data.command_id)
-    }
+    },
   })
 
-  // Start polling for rebuild status
   const startPolling = (cmdId: string) => {
     if (pollingInterval) {
       clearInterval(pollingInterval)
@@ -51,19 +54,17 @@ export function RebuildEmbeddings() {
         const statusData = await embeddingApi.getRebuildStatus(cmdId)
         setStatus(statusData)
 
-        // Stop polling if completed or failed
         if (statusData.status === 'completed' || statusData.status === 'failed') {
           stopPolling()
         }
       } catch (error) {
         console.error('Failed to fetch rebuild status:', error)
       }
-    }, 5000) // Poll every 5 seconds
+    }, 5000)
 
     setPollingInterval(interval)
   }
 
-  // Stop polling
   const stopPolling = useCallback(() => {
     if (pollingInterval) {
       clearInterval(pollingInterval)
@@ -71,7 +72,6 @@ export function RebuildEmbeddings() {
     }
   }, [pollingInterval])
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       stopPolling()
@@ -83,7 +83,7 @@ export function RebuildEmbeddings() {
       mode,
       include_sources: includeSources,
       include_notes: includeNotes,
-      include_insights: includeInsights
+      include_insights: includeInsights,
     }
 
     rebuildMutation.mutate(request)
@@ -97,14 +97,16 @@ export function RebuildEmbeddings() {
   }
 
   const isAnyTypeSelected = includeSources || includeNotes || includeInsights
-  const isRebuildActive = commandId && status && (status.status === 'queued' || status.status === 'running')
+  const isRebuildActive =
+    commandId && status && (status.status === 'queued' || status.status === 'running')
 
   const progressData = status?.progress
   const stats = status?.stats
 
   const totalItems = progressData?.total_items ?? progressData?.total ?? 0
   const processedItems = progressData?.processed_items ?? progressData?.processed ?? 0
-  const derivedProgressPercent = progressData?.percentage ?? (totalItems > 0 ? (processedItems / totalItems) * 100 : 0)
+  const derivedProgressPercent =
+    progressData?.percentage ?? (totalItems > 0 ? (processedItems / totalItems) * 100 : 0)
   const progressPercent = Number.isFinite(derivedProgressPercent) ? derivedProgressPercent : 0
 
   const sourcesProcessed = stats?.sources_processed ?? stats?.sources ?? 0
@@ -112,45 +114,56 @@ export function RebuildEmbeddings() {
   const insightsProcessed = stats?.insights_processed ?? stats?.insights ?? 0
   const failedItems = stats?.failed_items ?? stats?.failed ?? 0
 
-  const computedDuration = status?.started_at && status?.completed_at
-    ? (new Date(status.completed_at).getTime() - new Date(status.started_at).getTime()) / 1000
-    : undefined
+  const computedDuration =
+    status?.started_at && status?.completed_at
+      ? (new Date(status.completed_at).getTime() - new Date(status.started_at).getTime()) / 1000
+      : undefined
   const processingTimeSeconds = stats?.processing_time ?? computedDuration
+
+  const renderStatusLabel = () => {
+    switch (status?.status) {
+      case 'queued':
+        return tStatus('queued')
+      case 'running':
+        return tStatus('running')
+      case 'completed':
+        return tStatus('completed')
+      case 'failed':
+        return tStatus('failed')
+      default:
+        return null
+    }
+  }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          🔄 Rebuild Embeddings
+          🔄 {t('title')}
         </CardTitle>
-        <CardDescription>
-          Rebuild vector embeddings for your content. Use this when switching embedding models or fixing corrupted embeddings.
-        </CardDescription>
+        <CardDescription>{t('subtitle')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Configuration Form */}
         {!isRebuildActive && (
           <div className="space-y-6">
             <div className="space-y-3">
-              <Label htmlFor="mode">Rebuild Mode</Label>
+              <Label htmlFor="mode">{tForm('modeLabel')}</Label>
               <Select value={mode} onValueChange={(value) => setMode(value as 'existing' | 'all')}>
                 <SelectTrigger id="mode">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="existing">Existing</SelectItem>
-                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="existing">{tForm('modeOptionExisting')}</SelectItem>
+                  <SelectItem value="all">{tForm('modeOptionAll')}</SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-sm text-muted-foreground">
-                {mode === 'existing'
-                  ? 'Re-embed only items that already have embeddings (faster, for model switching)'
-                  : 'Re-embed existing items + create embeddings for items without any (slower, comprehensive)'}
+                {mode === 'existing' ? tForm('modeHintExisting') : tForm('modeHintAll')}
               </p>
             </div>
 
             <div className="space-y-3">
-              <Label>Include in Rebuild</Label>
+              <Label>{tForm('includeLabel')}</Label>
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <Checkbox
@@ -159,7 +172,7 @@ export function RebuildEmbeddings() {
                     onCheckedChange={(checked) => setIncludeSources(checked === true)}
                   />
                   <Label htmlFor="sources" className="font-normal cursor-pointer">
-                    Sources
+                    {tForm('includeSources')}
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -169,7 +182,7 @@ export function RebuildEmbeddings() {
                     onCheckedChange={(checked) => setIncludeNotes(checked === true)}
                   />
                   <Label htmlFor="notes" className="font-normal cursor-pointer">
-                    Notes
+                    {tForm('includeNotes')}
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -179,16 +192,14 @@ export function RebuildEmbeddings() {
                     onCheckedChange={(checked) => setIncludeInsights(checked === true)}
                   />
                   <Label htmlFor="insights" className="font-normal cursor-pointer">
-                    Insights
+                    {tForm('includeInsights')}
                   </Label>
                 </div>
               </div>
               {!isAnyTypeSelected && (
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    Please select at least one item type to rebuild
-                  </AlertDescription>
+                  <AlertDescription>{tForm('selectionRequired')}</AlertDescription>
                 </Alert>
               )}
             </div>
@@ -201,10 +212,10 @@ export function RebuildEmbeddings() {
               {rebuildMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Starting Rebuild...
+                  {tForm('starting')}
                 </>
               ) : (
-                '🚀 Start Rebuild'
+                tForm('start')
               )}
             </Button>
 
@@ -212,39 +223,36 @@ export function RebuildEmbeddings() {
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  Failed to start rebuild: {(rebuildMutation.error as Error)?.message || 'Unknown error'}
+                  {tForm('startFailed').replace(
+                    '{message}',
+                    (rebuildMutation.error as Error)?.message ?? 'Unknown error',
+                  )}
                 </AlertDescription>
               </Alert>
             )}
           </div>
         )}
 
-        {/* Status Display */}
         {status && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {status.status === 'queued' && <Clock className="h-5 w-5 text-yellow-500" />}
-                {status.status === 'running' && <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />}
+                {status.status === 'running' && (
+                  <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />
+                )}
                 {status.status === 'completed' && <CheckCircle2 className="h-5 w-5 text-green-500" />}
                 {status.status === 'failed' && <XCircle className="h-5 w-5 text-red-500" />}
                 <div className="flex flex-col">
-                  <span className="font-medium">
-                    {status.status === 'queued' && 'Queued'}
-                    {status.status === 'running' && 'Running...'}
-                    {status.status === 'completed' && 'Completed!'}
-                    {status.status === 'failed' && 'Failed'}
-                  </span>
+                  <span className="font-medium">{renderStatusLabel()}</span>
                   {status.status === 'running' && (
-                    <span className="text-sm text-muted-foreground">
-                      You can leave this page as this will run in the background
-                    </span>
+                    <span className="text-sm text-muted-foreground">{tStatus('runningHint')}</span>
                   )}
                 </div>
               </div>
               {(status.status === 'completed' || status.status === 'failed') && (
                 <Button variant="outline" size="sm" onClick={handleReset}>
-                  Start New Rebuild
+                  {tForm('startNew')}
                 </Button>
               )}
             </div>
@@ -252,15 +260,18 @@ export function RebuildEmbeddings() {
             {progressData && (
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Progress</span>
+                  <span>{tStatus('progressLabel')}</span>
                   <span className="font-medium">
-                    {processedItems}/{totalItems} items ({progressPercent.toFixed(1)}%)
+                    {tStatus('progressSummary')
+                      .replace('{processed}', processedItems.toString())
+                      .replace('{total}', totalItems.toString())
+                      .replace('{percent}', progressPercent.toFixed(1))}
                   </span>
                 </div>
                 <Progress value={progressPercent} className="h-2" />
                 {failedItems > 0 && (
                   <p className="text-sm text-yellow-600">
-                    ⚠️ {failedItems} items failed to process
+                    ⚠️ {tStatus('failedItems').replace('{count}', failedItems.toString())}
                   </p>
                 )}
               </div>
@@ -269,21 +280,23 @@ export function RebuildEmbeddings() {
             {stats && (
               <div className="grid grid-cols-4 gap-4">
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Sources</p>
+                  <p className="text-sm text-muted-foreground">{tStatus('stats.sources')}</p>
                   <p className="text-2xl font-bold">{sourcesProcessed}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Notes</p>
+                  <p className="text-sm text-muted-foreground">{tStatus('stats.notes')}</p>
                   <p className="text-2xl font-bold">{notesProcessed}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Insights</p>
+                  <p className="text-sm text-muted-foreground">{tStatus('stats.insights')}</p>
                   <p className="text-2xl font-bold">{insightsProcessed}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Time</p>
+                  <p className="text-sm text-muted-foreground">{tStatus('stats.time')}</p>
                   <p className="text-2xl font-bold">
-                    {processingTimeSeconds !== undefined ? `${processingTimeSeconds.toFixed(1)}s` : '—'}
+                    {processingTimeSeconds !== undefined
+                      ? `${processingTimeSeconds.toFixed(1)}s`
+                      : tStatus('stats.timePlaceholder')}
                   </p>
                 </div>
               </div>
@@ -298,61 +311,80 @@ export function RebuildEmbeddings() {
 
             {status.started_at && (
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>Started: {new Date(status.started_at).toLocaleString()}</p>
+                <p>
+                  {tStatus('startedAt').replace(
+                    '{timestamp}',
+                    new Date(status.started_at).toLocaleString(),
+                  )}
+                </p>
                 {status.completed_at && (
-                  <p>Completed: {new Date(status.completed_at).toLocaleString()}</p>
+                  <p>
+                    {tStatus('completedAt').replace(
+                      '{timestamp}',
+                      new Date(status.completed_at).toLocaleString(),
+                    )}
+                  </p>
                 )}
               </div>
             )}
           </div>
         )}
 
-        {/* Help Section */}
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="when">
-            <AccordionTrigger>When should I rebuild embeddings?</AccordionTrigger>
+            <AccordionTrigger>{tAccordion('when.title')}</AccordionTrigger>
             <AccordionContent className="space-y-2 text-sm">
-              <p><strong>You should rebuild embeddings when:</strong></p>
+              <p>
+                <strong>{tAccordion('when.intro')}</strong>
+              </p>
               <ul className="list-disc list-inside space-y-1 ml-2">
-                <li><strong>Switching embedding models:</strong> If you change from one embedding model to another, you need to rebuild all embeddings to ensure consistency.</li>
-                <li><strong>Upgrading model versions:</strong> When updating to a newer version of your embedding model, rebuild to take advantage of improvements.</li>
-                <li><strong>Fixing corrupted embeddings:</strong> If you suspect some embeddings are corrupted or missing, rebuilding can restore them.</li>
-                <li><strong>After bulk imports:</strong> If you imported content without embeddings, use &quot;All&quot; mode to embed everything.</li>
+                <li>{tAccordion('when.items.switching')}</li>
+                <li>{tAccordion('when.items.upgrading')}</li>
+                <li>{tAccordion('when.items.fixing')}</li>
+                <li>{tAccordion('when.items.bulk')}</li>
               </ul>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="time">
-            <AccordionTrigger>How long does rebuilding take?</AccordionTrigger>
+            <AccordionTrigger>{tAccordion('time.title')}</AccordionTrigger>
             <AccordionContent className="space-y-2 text-sm">
-              <p><strong>Processing time depends on:</strong></p>
+              <p>
+                <strong>{tAccordion('time.intro')}</strong>
+              </p>
               <ul className="list-disc list-inside space-y-1 ml-2">
-                <li>Number of items to process</li>
-                <li>Embedding model speed</li>
-                <li>API rate limits (for cloud providers)</li>
-                <li>System resources</li>
+                <li>{tAccordion('time.factors.count')}</li>
+                <li>{tAccordion('time.factors.speed')}</li>
+                <li>{tAccordion('time.factors.rateLimits')}</li>
+                <li>{tAccordion('time.factors.resources')}</li>
               </ul>
-              <p className="mt-2"><strong>Typical rates:</strong></p>
+              <p className="mt-2">
+                <strong>{tAccordion('time.rates.heading')}</strong>
+              </p>
               <ul className="list-disc list-inside space-y-1 ml-2">
-                <li><strong>Local models</strong> (Ollama): Very fast, limited only by hardware</li>
-                <li><strong>Cloud APIs</strong> (OpenAI, Google): Moderate speed, may hit rate limits with large datasets</li>
-                <li><strong>Sources:</strong> Slower than notes/insights (creates multiple chunks per source)</li>
+                <li>{tAccordion('time.rates.local')}</li>
+                <li>{tAccordion('time.rates.cloud')}</li>
+                <li>{tAccordion('time.rates.sources')}</li>
               </ul>
-              <p className="mt-2"><em>Example: Rebuilding 200 items might take 2-5 minutes with cloud APIs, or under 1 minute with local models.</em></p>
+              <p className="mt-2">
+                <em>{tAccordion('time.rates.example')}</em>
+              </p>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="safe">
-            <AccordionTrigger>Is it safe to rebuild while using the app?</AccordionTrigger>
+            <AccordionTrigger>{tAccordion('safe.title')}</AccordionTrigger>
             <AccordionContent className="space-y-2 text-sm">
-              <p><strong>Yes, rebuilding is safe!</strong> The rebuild process:</p>
+              <p>
+                <strong>{tAccordion('safe.intro')}</strong>
+              </p>
               <ul className="list-disc list-inside space-y-1 ml-2">
-                <li>✅ <strong>Is idempotent:</strong> Running multiple times produces the same result</li>
-                <li>✅ <strong>Doesn&apos;t delete content:</strong> Only replaces embeddings</li>
-                <li>✅ <strong>Can be run anytime:</strong> No need to stop other operations</li>
-                <li>✅ <strong>Handles errors gracefully:</strong> Failed items are logged and skipped</li>
+                <li>{tAccordion('safe.items.idempotent')}</li>
+                <li>{tAccordion('safe.items.noDeletion')}</li>
+                <li>{tAccordion('safe.items.anytime')}</li>
+                <li>{tAccordion('safe.items.errors')}</li>
               </ul>
-              <p className="mt-2">⚠️ <strong>However:</strong> Very large rebuilds (1000s of items) may temporarily slow down searches while processing.</p>
+              <p className="mt-2">{tAccordion('safe.note')}</p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

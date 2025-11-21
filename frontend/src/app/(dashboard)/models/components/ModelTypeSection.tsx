@@ -1,5 +1,7 @@
 'use client'
 
+import { useMemo, useState } from 'react'
+
 import { Model, ProviderAvailability } from '@/lib/types/models'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -9,7 +11,7 @@ import { Bot, Mic, Volume2, Search, Trash2, X, ChevronDown, ChevronUp } from 'lu
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { useDeleteModel } from '@/lib/hooks/use-models'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
-import { useState, useMemo } from 'react'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 interface ModelTypeSectionProps {
   type: 'language' | 'embedding' | 'text_to_speech' | 'speech_to_text'
@@ -26,59 +28,53 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
   const [isExpanded, setIsExpanded] = useState(false)
   const deleteModelMutation = useDeleteModel()
 
-  const getTypeInfo = () => {
+  const t = useTranslations('models.typeSection')
+  const tTypes = useTranslations('models.typeSection.types')
+
+  const typeVisuals = useMemo(() => {
     switch (type) {
       case 'language':
         return {
-          title: 'Language Models',
-          description: 'Chat, transformations, and text generation',
           icon: Bot,
           iconColor: 'text-blue-500',
-          bgColor: 'bg-blue-50 dark:bg-blue-950/20'
+          bgColor: 'bg-blue-50 dark:bg-blue-950/20',
         }
       case 'embedding':
         return {
-          title: 'Embedding Models',
-          description: 'Semantic search and vector embeddings',
           icon: Search,
           iconColor: 'text-green-500',
-          bgColor: 'bg-green-50 dark:bg-green-950/20'
+          bgColor: 'bg-green-50 dark:bg-green-950/20',
         }
       case 'text_to_speech':
         return {
-          title: 'Text-to-Speech',
-          description: 'Generate audio from text',
           icon: Volume2,
           iconColor: 'text-purple-500',
-          bgColor: 'bg-purple-50 dark:bg-purple-950/20'
+          bgColor: 'bg-purple-50 dark:bg-purple-950/20',
         }
       case 'speech_to_text':
+      default:
         return {
-          title: 'Speech-to-Text',
-          description: 'Transcribe audio to text',
           icon: Mic,
           iconColor: 'text-orange-500',
-          bgColor: 'bg-orange-50 dark:bg-orange-950/20'
+          bgColor: 'bg-orange-50 dark:bg-orange-950/20',
         }
     }
-  }
+  }, [type])
 
-  const { title, description, icon: Icon, iconColor, bgColor } = getTypeInfo()
-  
-  // Filter and sort models
+  const title = tTypes(`${type}.title`)
+  const description = tTypes(`${type}.description`)
+  const Icon = typeVisuals.icon
+  const iconColor = typeVisuals.iconColor
+  const bgColor = typeVisuals.bgColor
+
   const filteredModels = useMemo(() => {
     let filtered = models.filter(model => model.type === type)
-    
-    // Apply provider filter if selected
     if (selectedProvider) {
       filtered = filtered.filter(model => model.provider === selectedProvider)
     }
-    
-    // Sort by name alphabetically
     return filtered.sort((a, b) => a.name.localeCompare(b.name))
   }, [models, type, selectedProvider])
 
-  // Get unique providers for this model type
   const modelProviders = useMemo(() => {
     const typeModels = models.filter(model => model.type === type)
     const uniqueProviders = [...new Set(typeModels.map(m => m.provider))]
@@ -110,20 +106,19 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
           </div>
         </CardHeader>
         <CardContent className="pt-0">
-          {/* Provider filter badges */}
           {modelProviders.length > 1 && (
             <div className="flex flex-wrap gap-1 mb-3">
               <Badge
-                variant={selectedProvider === null ? "default" : "outline"}
+                variant={selectedProvider === null ? 'default' : 'outline'}
                 className="cursor-pointer text-xs"
                 onClick={() => setSelectedProvider(null)}
               >
-                All
+                {t('filterAll')}
               </Badge>
               {modelProviders.map(provider => (
                 <Badge
                   key={provider}
-                  variant={selectedProvider === provider ? "default" : "outline"}
+                  variant={selectedProvider === provider ? 'default' : 'outline'}
                   className="cursor-pointer text-xs capitalize"
                   onClick={() => setSelectedProvider(provider === selectedProvider ? null : provider)}
                 >
@@ -142,14 +137,19 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
             </div>
           ) : filteredModels.length === 0 ? (
             <div className="text-center py-6 text-sm text-muted-foreground">
-              {selectedProvider 
-                ? `No ${selectedProvider} models configured`
-                : 'No models configured'
-              }
+              {selectedProvider
+                ? t('noModelsForProvider').replace('{provider}', selectedProvider)
+                : t('noModels')}
             </div>
           ) : (
             <div className="space-y-2">
-              <div className={`space-y-2 ${!isExpanded && filteredModels.length > COLLAPSED_ITEM_COUNT ? 'max-h-[280px] overflow-hidden relative' : ''}`}>
+              <div
+                className={`space-y-2 ${
+                  !isExpanded && filteredModels.length > COLLAPSED_ITEM_COUNT
+                    ? 'max-h-[280px] overflow-hidden relative'
+                    : ''
+                }`}
+              >
                 {filteredModels.slice(0, isExpanded ? undefined : COLLAPSED_ITEM_COUNT).map(model => (
                   <div key={model.id} className="flex items-center gap-2 group">
                     <div className="flex-1 flex items-center gap-2 px-3 py-2 rounded-md border bg-muted/30">
@@ -182,12 +182,15 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
                   {isExpanded ? (
                     <>
                       <ChevronUp className="h-4 w-4 mr-2" />
-                      Show less
+                      {t('showLess')}
                     </>
                   ) : (
                     <>
                       <ChevronDown className="h-4 w-4 mr-2" />
-                      Show {filteredModels.length - COLLAPSED_ITEM_COUNT} more
+                      {t('showMore').replace(
+                        '{count}',
+                        String(filteredModels.length - COLLAPSED_ITEM_COUNT),
+                      )}
                     </>
                   )}
                 </Button>
@@ -200,9 +203,9 @@ export function ModelTypeSection({ type, models, providers, isLoading }: ModelTy
       <ConfirmDialog
         open={!!deleteModel}
         onOpenChange={(open) => !open && setDeleteModel(null)}
-        title="Delete Model"
-        description={`Are you sure you want to delete "${deleteModel?.name}"? This action cannot be undone.`}
-        confirmText="Delete"
+        title={t('delete.title')}
+        description={t('delete.description').replace('{name}', deleteModel?.name ?? '')}
+        confirmText={t('delete.confirm')}
         confirmVariant="destructive"
         onConfirm={handleDelete}
       />
