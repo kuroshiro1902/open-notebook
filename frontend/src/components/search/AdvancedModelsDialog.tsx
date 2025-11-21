@@ -57,44 +57,44 @@ export function AdvancedModelsDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Advanced Model Selection</DialogTitle>
+          <DialogTitle>Tùy chọn mô hình nâng cao</DialogTitle>
           <DialogDescription>
-            Choose specific models for each stage of the Ask process
+            Chọn mô hình cụ thể cho từng bước
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <ModelSelector
-            label="Strategy Model"
+            label="Mô hình xử lý"
             modelType="language"
             value={strategyModel}
             onChange={setStrategyModel}
-            placeholder="Select strategy model"
+            placeholder="Chọn mô hình xử lý"
           />
 
           <ModelSelector
-            label="Answer Model"
+            label="Mô hình tạo câu trả lời"
             modelType="language"
             value={answerModel}
             onChange={setAnswerModel}
-            placeholder="Select answer model"
+            placeholder="Chọn mô hình tạo câu trả lời"
           />
 
           <ModelSelector
-            label="Final Answer Model"
+            label="Mô hình trả lời"
             modelType="language"
             value={finalAnswerModel}
             onChange={setFinalAnswerModel}
-            placeholder="Select final answer model"
+            placeholder="Chọn mô hình trả lời"
           />
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            Hủy
           </Button>
           <Button onClick={handleSave}>
-            Save Changes
+            Lưu thay đổi
           </Button>
         </DialogFooter>
       </DialogContent>
