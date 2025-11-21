@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/hooks/use-auth'
 import { useSidebarStore } from '@/lib/stores/sidebar-store'
+import { useTranslations } from '@/lib/hooks/use-language'
 import {
   Tooltip,
   TooltipContent,
@@ -40,53 +41,53 @@ import {
   Plus,
   Wrench,
 } from 'lucide-react'
-import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from '@/components/common/LanguageSwitcher'
 
 type CreateTarget = 'source' | 'notebook' | 'podcast'
 
 export function AppSidebar() {
-
-  const t = useTranslations();
-
-  const navigation = useMemo(() => [
-    {
-      title: t("sidebar.collect"),
-      items: [
-        { name: t("sidebar.source"), href: '/sources', icon: FileText },
-      ],
-    },
-    {
-      title: t("sidebar.process"),
-      items: [
-        { name: t("sidebar.notebook"), href: '/notebooks', icon: Book },
-        { name: t("sidebar.askAndSearch"), href: '/search', icon: Search },
-      ],
-    },
-    // {
-    //   title: t("sidebar.create"),
-    //   items: [
-    //     { name: 'Podcasts', href: '/podcasts', icon: Mic },
-    //   ],
-    // },
-    {
-      title: t("sidebar.manage"),
-      items: [
-        { name: t("sidebar.models"), href: '/models', icon: Bot },
-        { name: t("sidebar.transformations"), href: '/transformations', icon: Shuffle },
-        { name: t("sidebar.settings"), href: '/settings', icon: Settings },
-        { name: t("sidebar.advanced"), href: '/advanced', icon: Wrench },
-      ],
-    },
-  ] as const, [t])
-
   const pathname = usePathname()
   const { logout } = useAuth()
   const { isCollapsed, toggleCollapse } = useSidebarStore()
+  const tSidebar = useTranslations('sidebar')
+  const tApp = useTranslations('app')
+  const tTheme = useTranslations('controls.theme')
+  const tLanguage = useTranslations('controls.language')
 
   const [createMenuOpen, setCreateMenuOpen] = useState(false)
   const [sourceDialogOpen, setSourceDialogOpen] = useState(false)
   const [notebookDialogOpen, setNotebookDialogOpen] = useState(false)
   const [podcastDialogOpen, setPodcastDialogOpen] = useState(false)
+
+  const navigation = useMemo(
+    () => [
+      {
+        title: tSidebar('sections.collect'),
+        items: [{ name: tSidebar('items.sources'), href: '/sources', icon: FileText }],
+      },
+      {
+        title: tSidebar('sections.process'),
+        items: [
+          { name: tSidebar('items.notebooks'), href: '/notebooks', icon: Book },
+          { name: tSidebar('items.search'), href: '/search', icon: Search },
+        ],
+      },
+      {
+        title: tSidebar('sections.create'),
+        items: [{ name: tSidebar('items.podcasts'), href: '/podcasts', icon: Mic }],
+      },
+      {
+        title: tSidebar('sections.manage'),
+        items: [
+          { name: tSidebar('items.models'), href: '/models', icon: Bot },
+          { name: tSidebar('items.transformations'), href: '/transformations', icon: Shuffle },
+          { name: tSidebar('items.settings'), href: '/settings', icon: Settings },
+          { name: tSidebar('items.advanced'), href: '/advanced', icon: Wrench },
+        ],
+      },
+    ],
+    [tSidebar]
+  )
 
   const handleCreateSelection = (target: CreateTarget) => {
     setCreateMenuOpen(false)
@@ -117,8 +118,8 @@ export function AppSidebar() {
           {isCollapsed ? (
             <div className="relative flex items-center justify-center w-full">
               <Image
-                src="/logo.svg"
-                alt={t("app.title")}
+                src="/Vietnam_Coast_Guard_insignia.svg"
+                alt={tApp('name')}
                 width={32}
                 height={32}
                 className="transition-opacity group-hover:opacity-0"
@@ -135,9 +136,9 @@ export function AppSidebar() {
           ) : (
             <>
               <div className="flex items-center gap-2">
-                <Image src="/logo.svg" alt={t("app.title")} width={32} height={32} />
+                <Image src="/Vietnam_Coast_Guard_insignia.svg" alt={tApp('name')} width={32} height={32} />
                 <span className="text-base font-medium text-sidebar-foreground">
-                  {t("app.title")}
+                  {tApp('name')}
                 </span>
               </div>
               <Button
@@ -174,13 +175,13 @@ export function AppSidebar() {
                         variant="default"
                         size="sm"
                         className="w-full justify-center px-2 bg-primary hover:bg-primary/90 text-primary-foreground border-0"
-                        aria-label="Create"
+                        aria-label={tSidebar('create.tooltip')}
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                   </TooltipTrigger>
-                  <TooltipContent side="right">{t("sidebar.create")}</TooltipContent>
+                  <TooltipContent side="right">{tSidebar('create.tooltip')}</TooltipContent>
                 </Tooltip>
               ) : (
                 <DropdownMenuTrigger asChild>
@@ -191,7 +192,7 @@ export function AppSidebar() {
                     className="w-full justify-start bg-primary hover:bg-primary/90 text-primary-foreground border-0"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    {t("sidebar.create")}
+                    {tSidebar('create.buttonLabel')}
                   </Button>
                 </DropdownMenuTrigger>
               )}
@@ -209,7 +210,7 @@ export function AppSidebar() {
                   className="gap-2"
                 >
                   <FileText className="h-4 w-4" />
-                  {t("sidebar.source")}
+                    {tSidebar('create.options.source')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onSelect={(event) => {
@@ -219,7 +220,7 @@ export function AppSidebar() {
                   className="gap-2"
                 >
                   <Book className="h-4 w-4" />
-                  {t("sidebar.notebook")}
+                    {tSidebar('create.options.notebook')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onSelect={(event) => {
@@ -229,7 +230,7 @@ export function AppSidebar() {
                   className="gap-2"
                 >
                   <Mic className="h-4 w-4" />
-                  {t("sidebar.podcast")}
+                    {tSidebar('create.options.podcast')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -293,24 +294,46 @@ export function AppSidebar() {
             isCollapsed && 'px-2'
           )}
         >
-          <div
-            className={cn(
-              'flex',
-              isCollapsed ? 'justify-center' : 'justify-start'
-            )}
-          >
-            {isCollapsed ? (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div>
-                    <ThemeToggle iconOnly />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="right">Theme</TooltipContent>
-              </Tooltip>
-            ) : (
-              <ThemeToggle />
-            )}
+          <div className={cn('space-y-2', isCollapsed && 'space-y-2')}>
+            <div
+              className={cn(
+                'flex',
+                isCollapsed ? 'justify-center' : 'justify-start'
+              )}
+            >
+              {isCollapsed ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <LanguageSwitcher iconOnly />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">{tLanguage('label')}</TooltipContent>
+                </Tooltip>
+              ) : (
+                <LanguageSwitcher />
+              )}
+            </div>
+
+            <div
+              className={cn(
+                'flex',
+                isCollapsed ? 'justify-center' : 'justify-start'
+              )}
+            >
+              {isCollapsed ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <ThemeToggle iconOnly />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">{tTheme('label')}</TooltipContent>
+                </Tooltip>
+              ) : (
+                <ThemeToggle />
+              )}
+            </div>
           </div>
 
           {isCollapsed ? (
@@ -324,7 +347,7 @@ export function AppSidebar() {
                   <LogOut className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">{t("signOut")}</TooltipContent>
+              <TooltipContent side="right">{tSidebar('signOut.tooltip')}</TooltipContent>
             </Tooltip>
           ) : (
             <Button
@@ -333,7 +356,7 @@ export function AppSidebar() {
               onClick={logout}
             >
               <LogOut className="h-4 w-4" />
-              {t("signOut")}
+              {tSidebar('signOut.button')}
             </Button>
           )}
         </div>

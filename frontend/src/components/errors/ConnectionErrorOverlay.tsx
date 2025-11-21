@@ -46,7 +46,7 @@ export function ConnectionErrorOverlay({
             </h1>
             <p className="text-muted-foreground">
               {isApiError
-                ? 'The CSBKMS API server could not be reached'
+                ? 'The CSB-KMS API server could not be reached'
                 : 'The API server is running, but the database is not accessible'}
             </p>
           </div>
@@ -106,7 +106,7 @@ export function ConnectionErrorOverlay({
           <span
             className="text-primary hover:underline inline-flex items-center gap-1"
           >
-            CSBKMS Documentation
+            CSB-KMS Documentation
             <ExternalLink className="w-4 h-4" />
           </span>
         </div>

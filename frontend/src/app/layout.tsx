@@ -6,6 +6,7 @@ import { QueryProvider } from "@/components/providers/QueryProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { ConnectionGuard } from "@/components/common/ConnectionGuard";
+import { LanguageProvider } from "@/components/providers/LanguageProvider";
 import { themeScript } from "@/lib/theme-script";
 import { NextIntlClientProvider } from "next-intl";
 
@@ -31,18 +32,18 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={inter.className}>
-        <ErrorBoundary>
-          <NextIntlClientProvider>
-          <ThemeProvider>
-            <QueryProvider>
-              <ConnectionGuard>
-                {children}
-                <Toaster />
-              </ConnectionGuard>
-            </QueryProvider>
-          </ThemeProvider>
-          </NextIntlClientProvider>
-        </ErrorBoundary>
+        <LanguageProvider>
+          <ErrorBoundary>
+            <ThemeProvider>
+              <QueryProvider>
+                <ConnectionGuard>
+                  {children}
+                  <Toaster />
+                </ConnectionGuard>
+              </QueryProvider>
+            </ThemeProvider>
+          </ErrorBoundary>
+        </LanguageProvider>
       </body>
     </html>
   );

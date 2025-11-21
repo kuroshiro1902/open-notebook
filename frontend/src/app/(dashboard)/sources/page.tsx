@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 export default function SourcesPage() {
   const [sources, setSources] = useState<SourceListResponse[]>([])
@@ -34,6 +35,13 @@ export default function SourcesPage() {
   const loadingMoreRef = useRef(false)
   const hasMoreRef = useRef(true)
   const PAGE_SIZE = 30
+
+  const t = useTranslations('sources.page')
+  const tTable = useTranslations('sources.page.table.headers')
+  const tTypes = useTranslations('sources.page.types')
+  const tToast = useTranslations('sources.page.toast')
+  const tTableLabels = useTranslations('sources.page.table')
+  const tConfirm = useTranslations('sources.page.confirmDelete')
 
   const fetchSources = useCallback(async (reset = false) => {
     try {
@@ -71,14 +79,14 @@ export default function SourcesPage() {
       offsetRef.current += data.length
     } catch (err) {
       console.error('Failed to fetch sources:', err)
-      setError('Failed to load sources')
-      toast.error('Failed to load sources')
+      setError(t('error'))
+      toast.error(tToast('loadError'))
     } finally {
       setLoading(false)
       setLoadingMore(false)
       loadingMoreRef.current = false
     }
-  }, [sortBy, sortOrder])
+  }, [sortBy, sortOrder, t, tToast])
 
   // Initial load and when sort changes
   useEffect(() => {
@@ -216,9 +224,9 @@ export default function SourcesPage() {
   }
 
   const getSourceType = (source: SourceListResponse) => {
-    if (source.asset?.url) return 'Link'
-    if (source.asset?.file_path) return 'File'
-    return 'Text'
+    if (source.asset?.url) return tTypes('link')
+    if (source.asset?.file_path) return tTypes('file')
+    return tTypes('text')
   }
 
   const handleRowClick = useCallback((index: number, sourceId: string) => {
@@ -236,13 +244,13 @@ export default function SourcesPage() {
 
     try {
       await sourcesApi.delete(deleteDialog.source.id)
-      toast.success('Source deleted successfully')
+      toast.success(tToast('deleteSuccess'))
       // Remove the deleted source from the list
       setSources(prev => prev.filter(s => s.id !== deleteDialog.source?.id))
       setDeleteDialog({ open: false, source: null })
     } catch (err) {
       console.error('Failed to delete source:', err)
-      toast.error('Failed to delete source')
+      toast.error(tToast('deleteError'))
     }
   }
 
@@ -271,8 +279,8 @@ export default function SourcesPage() {
       <AppShell>
         <EmptyState
           icon={FileText}
-          title="No sources yet"
-          description="Sources from all notebooks will appear here"
+          title={t('emptyTitle')}
+          description={t('emptyDescription')}
         />
       </AppShell>
     )
@@ -282,9 +290,9 @@ export default function SourcesPage() {
     <AppShell>
       <div className="flex flex-col h-full w-full max-w-none px-6 py-6">
         <div className="mb-6 flex-shrink-0">
-          <h1 className="text-3xl font-bold">Danh sách nguồn</h1>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
           <p className="mt-2 text-muted-foreground">
-            Xem tất cả nguồn từ tất cả sổ tay của bạn.
+            {t('description')}
           </p>
         </div>
 
@@ -305,10 +313,10 @@ export default function SourcesPage() {
             <thead className="sticky top-0 bg-background z-10">
               <tr className="border-b bg-muted/50">
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Loại
+                  {tTable('type')}
                 </th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Tiêu đề
+                  {tTable('title')}
                 </th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden sm:table-cell">
                   <Button
@@ -317,7 +325,7 @@ export default function SourcesPage() {
                     onClick={() => toggleSort('created')}
                     className="h-8 px-2 hover:bg-muted"
                   >
-                    Tạo
+                    {tTable('created')}
                     <ArrowUpDown className={cn(
                       "ml-2 h-3 w-3",
                       sortBy === 'created' ? 'opacity-100' : 'opacity-30'
@@ -330,13 +338,13 @@ export default function SourcesPage() {
                   </Button>
                 </th>
                 <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground hidden md:table-cell">
-                  Insights
+                  {tTable('insights')}
                 </th>
                 <th className="h-12 px-4 text-center align-middle font-medium text-muted-foreground hidden lg:table-cell">
-                  Embedded
+                  {tTable('embedded')}
                 </th>
                 <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">
-                  Hành động
+                  {tTable('actions')}
                 </th>
               </tr>
             </thead>
@@ -364,7 +372,7 @@ export default function SourcesPage() {
                   <td className="h-12 px-4">
                     <div className="flex flex-col overflow-hidden">
                       <span className="font-medium truncate">
-                        {source.title || 'Untitled Source'}
+                        {source.title || tTableLabels('untitled')}
                       </span>
                       {source.asset?.url && (
                         <span className="text-xs text-muted-foreground truncate">
@@ -381,7 +389,7 @@ export default function SourcesPage() {
                   </td>
                   <td className="h-12 px-4 text-center hidden lg:table-cell">
                     <Badge variant={source.embedded ? "default" : "secondary"} className="text-xs">
-                      {source.embedded ? "Yes" : "No"}
+                      {source.embedded ? tTableLabels('embeddedYes') : tTableLabels('embeddedNo')}
                     </Badge>
                   </td>
                   <td className="h-12 px-4 text-right">
@@ -401,7 +409,7 @@ export default function SourcesPage() {
                   <td colSpan={6} className="h-16 text-center">
                     <div className="flex items-center justify-center">
                       <LoadingSpinner />
-                      <span className="ml-2 text-muted-foreground">Đang tải thêm nguồn...</span>
+                      <span className="ml-2 text-muted-foreground">{t('loadingMore')}</span>
                     </div>
                   </td>
                 </tr>
@@ -414,9 +422,9 @@ export default function SourcesPage() {
       <ConfirmDialog
         open={deleteDialog.open}
         onOpenChange={(open) => setDeleteDialog({ open, source: deleteDialog.source })}
-        title="Xóa nguồn"
-        description={`Bạn có chắc chắn muốn xóa "${deleteDialog.source?.title || 'nguồn này'}"? Điều này không thể hoàn tác.`}
-        confirmText="Xóa"
+        title={tConfirm('title')}
+        description={tConfirm('description').replace('{name}', deleteDialog.source?.title || tConfirm('fallbackName'))}
+        confirmText={tConfirm('confirm')}
         confirmVariant="destructive"
         onConfirm={handleDeleteConfirm}
       />

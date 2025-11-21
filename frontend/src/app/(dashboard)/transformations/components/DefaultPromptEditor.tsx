@@ -7,12 +7,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { ChevronDown, ChevronRight, Settings } from 'lucide-react'
 import { useDefaultPrompt, useUpdateDefaultPrompt } from '@/lib/hooks/use-transformations'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 export function DefaultPromptEditor() {
   const [isOpen, setIsOpen] = useState(false)
   const [prompt, setPrompt] = useState('')
   const { data: defaultPrompt, isLoading } = useDefaultPrompt()
   const updateDefaultPrompt = useUpdateDefaultPrompt()
+  const t = useTranslations('transformations.defaultPrompt')
 
   useEffect(() => {
     if (defaultPrompt) {
@@ -33,9 +35,9 @@ export function DefaultPromptEditor() {
               <div className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
                 <div className="text-left">
-                  <CardTitle className="text-lg">Prompt mặc định</CardTitle>
+                  <CardTitle className="text-lg">{t('title')}</CardTitle>
                   <CardDescription>
-                    Đây sẽ được thêm vào tất cả các prompt biến đổi của bạn
+                    {t('description')}
                   </CardDescription>
                 </div>
               </div>
@@ -52,7 +54,7 @@ export function DefaultPromptEditor() {
             <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Nhập các hướng dẫn biến đổi mặc định..."
+              placeholder={t('placeholder')}
               className="min-h-[200px] font-mono text-sm"
               disabled={isLoading}
             />
@@ -61,7 +63,7 @@ export function DefaultPromptEditor() {
                 onClick={handleSave}
                 disabled={isLoading || updateDefaultPrompt.isPending}
               >
-                Lưu
+                {t('save')}
               </Button>
             </div>
           </CardContent>

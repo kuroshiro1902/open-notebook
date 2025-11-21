@@ -1,12 +1,14 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { formatDistanceToNow } from 'date-fns'
+import { MoreHorizontal, Archive, ArchiveRestore, Trash2, FileText, StickyNote } from 'lucide-react'
+
 import { NotebookResponse } from '@/lib/types/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { MoreHorizontal, Archive, ArchiveRestore, Trash2, FileText, StickyNote } from 'lucide-react'
-import { formatDistanceToNow } from 'date-fns'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,19 +17,20 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useUpdateNotebook, useDeleteNotebook } from '@/lib/hooks/use-notebooks'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
-import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/hooks/use-language'
 
 interface NotebookCardProps {
   notebook: NotebookResponse
 }
 
 export function NotebookCard({ notebook }: NotebookCardProps) {
-  const t = useTranslations()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const router = useRouter()
   const updateNotebook = useUpdateNotebook()
   const deleteNotebook = useDeleteNotebook()
+  const t = useTranslations('notebooks.card')
+  const tMenu = useTranslations('notebooks.card.menu')
+  const tConfirm = useTranslations('notebooks.card.confirmDelete')
 
   const handleArchiveToggle = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -60,9 +63,9 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
                   {notebook.name}
                 </CardTitle>
                 {notebook.archived && (
-                    <Badge variant="secondary" className="mt-1">
-                      {t('notebooks.card.archived')}
-                    </Badge>
+                  <Badge variant="secondary" className="mt-1">
+                    {t('archivedBadge')}
+                  </Badge>
                 )}
               </div>
               
@@ -82,12 +85,12 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
                     {notebook.archived ? (
                       <>
                         <ArchiveRestore className="h-4 w-4 mr-2" />
-                          {t('notebooks.actions.unarchive')}
+                        {tMenu('unarchive')}
                       </>
                     ) : (
                       <>
                         <Archive className="h-4 w-4 mr-2" />
-                          {t('notebooks.actions.archive')}
+                        {tMenu('archive')}
                       </>
                     )}
                   </DropdownMenuItem>
@@ -99,7 +102,7 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
                     className="text-red-600"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
-                      {t('notebooks.actions.delete')}
+                    {tMenu('delete')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -108,11 +111,11 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
           
           <CardContent>
             <CardDescription className="line-clamp-2 text-sm">
-                {notebook.description || t('notebooks.card.noDescription')}
+              {notebook.description || t('descriptionFallback')}
             </CardDescription>
 
             <div className="mt-3 text-xs text-muted-foreground">
-                {t('notebooks.card.updated', { time: formatDistanceToNow(new Date(notebook.updated), { addSuffix: true }) })}
+              {t('updatedPrefix')} {formatDistanceToNow(new Date(notebook.updated), { addSuffix: true })}
             </div>
 
             {/* Item counts footer */}
@@ -132,9 +135,9 @@ export function NotebookCard({ notebook }: NotebookCardProps) {
       <ConfirmDialog
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
-          title={t('notebooks.card.confirmDelete.title')}
-          description={t('notebooks.card.confirmDelete.description', { name: notebook.name })}
-          confirmText={t('notebooks.card.confirmDelete.confirm')}
+        title={tConfirm('title')}
+        description={tConfirm('description').replace('{name}', notebook.name)}
+        confirmText={tConfirm('confirm')}
         confirmVariant="destructive"
         onConfirm={handleDelete}
       />
